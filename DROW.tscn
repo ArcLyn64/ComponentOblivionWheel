@@ -1,0 +1,346 @@
+[gd_scene load_steps=27 format=3 uid="uid://ccy07coqyd1kq"]
+
+[ext_resource type="Script" path="res://DROW.gd" id="1_dtc7r"]
+[ext_resource type="Script" path="res://wheel_slice_data.gd" id="2_g4dfi"]
+[ext_resource type="Script" path="res://wheel_segment_data.gd" id="3_n6fcq"]
+
+[sub_resource type="Gradient" id="Gradient_v8edh"]
+interpolation_mode = 1
+colors = PackedColorArray(1, 1, 1, 1, 0.775063, 0.775063, 0.775064, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_ft0xd"]
+gradient = SubResource("Gradient_v8edh")
+fill_to = Vector2(0, 0.5)
+
+[sub_resource type="Gradient" id="Gradient_lkiug"]
+offsets = PackedFloat32Array(0, 0.454148)
+colors = PackedColorArray(0.125167, 0, 0.961748, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_t2lpr"]
+gradient = SubResource("Gradient_lkiug")
+width = 200
+
+[sub_resource type="Gradient" id="Gradient_skjdx"]
+colors = PackedColorArray(0.64746, 0.4617, 0.81, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_20n43"]
+gradient = SubResource("Gradient_skjdx")
+width = 200
+
+[sub_resource type="Resource" id="Resource_puhhf"]
+script = ExtResource("2_g4dfi")
+color = Color(1, 0.482353, 0, 1)
+value = 1
+
+[sub_resource type="Resource" id="Resource_doyg3"]
+script = ExtResource("2_g4dfi")
+color = Color(1, 0.482353, 0, 1)
+value = 2
+
+[sub_resource type="Resource" id="Resource_pxdg8"]
+script = ExtResource("2_g4dfi")
+color = Color(1, 0.482353, 0, 1)
+value = 3
+
+[sub_resource type="Resource" id="Resource_rikmm"]
+script = ExtResource("2_g4dfi")
+color = Color(1, 0.482353, 0, 1)
+value = 4
+
+[sub_resource type="Resource" id="Resource_5m4cl"]
+script = ExtResource("2_g4dfi")
+color = Color(1, 0.482353, 0, 1)
+value = 1
+
+[sub_resource type="Resource" id="Resource_q3l3l"]
+script = ExtResource("2_g4dfi")
+color = Color(1, 0.482353, 0, 1)
+value = 2
+
+[sub_resource type="Resource" id="Resource_63npt"]
+script = ExtResource("2_g4dfi")
+color = Color(1, 0.482353, 0, 1)
+value = 3
+
+[sub_resource type="Resource" id="Resource_t361p"]
+script = ExtResource("2_g4dfi")
+color = Color(1, 0.482353, 0, 1)
+value = 4
+
+[sub_resource type="Resource" id="Resource_1prh3"]
+script = ExtResource("3_n6fcq")
+color = Color(1, 1, 1, 1)
+value = -2
+selectable = true
+
+[sub_resource type="Resource" id="Resource_g5yle"]
+script = ExtResource("3_n6fcq")
+color = Color(1, 1, 1, 1)
+value = -1
+selectable = true
+
+[sub_resource type="Resource" id="Resource_5ern4"]
+script = ExtResource("3_n6fcq")
+color = Color(1, 1, 1, 1)
+value = 1
+selectable = true
+
+[sub_resource type="Resource" id="Resource_2fuo4"]
+script = ExtResource("3_n6fcq")
+color = Color(1, 1, 1, 1)
+value = 2
+selectable = true
+
+[sub_resource type="Resource" id="Resource_k8d87"]
+script = ExtResource("3_n6fcq")
+color = Color(1, 1, 1, 1)
+value = 1
+selectable = true
+
+[sub_resource type="Resource" id="Resource_xqxo4"]
+script = ExtResource("3_n6fcq")
+color = Color(1, 1, 1, 1)
+value = 1
+selectable = true
+
+[sub_resource type="Resource" id="Resource_etjgp"]
+script = ExtResource("3_n6fcq")
+color = Color(1, 1, 1, 1)
+value = 1
+selectable = true
+
+[sub_resource type="Resource" id="Resource_c0l86"]
+script = ExtResource("3_n6fcq")
+color = Color(1, 1, 1, 1)
+value = 1
+selectable = true
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_5n8m4"]
+radius = 212.5
+
+[node name="DROW" type="CenterContainer"]
+custom_minimum_size = Vector2(510, 510)
+script = ExtResource("1_dtc7r")
+rotate_on_selection = null
+outer_border_thickness = 10.0
+outer_border_texture = SubResource("GradientTexture2D_ft0xd")
+inner_border_thickness = 5.0
+selector_color = Color(0.52876, 0.68171, 1, 1)
+selector_thickness = 10.0
+cover_texture = SubResource("GradientTexture1D_t2lpr")
+radius = 250.0
+outer_border_fidelity = 100
+transition = 9
+easing = 1
+slice_gradient = SubResource("GradientTexture1D_20n43")
+multiplier_slice_data = Array[ExtResource("2_g4dfi")]([SubResource("Resource_puhhf"), SubResource("Resource_doyg3"), SubResource("Resource_pxdg8"), SubResource("Resource_rikmm"), SubResource("Resource_5m4cl"), SubResource("Resource_q3l3l"), SubResource("Resource_63npt"), SubResource("Resource_t361p")])
+value_segment_data = Array[ExtResource("3_n6fcq")]([SubResource("Resource_1prh3"), SubResource("Resource_g5yle"), SubResource("Resource_5ern4"), SubResource("Resource_2fuo4"), SubResource("Resource_k8d87"), SubResource("Resource_xqxo4"), SubResource("Resource_etjgp"), SubResource("Resource_c0l86")])
+
+[node name="ThisNodeLetsSliceParentRotate" type="Control" parent="."]
+layout_mode = 2
+
+[node name="SliceParent" type="Control" parent="ThisNodeLetsSliceParentRotate"]
+unique_name_in_owner = true
+layout_mode = 2
+anchors_preset = 0
+
+[node name="SegmentParent" type="Control" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="WheelOverlayParent" type="Control" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="OuterBorder" type="Line2D" parent="WheelOverlayParent"]
+unique_name_in_owner = true
+points = PackedVector2Array(-250, 2.18557e-05, -249.497, -15.856, -247.989, -31.6481, -245.482, -47.3128, -241.987, -62.787, -237.518, -78.0083, -232.092, -92.9156, -225.732, -107.449, -218.462, -121.549, -210.313, -135.16, -201.318, -148.227, -191.511, -160.697, -180.934, -172.52, -169.627, -183.648, -157.638, -194.037, -145.014, -203.644, -131.806, -212.431, -118.068, -220.363, -103.854, -227.408, -89.2215, -233.537, -74.2301, -238.726, -58.9397, -242.953, -43.412, -246.202, -27.7095, -248.46, -11.8955, -249.717, 3.96651, -249.969, 19.8125, -249.214, 35.5787, -247.455, 51.2017, -244.701, 66.6185, -240.961, 81.767, -236.25, 96.5863, -230.589, 111.017, -223.998, 125, -216.506, 138.48, -208.142, 151.402, -198.94, 163.715, -188.937, 175.369, -178.174, 186.316, -166.692, 196.513, -154.54, 205.919, -141.765, 214.496, -128.419, 222.209, -114.557, 229.027, -100.233, 234.923, -85.5051, 239.873, -70.4332, 243.857, -55.0776, 246.86, -39.5004, 248.868, -23.764, 249.874, -7.93199, 249.874, 7.93198, 248.868, 23.764, 246.86, 39.5003, 243.857, 55.0776, 239.873, 70.4331, 234.923, 85.505, 229.027, 100.233, 222.209, 114.557, 214.496, 128.419, 205.919, 141.765, 196.513, 154.54, 186.316, 166.692, 175.369, 178.174, 163.715, 188.937, 151.402, 198.94, 138.48, 208.142, 125, 216.506, 111.017, 223.998, 96.5863, 230.589, 81.767, 236.25, 66.6184, 240.961, 51.2016, 244.701, 35.5787, 247.455, 19.8125, 249.214, 3.96647, 249.969, -11.8955, 249.717, -27.7096, 248.46, -43.4121, 246.202, -58.9398, 242.953, -74.2301, 238.726, -89.2216, 233.537, -103.854, 227.408, -118.068, 220.363, -131.806, 212.431, -145.014, 203.644, -157.638, 194.037, -169.627, 183.648, -180.934, 172.52, -191.511, 160.697, -201.318, 148.227, -210.313, 135.16, -218.462, 121.549, -225.732, 107.449, -232.092, 92.9156, -237.518, 78.0083, -241.987, 62.787, -245.482, 47.3128, -247.989, 31.6481, -249.497, 15.8559, -250, -4.673e-05)
+texture = SubResource("GradientTexture2D_ft0xd")
+texture_mode = 1
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
+antialiased = true
+
+[node name="CoverParent" type="Control" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="SelectorParent" type="Control" parent="."]
+layout_mode = 2
+
+[node name="Selector" type="Line2D" parent="SelectorParent"]
+unique_name_in_owner = true
+points = PackedVector2Array(19.5984, 0, 224.492, -84.8712, 227.558, -76.2705, 230.295, -67.5594, 232.698, -58.7506, 234.764, -49.8567, 236.491, -40.8906, 237.875, -31.8653, 238.915, -22.794, 239.609, -13.6896, 239.957, -4.5654, 239.957, 4.56539, 239.609, 13.6896, 238.915, 22.7939, 237.875, 31.8653, 236.491, 40.8906, 234.764, 49.8566, 232.698, 58.7505, 230.295, 67.5594, 227.558, 76.2705, 224.492, 84.8712)
+closed = true
+default_color = Color(0.52876, 0.68171, 1, 1)
+joint_mode = 2
+
+[node name="TotalAreaDetector" type="Area2D" parent="SelectorParent"]
+unique_name_in_owner = true
+
+[node name="TADCollision" type="CollisionShape2D" parent="SelectorParent/TotalAreaDetector"]
+unique_name_in_owner = true
+visible = false
+shape = SubResource("CircleShape2D_5n8m4")
+
+[connection signal="area_entered" from="ThisNodeLetsSliceParentRotate/SliceParent/WheelSlice" to="ThisNodeLetsSliceParentRotate/SliceParent/WheelSlice/WheelPolygon" method="_bubble_area_entered"]
+[connection signal="area_exited" from="ThisNodeLetsSliceParentRotate/SliceParent/WheelSlice" to="ThisNodeLetsSliceParentRotate/SliceParent/WheelSlice/WheelPolygon" method="_bubble_area_exited"]
+[connection signal="area_shape_entered" from="ThisNodeLetsSliceParentRotate/SliceParent/WheelSlice" to="ThisNodeLetsSliceParentRotate/SliceParent/WheelSlice/WheelPolygon" method="_bubble_area_shape_entered"]
+[connection signal="area_shape_exited" from="ThisNodeLetsSliceParentRotate/SliceParent/WheelSlice" to="ThisNodeLetsSliceParentRotate/SliceParent/WheelSlice/WheelPolygon" method="_bubble_area_shape_exited"]
+[connection signal="body_entered" from="ThisNodeLetsSliceParentRotate/SliceParent/WheelSlice" to="ThisNodeLetsSliceParentRotate/SliceParent/WheelSlice/WheelPolygon" method="_bubble_body_entered"]
+[connection signal="body_exited" from="ThisNodeLetsSliceParentRotate/SliceParent/WheelSlice" to="ThisNodeLetsSliceParentRotate/SliceParent/WheelSlice/WheelPolygon" method="_bubble_body_exited"]
+[connection signal="body_shape_entered" from="ThisNodeLetsSliceParentRotate/SliceParent/WheelSlice" to="ThisNodeLetsSliceParentRotate/SliceParent/WheelSlice/WheelPolygon" method="_bubble_body_shape_entered"]
+[connection signal="body_shape_exited" from="ThisNodeLetsSliceParentRotate/SliceParent/WheelSlice" to="ThisNodeLetsSliceParentRotate/SliceParent/WheelSlice/WheelPolygon" method="_bubble_body_shape_exited"]
+[connection signal="mouse_entered" from="ThisNodeLetsSliceParentRotate/SliceParent/WheelSlice" to="ThisNodeLetsSliceParentRotate/SliceParent/WheelSlice/WheelPolygon" method="_bubble_mouse_entered"]
+[connection signal="mouse_exited" from="ThisNodeLetsSliceParentRotate/SliceParent/WheelSlice" to="ThisNodeLetsSliceParentRotate/SliceParent/WheelSlice/WheelPolygon" method="_bubble_mouse_exited"]
+[connection signal="area_entered" from="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@17238" to="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@17238/WheelPolygon" method="_bubble_area_entered"]
+[connection signal="area_exited" from="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@17238" to="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@17238/WheelPolygon" method="_bubble_area_exited"]
+[connection signal="area_shape_entered" from="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@17238" to="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@17238/WheelPolygon" method="_bubble_area_shape_entered"]
+[connection signal="area_shape_exited" from="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@17238" to="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@17238/WheelPolygon" method="_bubble_area_shape_exited"]
+[connection signal="body_entered" from="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@17238" to="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@17238/WheelPolygon" method="_bubble_body_entered"]
+[connection signal="body_exited" from="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@17238" to="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@17238/WheelPolygon" method="_bubble_body_exited"]
+[connection signal="body_shape_entered" from="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@17238" to="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@17238/WheelPolygon" method="_bubble_body_shape_entered"]
+[connection signal="body_shape_exited" from="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@17238" to="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@17238/WheelPolygon" method="_bubble_body_shape_exited"]
+[connection signal="mouse_entered" from="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@17238" to="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@17238/WheelPolygon" method="_bubble_mouse_entered"]
+[connection signal="mouse_exited" from="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@17238" to="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@17238/WheelPolygon" method="_bubble_mouse_exited"]
+[connection signal="area_entered" from="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@17239" to="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@17239/WheelPolygon" method="_bubble_area_entered"]
+[connection signal="area_exited" from="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@17239" to="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@17239/WheelPolygon" method="_bubble_area_exited"]
+[connection signal="area_shape_entered" from="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@17239" to="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@17239/WheelPolygon" method="_bubble_area_shape_entered"]
+[connection signal="area_shape_exited" from="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@17239" to="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@17239/WheelPolygon" method="_bubble_area_shape_exited"]
+[connection signal="body_entered" from="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@17239" to="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@17239/WheelPolygon" method="_bubble_body_entered"]
+[connection signal="body_exited" from="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@17239" to="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@17239/WheelPolygon" method="_bubble_body_exited"]
+[connection signal="body_shape_entered" from="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@17239" to="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@17239/WheelPolygon" method="_bubble_body_shape_entered"]
+[connection signal="body_shape_exited" from="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@17239" to="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@17239/WheelPolygon" method="_bubble_body_shape_exited"]
+[connection signal="mouse_entered" from="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@17239" to="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@17239/WheelPolygon" method="_bubble_mouse_entered"]
+[connection signal="mouse_exited" from="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@17239" to="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@17239/WheelPolygon" method="_bubble_mouse_exited"]
+[connection signal="area_entered" from="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@17240" to="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@17240/WheelPolygon" method="_bubble_area_entered"]
+[connection signal="area_exited" from="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@17240" to="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@17240/WheelPolygon" method="_bubble_area_exited"]
+[connection signal="area_shape_entered" from="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@17240" to="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@17240/WheelPolygon" method="_bubble_area_shape_entered"]
+[connection signal="area_shape_exited" from="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@17240" to="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@17240/WheelPolygon" method="_bubble_area_shape_exited"]
+[connection signal="body_entered" from="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@17240" to="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@17240/WheelPolygon" method="_bubble_body_entered"]
+[connection signal="body_exited" from="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@17240" to="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@17240/WheelPolygon" method="_bubble_body_exited"]
+[connection signal="body_shape_entered" from="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@17240" to="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@17240/WheelPolygon" method="_bubble_body_shape_entered"]
+[connection signal="body_shape_exited" from="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@17240" to="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@17240/WheelPolygon" method="_bubble_body_shape_exited"]
+[connection signal="mouse_entered" from="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@17240" to="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@17240/WheelPolygon" method="_bubble_mouse_entered"]
+[connection signal="mouse_exited" from="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@17240" to="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@17240/WheelPolygon" method="_bubble_mouse_exited"]
+[connection signal="area_entered" from="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@20404" to="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@20404/WheelPolygon" method="_bubble_area_entered"]
+[connection signal="area_exited" from="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@20404" to="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@20404/WheelPolygon" method="_bubble_area_exited"]
+[connection signal="area_shape_entered" from="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@20404" to="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@20404/WheelPolygon" method="_bubble_area_shape_entered"]
+[connection signal="area_shape_exited" from="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@20404" to="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@20404/WheelPolygon" method="_bubble_area_shape_exited"]
+[connection signal="body_entered" from="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@20404" to="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@20404/WheelPolygon" method="_bubble_body_entered"]
+[connection signal="body_exited" from="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@20404" to="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@20404/WheelPolygon" method="_bubble_body_exited"]
+[connection signal="body_shape_entered" from="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@20404" to="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@20404/WheelPolygon" method="_bubble_body_shape_entered"]
+[connection signal="body_shape_exited" from="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@20404" to="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@20404/WheelPolygon" method="_bubble_body_shape_exited"]
+[connection signal="mouse_entered" from="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@20404" to="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@20404/WheelPolygon" method="_bubble_mouse_entered"]
+[connection signal="mouse_exited" from="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@20404" to="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@20404/WheelPolygon" method="_bubble_mouse_exited"]
+[connection signal="area_entered" from="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@20405" to="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@20405/WheelPolygon" method="_bubble_area_entered"]
+[connection signal="area_exited" from="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@20405" to="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@20405/WheelPolygon" method="_bubble_area_exited"]
+[connection signal="area_shape_entered" from="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@20405" to="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@20405/WheelPolygon" method="_bubble_area_shape_entered"]
+[connection signal="area_shape_exited" from="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@20405" to="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@20405/WheelPolygon" method="_bubble_area_shape_exited"]
+[connection signal="body_entered" from="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@20405" to="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@20405/WheelPolygon" method="_bubble_body_entered"]
+[connection signal="body_exited" from="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@20405" to="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@20405/WheelPolygon" method="_bubble_body_exited"]
+[connection signal="body_shape_entered" from="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@20405" to="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@20405/WheelPolygon" method="_bubble_body_shape_entered"]
+[connection signal="body_shape_exited" from="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@20405" to="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@20405/WheelPolygon" method="_bubble_body_shape_exited"]
+[connection signal="mouse_entered" from="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@20405" to="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@20405/WheelPolygon" method="_bubble_mouse_entered"]
+[connection signal="mouse_exited" from="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@20405" to="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@20405/WheelPolygon" method="_bubble_mouse_exited"]
+[connection signal="area_entered" from="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@20406" to="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@20406/WheelPolygon" method="_bubble_area_entered"]
+[connection signal="area_exited" from="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@20406" to="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@20406/WheelPolygon" method="_bubble_area_exited"]
+[connection signal="area_shape_entered" from="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@20406" to="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@20406/WheelPolygon" method="_bubble_area_shape_entered"]
+[connection signal="area_shape_exited" from="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@20406" to="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@20406/WheelPolygon" method="_bubble_area_shape_exited"]
+[connection signal="body_entered" from="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@20406" to="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@20406/WheelPolygon" method="_bubble_body_entered"]
+[connection signal="body_exited" from="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@20406" to="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@20406/WheelPolygon" method="_bubble_body_exited"]
+[connection signal="body_shape_entered" from="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@20406" to="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@20406/WheelPolygon" method="_bubble_body_shape_entered"]
+[connection signal="body_shape_exited" from="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@20406" to="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@20406/WheelPolygon" method="_bubble_body_shape_exited"]
+[connection signal="mouse_entered" from="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@20406" to="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@20406/WheelPolygon" method="_bubble_mouse_entered"]
+[connection signal="mouse_exited" from="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@20406" to="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@20406/WheelPolygon" method="_bubble_mouse_exited"]
+[connection signal="area_entered" from="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@20407" to="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@20407/WheelPolygon" method="_bubble_area_entered"]
+[connection signal="area_exited" from="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@20407" to="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@20407/WheelPolygon" method="_bubble_area_exited"]
+[connection signal="area_shape_entered" from="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@20407" to="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@20407/WheelPolygon" method="_bubble_area_shape_entered"]
+[connection signal="area_shape_exited" from="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@20407" to="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@20407/WheelPolygon" method="_bubble_area_shape_exited"]
+[connection signal="body_entered" from="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@20407" to="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@20407/WheelPolygon" method="_bubble_body_entered"]
+[connection signal="body_exited" from="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@20407" to="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@20407/WheelPolygon" method="_bubble_body_exited"]
+[connection signal="body_shape_entered" from="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@20407" to="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@20407/WheelPolygon" method="_bubble_body_shape_entered"]
+[connection signal="body_shape_exited" from="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@20407" to="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@20407/WheelPolygon" method="_bubble_body_shape_exited"]
+[connection signal="mouse_entered" from="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@20407" to="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@20407/WheelPolygon" method="_bubble_mouse_entered"]
+[connection signal="mouse_exited" from="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@20407" to="ThisNodeLetsSliceParentRotate/SliceParent/@Area2D@20407/WheelPolygon" method="_bubble_mouse_exited"]
+[connection signal="area_entered" from="SegmentParent/WheelSegment" to="SegmentParent/WheelSegment/WheelPolygon" method="_bubble_area_entered"]
+[connection signal="area_exited" from="SegmentParent/WheelSegment" to="SegmentParent/WheelSegment/WheelPolygon" method="_bubble_area_exited"]
+[connection signal="area_shape_entered" from="SegmentParent/WheelSegment" to="SegmentParent/WheelSegment/WheelPolygon" method="_bubble_area_shape_entered"]
+[connection signal="area_shape_exited" from="SegmentParent/WheelSegment" to="SegmentParent/WheelSegment/WheelPolygon" method="_bubble_area_shape_exited"]
+[connection signal="body_entered" from="SegmentParent/WheelSegment" to="SegmentParent/WheelSegment/WheelPolygon" method="_bubble_body_entered"]
+[connection signal="body_exited" from="SegmentParent/WheelSegment" to="SegmentParent/WheelSegment/WheelPolygon" method="_bubble_body_exited"]
+[connection signal="body_shape_entered" from="SegmentParent/WheelSegment" to="SegmentParent/WheelSegment/WheelPolygon" method="_bubble_body_shape_entered"]
+[connection signal="body_shape_exited" from="SegmentParent/WheelSegment" to="SegmentParent/WheelSegment/WheelPolygon" method="_bubble_body_shape_exited"]
+[connection signal="mouse_entered" from="SegmentParent/WheelSegment" to="SegmentParent/WheelSegment/WheelPolygon" method="_bubble_mouse_entered"]
+[connection signal="mouse_exited" from="SegmentParent/WheelSegment" to="SegmentParent/WheelSegment/WheelPolygon" method="_bubble_mouse_exited"]
+[connection signal="area_entered" from="SegmentParent/@Area2D@17245" to="SegmentParent/@Area2D@17245/WheelPolygon" method="_bubble_area_entered"]
+[connection signal="area_exited" from="SegmentParent/@Area2D@17245" to="SegmentParent/@Area2D@17245/WheelPolygon" method="_bubble_area_exited"]
+[connection signal="area_shape_entered" from="SegmentParent/@Area2D@17245" to="SegmentParent/@Area2D@17245/WheelPolygon" method="_bubble_area_shape_entered"]
+[connection signal="area_shape_exited" from="SegmentParent/@Area2D@17245" to="SegmentParent/@Area2D@17245/WheelPolygon" method="_bubble_area_shape_exited"]
+[connection signal="body_entered" from="SegmentParent/@Area2D@17245" to="SegmentParent/@Area2D@17245/WheelPolygon" method="_bubble_body_entered"]
+[connection signal="body_exited" from="SegmentParent/@Area2D@17245" to="SegmentParent/@Area2D@17245/WheelPolygon" method="_bubble_body_exited"]
+[connection signal="body_shape_entered" from="SegmentParent/@Area2D@17245" to="SegmentParent/@Area2D@17245/WheelPolygon" method="_bubble_body_shape_entered"]
+[connection signal="body_shape_exited" from="SegmentParent/@Area2D@17245" to="SegmentParent/@Area2D@17245/WheelPolygon" method="_bubble_body_shape_exited"]
+[connection signal="mouse_entered" from="SegmentParent/@Area2D@17245" to="SegmentParent/@Area2D@17245/WheelPolygon" method="_bubble_mouse_entered"]
+[connection signal="mouse_exited" from="SegmentParent/@Area2D@17245" to="SegmentParent/@Area2D@17245/WheelPolygon" method="_bubble_mouse_exited"]
+[connection signal="area_entered" from="SegmentParent/@Area2D@17246" to="SegmentParent/@Area2D@17246/WheelPolygon" method="_bubble_area_entered"]
+[connection signal="area_exited" from="SegmentParent/@Area2D@17246" to="SegmentParent/@Area2D@17246/WheelPolygon" method="_bubble_area_exited"]
+[connection signal="area_shape_entered" from="SegmentParent/@Area2D@17246" to="SegmentParent/@Area2D@17246/WheelPolygon" method="_bubble_area_shape_entered"]
+[connection signal="area_shape_exited" from="SegmentParent/@Area2D@17246" to="SegmentParent/@Area2D@17246/WheelPolygon" method="_bubble_area_shape_exited"]
+[connection signal="body_entered" from="SegmentParent/@Area2D@17246" to="SegmentParent/@Area2D@17246/WheelPolygon" method="_bubble_body_entered"]
+[connection signal="body_exited" from="SegmentParent/@Area2D@17246" to="SegmentParent/@Area2D@17246/WheelPolygon" method="_bubble_body_exited"]
+[connection signal="body_shape_entered" from="SegmentParent/@Area2D@17246" to="SegmentParent/@Area2D@17246/WheelPolygon" method="_bubble_body_shape_entered"]
+[connection signal="body_shape_exited" from="SegmentParent/@Area2D@17246" to="SegmentParent/@Area2D@17246/WheelPolygon" method="_bubble_body_shape_exited"]
+[connection signal="mouse_entered" from="SegmentParent/@Area2D@17246" to="SegmentParent/@Area2D@17246/WheelPolygon" method="_bubble_mouse_entered"]
+[connection signal="mouse_exited" from="SegmentParent/@Area2D@17246" to="SegmentParent/@Area2D@17246/WheelPolygon" method="_bubble_mouse_exited"]
+[connection signal="area_entered" from="SegmentParent/@Area2D@17247" to="SegmentParent/@Area2D@17247/WheelPolygon" method="_bubble_area_entered"]
+[connection signal="area_exited" from="SegmentParent/@Area2D@17247" to="SegmentParent/@Area2D@17247/WheelPolygon" method="_bubble_area_exited"]
+[connection signal="area_shape_entered" from="SegmentParent/@Area2D@17247" to="SegmentParent/@Area2D@17247/WheelPolygon" method="_bubble_area_shape_entered"]
+[connection signal="area_shape_exited" from="SegmentParent/@Area2D@17247" to="SegmentParent/@Area2D@17247/WheelPolygon" method="_bubble_area_shape_exited"]
+[connection signal="body_entered" from="SegmentParent/@Area2D@17247" to="SegmentParent/@Area2D@17247/WheelPolygon" method="_bubble_body_entered"]
+[connection signal="body_exited" from="SegmentParent/@Area2D@17247" to="SegmentParent/@Area2D@17247/WheelPolygon" method="_bubble_body_exited"]
+[connection signal="body_shape_entered" from="SegmentParent/@Area2D@17247" to="SegmentParent/@Area2D@17247/WheelPolygon" method="_bubble_body_shape_entered"]
+[connection signal="body_shape_exited" from="SegmentParent/@Area2D@17247" to="SegmentParent/@Area2D@17247/WheelPolygon" method="_bubble_body_shape_exited"]
+[connection signal="mouse_entered" from="SegmentParent/@Area2D@17247" to="SegmentParent/@Area2D@17247/WheelPolygon" method="_bubble_mouse_entered"]
+[connection signal="mouse_exited" from="SegmentParent/@Area2D@17247" to="SegmentParent/@Area2D@17247/WheelPolygon" method="_bubble_mouse_exited"]
+[connection signal="area_entered" from="SegmentParent/@Area2D@20408" to="SegmentParent/@Area2D@20408/WheelPolygon" method="_bubble_area_entered"]
+[connection signal="area_exited" from="SegmentParent/@Area2D@20408" to="SegmentParent/@Area2D@20408/WheelPolygon" method="_bubble_area_exited"]
+[connection signal="area_shape_entered" from="SegmentParent/@Area2D@20408" to="SegmentParent/@Area2D@20408/WheelPolygon" method="_bubble_area_shape_entered"]
+[connection signal="area_shape_exited" from="SegmentParent/@Area2D@20408" to="SegmentParent/@Area2D@20408/WheelPolygon" method="_bubble_area_shape_exited"]
+[connection signal="body_entered" from="SegmentParent/@Area2D@20408" to="SegmentParent/@Area2D@20408/WheelPolygon" method="_bubble_body_entered"]
+[connection signal="body_exited" from="SegmentParent/@Area2D@20408" to="SegmentParent/@Area2D@20408/WheelPolygon" method="_bubble_body_exited"]
+[connection signal="body_shape_entered" from="SegmentParent/@Area2D@20408" to="SegmentParent/@Area2D@20408/WheelPolygon" method="_bubble_body_shape_entered"]
+[connection signal="body_shape_exited" from="SegmentParent/@Area2D@20408" to="SegmentParent/@Area2D@20408/WheelPolygon" method="_bubble_body_shape_exited"]
+[connection signal="mouse_entered" from="SegmentParent/@Area2D@20408" to="SegmentParent/@Area2D@20408/WheelPolygon" method="_bubble_mouse_entered"]
+[connection signal="mouse_exited" from="SegmentParent/@Area2D@20408" to="SegmentParent/@Area2D@20408/WheelPolygon" method="_bubble_mouse_exited"]
+[connection signal="area_entered" from="SegmentParent/@Area2D@20409" to="SegmentParent/@Area2D@20409/WheelPolygon" method="_bubble_area_entered"]
+[connection signal="area_exited" from="SegmentParent/@Area2D@20409" to="SegmentParent/@Area2D@20409/WheelPolygon" method="_bubble_area_exited"]
+[connection signal="area_shape_entered" from="SegmentParent/@Area2D@20409" to="SegmentParent/@Area2D@20409/WheelPolygon" method="_bubble_area_shape_entered"]
+[connection signal="area_shape_exited" from="SegmentParent/@Area2D@20409" to="SegmentParent/@Area2D@20409/WheelPolygon" method="_bubble_area_shape_exited"]
+[connection signal="body_entered" from="SegmentParent/@Area2D@20409" to="SegmentParent/@Area2D@20409/WheelPolygon" method="_bubble_body_entered"]
+[connection signal="body_exited" from="SegmentParent/@Area2D@20409" to="SegmentParent/@Area2D@20409/WheelPolygon" method="_bubble_body_exited"]
+[connection signal="body_shape_entered" from="SegmentParent/@Area2D@20409" to="SegmentParent/@Area2D@20409/WheelPolygon" method="_bubble_body_shape_entered"]
+[connection signal="body_shape_exited" from="SegmentParent/@Area2D@20409" to="SegmentParent/@Area2D@20409/WheelPolygon" method="_bubble_body_shape_exited"]
+[connection signal="mouse_entered" from="SegmentParent/@Area2D@20409" to="SegmentParent/@Area2D@20409/WheelPolygon" method="_bubble_mouse_entered"]
+[connection signal="mouse_exited" from="SegmentParent/@Area2D@20409" to="SegmentParent/@Area2D@20409/WheelPolygon" method="_bubble_mouse_exited"]
+[connection signal="area_entered" from="SegmentParent/@Area2D@20410" to="SegmentParent/@Area2D@20410/WheelPolygon" method="_bubble_area_entered"]
+[connection signal="area_exited" from="SegmentParent/@Area2D@20410" to="SegmentParent/@Area2D@20410/WheelPolygon" method="_bubble_area_exited"]
+[connection signal="area_shape_entered" from="SegmentParent/@Area2D@20410" to="SegmentParent/@Area2D@20410/WheelPolygon" method="_bubble_area_shape_entered"]
+[connection signal="area_shape_exited" from="SegmentParent/@Area2D@20410" to="SegmentParent/@Area2D@20410/WheelPolygon" method="_bubble_area_shape_exited"]
+[connection signal="body_entered" from="SegmentParent/@Area2D@20410" to="SegmentParent/@Area2D@20410/WheelPolygon" method="_bubble_body_entered"]
+[connection signal="body_exited" from="SegmentParent/@Area2D@20410" to="SegmentParent/@Area2D@20410/WheelPolygon" method="_bubble_body_exited"]
+[connection signal="body_shape_entered" from="SegmentParent/@Area2D@20410" to="SegmentParent/@Area2D@20410/WheelPolygon" method="_bubble_body_shape_entered"]
+[connection signal="body_shape_exited" from="SegmentParent/@Area2D@20410" to="SegmentParent/@Area2D@20410/WheelPolygon" method="_bubble_body_shape_exited"]
+[connection signal="mouse_entered" from="SegmentParent/@Area2D@20410" to="SegmentParent/@Area2D@20410/WheelPolygon" method="_bubble_mouse_entered"]
+[connection signal="mouse_exited" from="SegmentParent/@Area2D@20410" to="SegmentParent/@Area2D@20410/WheelPolygon" method="_bubble_mouse_exited"]
+[connection signal="area_entered" from="SegmentParent/@Area2D@20411" to="SegmentParent/@Area2D@20411/WheelPolygon" method="_bubble_area_entered"]
+[connection signal="area_exited" from="SegmentParent/@Area2D@20411" to="SegmentParent/@Area2D@20411/WheelPolygon" method="_bubble_area_exited"]
+[connection signal="area_shape_entered" from="SegmentParent/@Area2D@20411" to="SegmentParent/@Area2D@20411/WheelPolygon" method="_bubble_area_shape_entered"]
+[connection signal="area_shape_exited" from="SegmentParent/@Area2D@20411" to="SegmentParent/@Area2D@20411/WheelPolygon" method="_bubble_area_shape_exited"]
+[connection signal="body_entered" from="SegmentParent/@Area2D@20411" to="SegmentParent/@Area2D@20411/WheelPolygon" method="_bubble_body_entered"]
+[connection signal="body_exited" from="SegmentParent/@Area2D@20411" to="SegmentParent/@Area2D@20411/WheelPolygon" method="_bubble_body_exited"]
+[connection signal="body_shape_entered" from="SegmentParent/@Area2D@20411" to="SegmentParent/@Area2D@20411/WheelPolygon" method="_bubble_body_shape_entered"]
+[connection signal="body_shape_exited" from="SegmentParent/@Area2D@20411" to="SegmentParent/@Area2D@20411/WheelPolygon" method="_bubble_body_shape_exited"]
+[connection signal="mouse_entered" from="SegmentParent/@Area2D@20411" to="SegmentParent/@Area2D@20411/WheelPolygon" method="_bubble_mouse_entered"]
+[connection signal="mouse_exited" from="SegmentParent/@Area2D@20411" to="SegmentParent/@Area2D@20411/WheelPolygon" method="_bubble_mouse_exited"]

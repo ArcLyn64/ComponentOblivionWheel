@@ -1,0 +1,326 @@
+[gd_scene load_steps=27 format=3 uid="uid://1s3qqbc0ubl3"]
+
+[ext_resource type="Script" path="res://demo/subscenes/wheel_as_play_area.gd" id="1_d4i3w"]
+[ext_resource type="PackedScene" uid="uid://ccy07coqyd1kq" path="res://DROW.tscn" id="2_m4fo0"]
+[ext_resource type="Script" path="res://wheel_slice_data.gd" id="3_fwdcf"]
+[ext_resource type="Script" path="res://wheel_segment_data.gd" id="4_q1l3b"]
+[ext_resource type="Texture2D" uid="uid://csvma1cn8nmie" path="res://demo/assets/player.png" id="5_ho7tv"]
+[ext_resource type="Script" path="res://demo/subscenes/player.gd" id="5_uoxp5"]
+
+[sub_resource type="Resource" id="Resource_puhhf"]
+script = ExtResource("3_fwdcf")
+color = Color(1, 0.482353, 0, 1)
+value = 1
+
+[sub_resource type="Resource" id="Resource_doyg3"]
+script = ExtResource("3_fwdcf")
+color = Color(1, 0.482353, 0, 1)
+value = 2
+
+[sub_resource type="Resource" id="Resource_pxdg8"]
+script = ExtResource("3_fwdcf")
+color = Color(1, 0.482353, 0, 1)
+value = 3
+
+[sub_resource type="Resource" id="Resource_rikmm"]
+script = ExtResource("3_fwdcf")
+color = Color(1, 0.482353, 0, 1)
+value = 4
+
+[sub_resource type="Resource" id="Resource_1prh3"]
+script = ExtResource("4_q1l3b")
+color = Color(1, 1, 1, 1)
+value = -2
+selectable = true
+
+[sub_resource type="Resource" id="Resource_g5yle"]
+script = ExtResource("4_q1l3b")
+color = Color(1, 1, 1, 1)
+value = -1
+selectable = true
+
+[sub_resource type="Resource" id="Resource_5ern4"]
+script = ExtResource("4_q1l3b")
+color = Color(1, 1, 1, 1)
+value = 1
+selectable = true
+
+[sub_resource type="Resource" id="Resource_2fuo4"]
+script = ExtResource("4_q1l3b")
+color = Color(1, 1, 1, 1)
+value = 2
+selectable = true
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_hpqmw"]
+height = 26.0
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_6ojfj"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1sflh"]
+size = Vector2(200, 20)
+
+[sub_resource type="Gradient" id="Gradient_k38an"]
+colors = PackedColorArray(0.597176, 0.597176, 0.597176, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_ai6mr"]
+gradient = SubResource("Gradient_k38an")
+width = 200
+height = 20
+fill_to = Vector2(1, 1)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_d2ua6"]
+size = Vector2(50, 20)
+
+[sub_resource type="Gradient" id="Gradient_pc0v6"]
+colors = PackedColorArray(0.597176, 0.597176, 0.597176, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_nwye7"]
+gradient = SubResource("Gradient_pc0v6")
+width = 50
+height = 20
+fill_to = Vector2(1, 1)
+
+[sub_resource type="Gradient" id="Gradient_tbo00"]
+interpolation_mode = 1
+offsets = PackedFloat32Array(0.510417, 1)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_clq8j"]
+gradient = SubResource("Gradient_tbo00")
+width = 50
+height = 50
+fill = 2
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0.75, 0.5)
+
+[sub_resource type="LabelSettings" id="LabelSettings_hj3n0"]
+font_size = 144
+font_color = Color(0.57, 1, 0.613, 1)
+shadow_size = 20
+shadow_color = Color(0, 0, 0, 1)
+shadow_offset = Vector2(10, 10)
+
+[sub_resource type="LabelSettings" id="LabelSettings_kvhn4"]
+font_size = 144
+font_color = Color(1, 0.57, 0.57, 1)
+shadow_size = 20
+shadow_color = Color(0, 0, 0, 1)
+shadow_offset = Vector2(10, 10)
+
+[node name="ClassicWheel" type="CenterContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_d4i3w")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="DROW" parent="VBoxContainer" node_paths=PackedStringArray("node_as_selector") instance=ExtResource("2_m4fo0")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(520, 520)
+layout_mode = 2
+selector_active = false
+disable_selection_during_animation = true
+enable_mouse_input = false
+rotate_on_selection = true
+node_as_selector = NodePath("Stage/Player")
+overlay_color = Color(0.82606, 0.82606, 0.82606, 1)
+outer_border_thickness = 20.0
+inner_border_thickness = 10.0
+multiplier_slice_data = Array[ExtResource("3_fwdcf")]([SubResource("Resource_puhhf"), SubResource("Resource_doyg3"), SubResource("Resource_pxdg8"), SubResource("Resource_rikmm")])
+value_segment_data = Array[ExtResource("4_q1l3b")]([SubResource("Resource_1prh3"), SubResource("Resource_g5yle"), SubResource("Resource_5ern4"), SubResource("Resource_2fuo4")])
+
+[node name="Stage" type="StaticBody2D" parent="VBoxContainer/DROW"]
+position = Vector2(275, 260)
+
+[node name="Player" type="CharacterBody2D" parent="VBoxContainer/DROW/Stage"]
+unique_name_in_owner = true
+position = Vector2(2, 124)
+script = ExtResource("5_uoxp5")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="VBoxContainer/DROW/Stage/Player"]
+position = Vector2(0, 1)
+shape = SubResource("CapsuleShape2D_hpqmw")
+
+[node name="Sprite2D" type="Sprite2D" parent="VBoxContainer/DROW/Stage/Player"]
+texture_filter = 1
+scale = Vector2(2, 2)
+texture = ExtResource("5_ho7tv")
+
+[node name="DeathPlane" type="Area2D" parent="VBoxContainer/DROW/Stage"]
+unique_name_in_owner = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="VBoxContainer/DROW/Stage/DeathPlane"]
+position = Vector2(0, 250)
+shape = SubResource("WorldBoundaryShape2D_6ojfj")
+
+[node name="BPlat" type="CollisionShape2D" parent="VBoxContainer/DROW/Stage"]
+position = Vector2(0, 150)
+shape = SubResource("RectangleShape2D_1sflh")
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/DROW/Stage/BPlat"]
+custom_minimum_size = Vector2(200, 20)
+offset_left = -100.0
+offset_top = -10.0
+offset_right = 100.0
+offset_bottom = 10.0
+texture = SubResource("GradientTexture2D_ai6mr")
+
+[node name="TPlat" type="CollisionShape2D" parent="VBoxContainer/DROW/Stage"]
+position = Vector2(0, -150)
+shape = SubResource("RectangleShape2D_1sflh")
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/DROW/Stage/TPlat"]
+custom_minimum_size = Vector2(200, 20)
+offset_left = -100.0
+offset_top = -10.0
+offset_right = 100.0
+offset_bottom = 10.0
+texture = SubResource("GradientTexture2D_ai6mr")
+
+[node name="RPlat" type="CollisionShape2D" parent="VBoxContainer/DROW/Stage"]
+position = Vector2(300, 0)
+shape = SubResource("RectangleShape2D_1sflh")
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/DROW/Stage/RPlat"]
+custom_minimum_size = Vector2(200, 20)
+offset_left = -100.0
+offset_top = -10.0
+offset_right = 100.0
+offset_bottom = 10.0
+texture = SubResource("GradientTexture2D_ai6mr")
+
+[node name="LPlat" type="CollisionShape2D" parent="VBoxContainer/DROW/Stage"]
+position = Vector2(-300, 0)
+shape = SubResource("RectangleShape2D_1sflh")
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/DROW/Stage/LPlat"]
+custom_minimum_size = Vector2(200, 20)
+offset_left = -100.0
+offset_top = -10.0
+offset_right = 100.0
+offset_bottom = 10.0
+texture = SubResource("GradientTexture2D_ai6mr")
+
+[node name="LBPlat" type="CollisionShape2D" parent="VBoxContainer/DROW/Stage"]
+position = Vector2(-150, 75)
+shape = SubResource("RectangleShape2D_d2ua6")
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/DROW/Stage/LBPlat"]
+custom_minimum_size = Vector2(50, 20)
+offset_left = -25.0
+offset_top = -10.0
+offset_right = 25.0
+offset_bottom = 10.0
+texture = SubResource("GradientTexture2D_nwye7")
+
+[node name="RBPlat" type="CollisionShape2D" parent="VBoxContainer/DROW/Stage"]
+position = Vector2(150, 75)
+shape = SubResource("RectangleShape2D_d2ua6")
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/DROW/Stage/RBPlat"]
+custom_minimum_size = Vector2(50, 20)
+offset_left = -25.0
+offset_top = -10.0
+offset_right = 25.0
+offset_bottom = 10.0
+texture = SubResource("GradientTexture2D_nwye7")
+
+[node name="LTPlat" type="CollisionShape2D" parent="VBoxContainer/DROW/Stage"]
+position = Vector2(-150, -75)
+shape = SubResource("RectangleShape2D_d2ua6")
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/DROW/Stage/LTPlat"]
+custom_minimum_size = Vector2(50, 20)
+offset_left = -25.0
+offset_top = -10.0
+offset_right = 25.0
+offset_bottom = 10.0
+texture = SubResource("GradientTexture2D_nwye7")
+
+[node name="RTPlat" type="CollisionShape2D" parent="VBoxContainer/DROW/Stage"]
+position = Vector2(150, -75)
+shape = SubResource("RectangleShape2D_d2ua6")
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/DROW/Stage/RTPlat"]
+custom_minimum_size = Vector2(50, 20)
+offset_left = -25.0
+offset_top = -10.0
+offset_right = 25.0
+offset_bottom = 10.0
+texture = SubResource("GradientTexture2D_nwye7")
+
+[node name="ScoreBar" type="HBoxContainer" parent="VBoxContainer"]
+custom_minimum_size = Vector2(550, 50)
+layout_mode = 2
+theme_override_constants/separation = 0
+alignment = 1
+
+[node name="GoodBar" type="ColorRect" parent="VBoxContainer/ScoreBar"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+size_flags_horizontal = 10
+color = Color(0, 0.67, 0.0893334, 1)
+
+[node name="IndicatorRect" type="TextureRect" parent="VBoxContainer/ScoreBar"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+texture = SubResource("GradientTexture2D_clq8j")
+
+[node name="BadBar" type="ColorRect" parent="VBoxContainer/ScoreBar"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+size_flags_horizontal = 2
+color = Color(0.71, 0, 0, 1)
+
+[node name="WinLabel" type="Label" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+text = "PLATFORMING
+PROFESSIONAL"
+label_settings = SubResource("LabelSettings_hj3n0")
+horizontal_alignment = 1
+
+[node name="LoseLabelFall" type="Label" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+text = "mariodeathnois
+e.wav"
+label_settings = SubResource("LabelSettings_kvhn4")
+horizontal_alignment = 1
+
+[node name="LoseLabelScore" type="Label" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+text = "GO BACK TO
+WHEEL SCHOOL"
+label_settings = SubResource("LabelSettings_kvhn4")
+horizontal_alignment = 1
+
+[node name="ControlsLabelPositioner" type="Control" parent="."]
+layout_mode = 2
+
+[node name="ControlsLabel" type="RichTextLabel" parent="ControlsLabelPositioner"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+offset_left = 242.0
+offset_top = -151.0
+offset_right = 542.0
+offset_bottom = -105.0
+rotation = -0.359538
+text = "Move with L/R arrow keys
+Jump with space"
+fit_content = true
+
+[connection signal="new_segment_chosen" from="VBoxContainer/DROW" to="." method="_handle_choice"]
+[connection signal="new_segment_selected" from="VBoxContainer/DROW" to="." method="_update_on_selection"]

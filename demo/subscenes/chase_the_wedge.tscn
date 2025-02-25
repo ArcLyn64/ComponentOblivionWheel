@@ -1,0 +1,193 @@
+[gd_scene load_steps=22 format=3 uid="uid://dpa3e0ccbb2b6"]
+
+[ext_resource type="Script" path="res://demo/subscenes/chase_the_wedge.gd" id="1_0hmug"]
+[ext_resource type="PackedScene" uid="uid://ccy07coqyd1kq" path="res://DROW.tscn" id="1_dj464"]
+[ext_resource type="Script" path="res://wheel_slice_data.gd" id="2_60p4a"]
+[ext_resource type="Script" path="res://wheel_segment_data.gd" id="3_j2usd"]
+
+[sub_resource type="Gradient" id="Gradient_6uv37"]
+colors = PackedColorArray(1, 1, 1, 1, 0.776471, 0.776471, 0.776471, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_2obt8"]
+gradient = SubResource("Gradient_6uv37")
+fill_from = Vector2(0, 1)
+fill_to = Vector2(0, 0)
+
+[sub_resource type="Resource" id="Resource_k3kuo"]
+script = ExtResource("2_60p4a")
+color = Color(1, 1, 1, 1)
+value = 1
+
+[sub_resource type="Resource" id="Resource_f1a2l"]
+script = ExtResource("2_60p4a")
+color = Color(1, 0.482353, 0, 1)
+value = -1
+
+[sub_resource type="Resource" id="Resource_kir1y"]
+script = ExtResource("2_60p4a")
+color = Color(1, 0.482353, 0, 1)
+value = -1
+
+[sub_resource type="Resource" id="Resource_gh2m4"]
+script = ExtResource("3_j2usd")
+color = Color(1, 0, 1, 1)
+value = 1
+selectable = true
+
+[sub_resource type="Resource" id="Resource_61shm"]
+script = ExtResource("3_j2usd")
+color = Color(0, 1, 1, 1)
+value = 1
+selectable = true
+
+[sub_resource type="Resource" id="Resource_p4xfs"]
+script = ExtResource("3_j2usd")
+color = Color(1, 1, 0, 1)
+value = 1
+selectable = true
+
+[sub_resource type="Gradient" id="Gradient_tpi7f"]
+colors = PackedColorArray(0.532108, 0.870836, 0.362331, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_isosr"]
+gradient = SubResource("Gradient_tpi7f")
+width = 32
+height = 32
+fill_to = Vector2(1, 1)
+
+[sub_resource type="Gradient" id="Gradient_c2xld"]
+offsets = PackedFloat32Array(0, 0.167598)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_v7pml"]
+gradient = SubResource("Gradient_c2xld")
+width = 50
+height = 50
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_r2nw1"]
+gradient = SubResource("Gradient_tpi7f")
+width = 32
+height = 32
+fill_from = Vector2(1, 1)
+fill_to = Vector2(0, 0)
+
+[sub_resource type="Gradient" id="Gradient_2g2lx"]
+interpolation_mode = 1
+offsets = PackedFloat32Array(0, 0.167598)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_6g22r"]
+gradient = SubResource("Gradient_2g2lx")
+width = 50
+height = 50
+
+[sub_resource type="LabelSettings" id="LabelSettings_u3lwn"]
+font_size = 144
+font_color = Color(0.57, 1, 0.613, 1)
+shadow_size = 20
+shadow_color = Color(0, 0, 0, 1)
+shadow_offset = Vector2(10, 10)
+
+[sub_resource type="LabelSettings" id="LabelSettings_5r1bv"]
+font_size = 144
+font_color = Color(1, 0.57, 0.57, 1)
+shadow_size = 20
+shadow_color = Color(0, 0, 0, 1)
+shadow_offset = Vector2(10, 10)
+
+[node name="ChaseTheWedge" type="CenterContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_0hmug")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="DROW" parent="VBoxContainer" instance=ExtResource("1_dj464")]
+unique_name_in_owner = true
+layout_mode = 2
+selector_active = false
+disable_selection_during_animation = true
+disable_selected_segments = false
+rotate_on_selection = false
+outer_border_texture = SubResource("GradientTexture2D_2obt8")
+inner_border_thickness = 0.0
+cover_texture = null
+transition = 8
+animation_time = 0.2
+max_multiplier_value = 1
+multiplier_slice_data = Array[ExtResource("2_60p4a")]([SubResource("Resource_k3kuo"), SubResource("Resource_f1a2l"), SubResource("Resource_kir1y")])
+value_segment_data = Array[ExtResource("3_j2usd")]([SubResource("Resource_gh2m4"), SubResource("Resource_61shm"), SubResource("Resource_p4xfs")])
+
+[node name="TimerContainer" type="HBoxContainer" parent="VBoxContainer"]
+custom_minimum_size = Vector2(550, 50)
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="TimerBar" type="TextureRect" parent="VBoxContainer/TimerContainer"]
+unique_name_in_owner = true
+self_modulate = Color(1, 0.39, 0.39, 1)
+custom_minimum_size = Vector2(500, 32)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+texture = SubResource("GradientTexture2D_isosr")
+expand_mode = 1
+
+[node name="TimerCap" type="TextureRect" parent="VBoxContainer/TimerContainer"]
+self_modulate = Color(1, 0.53, 0.53, 1)
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+texture = SubResource("GradientTexture2D_v7pml")
+
+[node name="ScoreContainer" type="HBoxContainer" parent="VBoxContainer"]
+custom_minimum_size = Vector2(550, 50)
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="ScoreBar" type="TextureRect" parent="VBoxContainer/ScoreContainer"]
+unique_name_in_owner = true
+self_modulate = Color(0.205138, 0.724113, 0.516817, 1)
+custom_minimum_size = Vector2(500, 32)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+texture = SubResource("GradientTexture2D_r2nw1")
+expand_mode = 1
+
+[node name="Spacer" type="ColorRect" parent="VBoxContainer/ScoreContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+color = Color(1, 1, 1, 0)
+
+[node name="ScoreCap" type="TextureRect" parent="VBoxContainer/ScoreContainer"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+texture = SubResource("GradientTexture2D_6g22r")
+
+[node name="WinLabel" type="Label" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+text = "CATLIKE
+REFLEXES"
+label_settings = SubResource("LabelSettings_u3lwn")
+horizontal_alignment = 1
+
+[node name="LoseLabel" type="Label" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+text = "GET JUKED"
+label_settings = SubResource("LabelSettings_5r1bv")
+horizontal_alignment = 1
+
+[connection signal="new_segment_chosen" from="VBoxContainer/DROW" to="." method="_process_mash"]
+[connection signal="render_finished" from="VBoxContainer/DROW" to="." method="_update_score_bar"]

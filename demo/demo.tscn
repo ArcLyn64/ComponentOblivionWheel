@@ -1,0 +1,118 @@
+[gd_scene load_steps=5 format=3 uid="uid://0xck4p2anlms"]
+
+[ext_resource type="Script" path="res://demo/demo.gd" id="1_o7txl"]
+[ext_resource type="PackedScene" uid="uid://c1q5khwepbabi" path="res://demo/subscenes/demo_selector.tscn" id="1_vwf47"]
+
+[sub_resource type="Gradient" id="Gradient_53xwd"]
+colors = PackedColorArray(1, 1, 1, 1, 0.262932, 0.262932, 0.262932, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_ccui3"]
+gradient = SubResource("Gradient_53xwd")
+width = 600
+height = 600
+fill_to = Vector2(1, 1)
+
+[node name="DemoRoot" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+script = ExtResource("1_o7txl")
+
+[node name="BackgroundLayer" type="CanvasLayer" parent="."]
+layer = -1
+
+[node name="Background" type="TextureRect" parent="BackgroundLayer"]
+self_modulate = Color(0.162066, 0.162066, 0.162066, 1)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_ccui3")
+
+[node name="DebugStringDisplay" type="CanvasLayer" parent="."]
+layer = 2
+
+[node name="DebugStringsMarginContainer" type="MarginContainer" parent="DebugStringDisplay"]
+offset_right = 239.0
+offset_bottom = 110.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_constants/margin_left = 25
+theme_override_constants/margin_top = 25
+
+[node name="DebugValuesVBoxContainer" type="VBoxContainer" parent="DebugStringDisplay/DebugStringsMarginContainer"]
+layout_mode = 2
+
+[node name="EnableDebugButton" type="CheckButton" parent="DebugStringDisplay/DebugStringsMarginContainer/DebugValuesVBoxContainer"]
+layout_mode = 2
+text = "Display Debug Values
+"
+
+[node name="DebugStrings" type="GridContainer" parent="DebugStringDisplay/DebugStringsMarginContainer/DebugValuesVBoxContainer"]
+visible = false
+layout_mode = 2
+columns = 2
+
+[node name="BaseValueTitle" type="Label" parent="DebugStringDisplay/DebugStringsMarginContainer/DebugValuesVBoxContainer/DebugStrings"]
+layout_mode = 2
+text = "Selected Base Value:"
+
+[node name="BaseValueDebugLabel" type="Label" parent="DebugStringDisplay/DebugStringsMarginContainer/DebugValuesVBoxContainer/DebugStrings"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "NONE"
+
+[node name="MultiplierTitle" type="Label" parent="DebugStringDisplay/DebugStringsMarginContainer/DebugValuesVBoxContainer/DebugStrings"]
+layout_mode = 2
+text = "Selected Multiplier:"
+
+[node name="MultiplierDebugLabel" type="Label" parent="DebugStringDisplay/DebugStringsMarginContainer/DebugValuesVBoxContainer/DebugStrings"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "NONE"
+
+[node name="SelectedIndexAndPositionTitle" type="Label" parent="DebugStringDisplay/DebugStringsMarginContainer/DebugValuesVBoxContainer/DebugStrings"]
+layout_mode = 2
+text = "Index/Slice Pos:"
+
+[node name="SelectedIndexAndPositionDebugLabel" type="Label" parent="DebugStringDisplay/DebugStringsMarginContainer/DebugValuesVBoxContainer/DebugStrings"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Selected Pos/Slice Pos:"
+
+[node name="SelectedWheelData" type="Label" parent="DebugStringDisplay/DebugStringsMarginContainer/DebugValuesVBoxContainer/DebugStrings"]
+layout_mode = 2
+text = "Selected WheelData:"
+
+[node name="SelectedWheelDataDebugLabel" type="Label" parent="DebugStringDisplay/DebugStringsMarginContainer/DebugValuesVBoxContainer/DebugStrings"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "NONE"
+
+[node name="WheelDataTitle" type="Label" parent="DebugStringDisplay/DebugStringsMarginContainer/DebugValuesVBoxContainer/DebugStrings"]
+layout_mode = 2
+text = "WheelData:"
+
+[node name="WheelDataDebugLabel" type="Label" parent="DebugStringDisplay/DebugStringsMarginContainer/DebugValuesVBoxContainer/DebugStrings"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "NONE"
+
+[node name="SubsceneContainer" type="CenterContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="DemoSelector" parent="SubsceneContainer" instance=ExtResource("1_vwf47")]
+layout_mode = 2
+
+[connection signal="toggled" from="DebugStringDisplay/DebugStringsMarginContainer/DebugValuesVBoxContainer/EnableDebugButton" to="DebugStringDisplay/DebugStringsMarginContainer/DebugValuesVBoxContainer/DebugStrings" method="set_visible"]

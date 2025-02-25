@@ -1,0 +1,29 @@
+[gd_scene load_steps=3 format=3 uid="uid://cdrvckmfxk4r"]
+
+[ext_resource type="Script" path="res://wheel_segment.gd" id="1_hqm4y"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_fgxyr"]
+blend_mode = 2
+
+[node name="WheelSegment" type="Area2D"]
+script = ExtResource("1_hqm4y")
+
+[node name="CollisionShape" type="CollisionPolygon2D" parent="."]
+unique_name_in_owner = true
+visible = false
+polygon = PackedVector2Array(6, 0, 24, 25, 37, -18)
+
+[node name="WheelPolygon" type="Polygon2D" parent="."]
+unique_name_in_owner = true
+material = SubResource("CanvasItemMaterial_fgxyr")
+
+[connection signal="area_entered" from="." to="WheelPolygon" method="_bubble_area_entered"]
+[connection signal="area_exited" from="." to="WheelPolygon" method="_bubble_area_exited"]
+[connection signal="area_shape_entered" from="." to="WheelPolygon" method="_bubble_area_shape_entered"]
+[connection signal="area_shape_exited" from="." to="WheelPolygon" method="_bubble_area_shape_exited"]
+[connection signal="body_entered" from="." to="WheelPolygon" method="_bubble_body_entered"]
+[connection signal="body_exited" from="." to="WheelPolygon" method="_bubble_body_exited"]
+[connection signal="body_shape_entered" from="." to="WheelPolygon" method="_bubble_body_shape_entered"]
+[connection signal="body_shape_exited" from="." to="WheelPolygon" method="_bubble_body_shape_exited"]
+[connection signal="mouse_entered" from="." to="WheelPolygon" method="_bubble_mouse_entered"]
+[connection signal="mouse_exited" from="." to="WheelPolygon" method="_bubble_mouse_exited"]
