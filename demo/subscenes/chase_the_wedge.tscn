@@ -1,16 +1,8 @@
-[gd_scene load_steps=15 format=3 uid="uid://dpa3e0ccbb2b6"]
+[gd_scene load_steps=13 format=3 uid="uid://dpa3e0ccbb2b6"]
 
 [ext_resource type="Script" path="res://demo/subscenes/chase_the_wedge.gd" id="1_0hmug"]
 [ext_resource type="PackedScene" uid="uid://ccy07coqyd1kq" path="res://DROW.tscn" id="1_dj464"]
 [ext_resource type="Script" path="res://wheel-components/wheel_slice_data.gd" id="2_60p4a"]
-
-[sub_resource type="Gradient" id="Gradient_6uv37"]
-colors = PackedColorArray(1, 1, 1, 1, 0.776471, 0.776471, 0.776471, 0)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_2obt8"]
-gradient = SubResource("Gradient_6uv37")
-fill_from = Vector2(0, 1)
-fill_to = Vector2(0, 0)
 
 [sub_resource type="Gradient" id="Gradient_tpi7f"]
 colors = PackedColorArray(0.532108, 0.870836, 0.362331, 1, 1, 1, 1, 1)
@@ -79,11 +71,13 @@ selector_active = false
 disable_selection_during_animation = true
 disable_selected_segments = false
 rotate_on_selection = false
-outer_border_texture = SubResource("GradientTexture2D_2obt8")
+outer_border_thickness = 0.0
+outer_border_texture = null
 inner_border_thickness = 0.0
 cover_texture = null
 slice_fidelity = 0
 segment_fidelity = 0
+outer_border_fidelity = 0
 hitbox_fidelity = 0
 transition = 8
 animation_time = 0.2
@@ -94,7 +88,7 @@ segment_collision_layer = null
 segment_collision_mask = null
 segment_collision_priority = 0.0
 slice_gradient = null
-maximum_segments = 0
+segment_limit = null
 max_multiplier_value = 0
 multiplier_slice_data = Array[ExtResource("2_60p4a")]([])
 value_segment_data = Array[ExtResource("2_60p4a")]([])

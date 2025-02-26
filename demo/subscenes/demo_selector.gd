@@ -14,7 +14,7 @@ var demos:Array[StringName] = [
 var tween:Tween = null
 
 func _ready() -> void:
-    wheel.maximum_segments = len(demos)
+    wheel.segment_limit = len(demos)
     wheel.total_area_detector.mouse_exited.connect(func():
         demo_name_label.text = ''
         _end_current_animation()

@@ -6,9 +6,9 @@ const CENTER_POINT:Array[Vector2] = [Vector2.ZERO]
 
 #region Export Vars
 @export_group('Data')
-@export var maximum_slices:int = 4 :
+@export var slice_limit:int = 4 :
     set(v):
-        maximum_slices = max(0, v)
+        slice_limit = max(0, v)
         _match_desired_slice_number()
 @export var slice_data:Array[WheelSliceData] = [] :
     set(v):
@@ -65,14 +65,10 @@ const CENTER_POINT:Array[Vector2] = [Vector2.ZERO]
         for_all_slices(update_hitbox_collision)
 #endregion
 
-#region Onready Vars
 @onready var wheel_slice_scene:PackedScene = preload("uid://c4xtb2itc034m")
 @onready var slice_parent:Control = %SliceGimbal
-#endregion
 
-#region Local Vars
 var slices:Array[WheelSlice] = []
-#endregion
 
 func _ready() -> void:
     _match_desired_slice_number()
@@ -91,7 +87,7 @@ func _match_desired_slice_number():
         slice_parent.add_child(new_slice)
     
     if len(slices) != get_num_slices():
-        WheelUtil.match_desired_value(slices as Array[Node], get_num_slices(), add_new_slice)
+        WheelUtil.match_desired_value(slices, get_num_slices(), add_new_slice)
         for_all_slices(update_slice_data)
         for_all_slices(update_all_slice_points)
         
@@ -131,7 +127,7 @@ func update_hitbox_collision(slice_index:int):
     slices[slice_index].set_collision_properties(collision_layer, collision_mask, collision_priority)
 
 func get_num_slices():
-    return min(maximum_slices, len(slice_data))
+    return min(slice_limit, len(slice_data))
 
 func _get_slice_arc_angle_deg() -> float:
     return 360.0 / max(1, get_num_slices())

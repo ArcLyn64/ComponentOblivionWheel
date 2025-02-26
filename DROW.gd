@@ -47,13 +47,13 @@ signal node_on_border() # used for connected node area detection
 @export_group('State')
 @export var selected_index:int = 0 :
     set(v):
-        selected_index = wrap_index(v, get_num_slices())
+        selected_index = wrap_index(v, get_num_segments())
         if selector_active:
             new_segment_selected.emit()
         render()
 @export var slice_position:int = 0 :
     set(v):
-        slice_position = wrap_index(v, get_num_slices())
+        slice_position = wrap_index(v, get_num_segments())
         render()
 @export var selector_active:bool = true:
     set(v):
@@ -78,20 +78,28 @@ signal node_on_border() # used for connected node area detection
 @export_group("Overlay and Selector Appearance")
 @export var overlay_color:Color = Color.WHITE :
     set(v):
-        overlay_color = v
-        render()
+        if wheel_overlay: wheel_overlay.overlay_color = v
+    get():
+        if wheel_overlay: return wheel_overlay.overlay_color
+        else: return Color.WHITE
 @export var outer_border_thickness:float = 5.0 :
     set(v):
-        outer_border_thickness = v
-        render()
+        if wheel_overlay: wheel_overlay.outer_border_thickness = v
+    get():
+        if wheel_overlay: return wheel_overlay.outer_border_thickness
+        else: return 0
 @export var outer_border_texture:GradientTexture2D :
     set(v):
-        outer_border_texture = v
-        render()
+        if wheel_overlay: wheel_overlay.outer_border_texture = v
+    get():
+        if wheel_overlay: return wheel_overlay.outer_border_texture
+        else: return null
 @export var inner_border_thickness:float = 10.0 :
     set(v):
-        inner_border_thickness = v
-        render()
+        if wheel_overlay: wheel_overlay.inner_border_thickness = v
+    get():
+        if wheel_overlay: return wheel_overlay.inner_border_thickness
+        else: return 0
 @export var selector_color:Color = Color.BLUE :
     set(v):
         selector_color = v
@@ -114,11 +122,7 @@ signal node_on_border() # used for connected node area detection
 @export var radius:float = 100.0 :
     set(v):
         radius = v
-        if slices: slices.maximum_radius = radius
-        if segments: segments.radius = radius
-        if cover_texture: cover_texture.width = int(radius)
-        if slice_gradient: slice_gradient.width = int(radius)
-        if segment_gradient: segment_gradient.width = int(radius)
+        _sync_radius()
         render()
 @export var slice_fidelity:int = 20 :
     set(v):
@@ -134,8 +138,10 @@ signal node_on_border() # used for connected node area detection
         else: return 2
 @export var outer_border_fidelity:int = 60 :
     set(v):
-        outer_border_fidelity = v
-        render()
+        if wheel_overlay: wheel_overlay.outer_border_fidelity = v
+    get():
+        if wheel_overlay: return wheel_overlay.outer_border_fidelity
+        else: return 0
 @export var selector_fidelity:int = 20 :
     set(v):
         selector_fidelity = v
@@ -235,17 +241,11 @@ signal node_on_border() # used for connected node area detection
         else: return null
 ## limits displayed slices/segments without removing slice/segment data
 ## useful for keeping a set of possible values and getting random subsets when you shuffle
-## displays all segments if the value is <= 0
-@export var maximum_segments:int = -1 :
+## displays all segments if the value is < 0
+@export var segment_limit:int = -1 :
     set(v):
-        v = clampi(v, 0, min(len(multiplier_slice_data), len(value_segment_data)))
-        if slices: slices.maximum_slices = v
-        if segments: segments.maximum_segments = v
-        render()
-    get():
-        if slices: return slices.maximum_slices
-        elif segments: return segments.maximum_segments
-        else: return 0
+        segment_limit = v
+        _sync_num_segments()
 ## wheel slice size is based in relation to this value
 @export var max_multiplier_value:int = 4 :
     set(v):
@@ -258,6 +258,7 @@ signal node_on_border() # used for connected node area detection
 @export var multiplier_slice_data:Array[WheelSliceData] = [] :
     set(v):
         if slices: slices.slice_data = v
+        _sync_num_segments()
     get():
         if slices: return slices.slice_data
         else: return []
@@ -266,6 +267,7 @@ signal node_on_border() # used for connected node area detection
 @export var value_segment_data:Array[WheelSegmentData] = [] :
     set(v):
         if segments: segments.segment_data = v
+        _sync_num_segments()
     get():
         if segments: return segments.segment_data
         else: return []
@@ -277,7 +279,7 @@ signal node_on_border() # used for connected node area detection
 # wheel components
 @onready var slices:WheelSlices = %WheelSlices
 @onready var segments:WheelSegments = %WheelSegments
-@onready var wheel_overlay_parent:Control = %WheelOverlayParent
+@onready var wheel_overlay:WheelOverlay = %WheelOverlay
 @onready var cover_parent:Control = %CoverParent
 @onready var outer_border:Line2D = %OuterBorder
 @onready var selector:Line2D = %Selector
@@ -294,6 +296,41 @@ var tween:Tween # keeps track of wheel rotation, used to skip the animation on r
 var connected_node_touching_segments:Array[int] = [] # used to detect if we're in multiple segments
 #endregion
 
+
+func _ready() -> void:
+    if not InputMap.has_action(DROW_CLICK_ACTION):
+        InputMap.add_action(DROW_CLICK_ACTION)
+        var mouse_click_event = InputEventMouseButton.new()
+        mouse_click_event.button_index = MOUSE_BUTTON_LEFT  
+        InputMap.action_add_event(DROW_CLICK_ACTION, mouse_click_event)
+    randomize()
+    _bind_segment_area_detection()
+    _sync_num_segments()
+    _sync_radius()
+    render()
+
+#region Value Sync
+func _sync_radius():
+    if slices: slices.maximum_radius = radius
+    if segments: segments.radius = radius
+    if wheel_overlay: wheel_overlay.radius = radius
+    if cover_texture: cover_texture.width = int(radius)
+    if slice_gradient: slice_gradient.width = int(radius)
+    if segment_gradient: segment_gradient.width = int(radius)
+
+func get_num_segments():
+    var max_possible_segments = min(len(value_segment_data), len(multiplier_slice_data))    
+    if segment_limit >= 0:
+        return min(max_possible_segments, segment_limit)
+    return max_possible_segments
+
+## syncs all segments to the maximum possible number of segments with the data we have
+func _sync_num_segments():
+    var num_segments = get_num_segments()
+    if slices: slices.slice_limit = num_segments
+    if segments: segments.segment_limit = num_segments
+    if wheel_overlay: wheel_overlay.num_borders = num_segments
+#endregion
 
 #region Input Handling
 ## handles default select-by-mouse
@@ -373,17 +410,9 @@ func get_selection_data(even_if_unselectable:bool = false) -> WheelSelectionData
     selection_data.selection_index = selected_index
     selection_data.slice_position = slice_position
     selection_data.base_value = value_segment_data[selected_index].value
-    selection_data.multiplier = multiplier_slice_data[wrap_index(selected_index - slice_position, get_num_slices())].value
+    selection_data.multiplier = multiplier_slice_data[wrap_index(selected_index - slice_position, get_num_segments())].value
     selection_data.total_value = selection_data.base_value * selection_data.multiplier
     return selection_data
-
-
-func get_num_slices() -> int:
-    var n = min(len(value_segment_data), len(multiplier_slice_data))
-    if maximum_segments >= 0:
-        return min(n, maximum_segments)
-    else:
-        return n
 
 
 func num_remaining_selectable_segments() -> int :
@@ -395,15 +424,15 @@ func num_remaining_selectable_segments() -> int :
 
 func get_segments_with_matching_slices() -> Array[Array]:
     var return_array:Array[Array] = []
-    for i in get_num_slices():
+    for i in get_num_segments():
         var vsd = value_segment_data[i]
-        var msd = multiplier_slice_data[wrap_index(i - slice_position, get_num_slices())]
+        var msd = multiplier_slice_data[wrap_index(i - slice_position, get_num_segments())]
         return_array.append([vsd, msd])
     return return_array
 
 
 func get_selected_multiplier() -> WheelSliceData:
-    return null if not selector_active else multiplier_slice_data[(selected_index - slice_position) % get_num_slices()]
+    return null if not selector_active else multiplier_slice_data[(selected_index - slice_position) % get_num_segments()]
 
 
 func get_selected_segment() -> WheelSegmentData:
@@ -481,7 +510,7 @@ func _rotate_one_step(clockwise:bool):
 
 
     # determine how we're moving
-    var slice_angle_deg:float = 360.0 / get_num_slices()
+    var slice_angle_deg:float = 360.0 / get_num_segments()
     var from:float = slice_position * slice_angle_deg
     var to:float = from + (slice_angle_deg * (1 if clockwise else -1))
 
@@ -506,18 +535,13 @@ func _rotate_one_step(clockwise:bool):
 ## Called when one of our properties is modified
 func render():
     # set up useful reference values
-    var num_slices = min(segments.get_num_segments(), slices.get_num_slices())
-    if maximum_segments > 0: num_slices = min(num_slices, maximum_segments)
-    var slice_arc_angle_deg:float = 360.0 / max(1, num_slices)
+    var slice_arc_angle_deg:float = 360.0 / max(1, get_num_segments())
     
     ## if we're not animating, snap slice_parent rotation to a valid wheel location
     if not (tween and tween.is_running()):
         if slices: slices.gimbal_rotation_deg = slice_position * slice_arc_angle_deg
 
-    ## extra operations based on data outlier cases
-    if num_slices <= 0: return # no wheel data, don't render
-    if not segments.get_num_segments() == slices.get_num_slices():
-        print("Mismatch between num segments (%d) and num slices (%d), rendering with the lower value." % [segments.get_num_segments(), slices.get_num_slices()]) 
+    if get_num_segments() <= 0: return # no wheel data, don't render
 
     ## handle container sizing
     set_custom_minimum_size(Vector2.ONE * ((2 * radius) + (outer_border_thickness)))
@@ -528,54 +552,11 @@ func render():
         total_area_detector.mouse_exited.connect(_mouse_exited_wheel)
     
     ## render the parts of wheel
-    _render_inner_border(num_slices, slice_arc_angle_deg)
-    _render_outer_border()
     _render_selector(slice_arc_angle_deg)
-    _render_covers(num_slices, slice_arc_angle_deg)
+    _render_covers(get_num_segments(), slice_arc_angle_deg)
     
     render_finished.emit()
     
-
-func _render_inner_border(num_borders:int, slice_arc_angle_deg:float):
-    ## make sure we have the right number of inner_borders
-    if len(inner_borders) > num_borders:
-        # remove extra inner_borders from the end
-        for border in inner_borders.slice(num_borders):
-            border.queue_free()
-        inner_borders = inner_borders.slice(0, num_borders)
-    elif len(inner_borders) < num_borders:
-        # create new inner_borders
-        var needed_new_borders = num_borders - len(inner_borders)
-        for _i in needed_new_borders:
-            var new_border = Line2D.new()
-            inner_borders.append(new_border)
-            wheel_overlay_parent.add_child(new_border)
-    
-    # don't show the single line if there's only one wheel segment
-    if num_borders == 1:
-        inner_borders[0].hide()
-    else:
-        inner_borders[0].show()
-    
-    ## update existing border lines
-    for i in num_borders:
-        var border:Line2D = inner_borders[i]
-        border.points = [
-            Vector2.ZERO,
-            Vector2.RIGHT * radius
-        ]
-        border.width = inner_border_thickness
-        border.default_color = overlay_color
-        border.rotation_degrees = (i * slice_arc_angle_deg) - (-slice_arc_angle_deg/2)
-
-
-func _render_outer_border():
-    outer_border.points = WheelUtil.create_arc_points(radius, outer_border_fidelity)
-    outer_border.width = outer_border_thickness
-    outer_border.default_color = overlay_color
-    outer_border.texture = outer_border_texture
-
-
 func _render_selector(slice_arc_angle_deg:float):
     if not selector_active:
         selector.hide()
@@ -593,12 +574,11 @@ func _render_selector(slice_arc_angle_deg:float):
     selector.width = selector_thickness
     selector.default_color = selector_color
     selector.rotation_degrees = (selected_index * slice_arc_angle_deg)
-    if get_num_slices() == 1:
+    if get_num_segments() == 1:
         pass
         selector.points = WheelUtil.create_arc_points(selector_radius, selector_fidelity)
     else:
         selector.points = [selector_offset] + WheelUtil.create_arc_points(selector_radius, selector_fidelity, slice_arc_angle_deg - arc_angle_offset)
-
 
 func _render_covers(num_covers:int, slice_arc_angle_deg:float):
     ## make sure we have the right number of covers
@@ -625,14 +605,3 @@ func _render_covers(num_covers:int, slice_arc_angle_deg:float):
         cover.rotation_degrees = i * slice_arc_angle_deg
         cover.visible = not value_segment_data[i].selectable
 #endregion
-
-
-func _ready() -> void:
-    if not InputMap.has_action(DROW_CLICK_ACTION):
-        InputMap.add_action(DROW_CLICK_ACTION)
-        var mouse_click_event = InputEventMouseButton.new()
-        mouse_click_event.button_index = MOUSE_BUTTON_LEFT  
-        InputMap.action_add_event(DROW_CLICK_ACTION, mouse_click_event)
-    randomize()
-    _bind_segment_area_detection()
-    render()

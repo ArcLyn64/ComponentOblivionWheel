@@ -8,9 +8,9 @@ signal num_segments_changed()
 
 #region Export Vars
 @export_group('Data')
-@export var maximum_segments:int = 4 :
+@export var segment_limit:int = 4 :
     set(v):
-        maximum_segments = max(0, v)
+        segment_limit = max(0, v)
         _match_desired_segment_number()
 @export var segment_data:Array[WheelSegmentData] = [] :
     set(v):
@@ -56,13 +56,9 @@ signal num_segments_changed()
         for_all_segments(update_hitbox_collision)
 #endregion
 
-#region Onready Vars
 @onready var wheel_segment_scene:PackedScene = preload("uid://cdrvckmfxk4r")
-#endregion
 
-#region Local Vars
 var segments:Array[WheelSegment] = []
-#endregion
 
 func _ready() -> void:
     _match_desired_segment_number()
@@ -81,7 +77,7 @@ func _match_desired_segment_number():
         add_child(new_segment)
     
     if len(segments) != get_num_segments():
-        WheelUtil.match_desired_value(segments as Array[Node], get_num_segments(), add_new_segment)
+        WheelUtil.match_desired_value(segments, get_num_segments(), add_new_segment)
         for_all_segments(update_segment_data)
         for_all_segments(update_all_segment_points)
         num_segments_changed.emit()
@@ -119,7 +115,7 @@ func update_hitbox_collision(segment_index:int):
     segments[segment_index].set_collision_properties(collision_layer, collision_mask, collision_priority)
 
 func get_num_segments():
-    return min(maximum_segments, len(segment_data))
+    return min(segment_limit, len(segment_data))
 
 func _get_segment_arc_angle_deg() -> float:
     return 360.0 / max(1, get_num_segments())

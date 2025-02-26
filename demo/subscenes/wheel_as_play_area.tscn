@@ -1,9 +1,17 @@
-[gd_scene load_steps=17 format=3 uid="uid://1s3qqbc0ubl3"]
+[gd_scene load_steps=19 format=3 uid="uid://1s3qqbc0ubl3"]
 
 [ext_resource type="Script" path="res://demo/subscenes/wheel_as_play_area.gd" id="1_d4i3w"]
 [ext_resource type="PackedScene" uid="uid://ccy07coqyd1kq" path="res://DROW.tscn" id="2_m4fo0"]
 [ext_resource type="Texture2D" uid="uid://csvma1cn8nmie" path="res://demo/assets/player.png" id="5_ho7tv"]
 [ext_resource type="Script" path="res://demo/subscenes/player.gd" id="5_uoxp5"]
+
+[sub_resource type="Gradient" id="Gradient_v8edh"]
+interpolation_mode = 1
+colors = PackedColorArray(1, 1, 1, 1, 0.775063, 0.775063, 0.775064, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_ft0xd"]
+gradient = SubResource("Gradient_v8edh")
+fill_to = Vector2(0, 0.5)
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_hpqmw"]
 height = 26.0
@@ -75,15 +83,16 @@ theme_override_constants/separation = 20
 
 [node name="DROW" parent="VBoxContainer" node_paths=PackedStringArray("node_as_selector") instance=ExtResource("2_m4fo0")]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(420, 420)
+custom_minimum_size = Vector2(410, 410)
 layout_mode = 2
 selector_active = false
 disable_selection_during_animation = true
 enable_mouse_input = false
 node_as_selector = NodePath("Stage/Player")
-overlay_color = Color(0.82606, 0.82606, 0.82606, 1)
-outer_border_thickness = 20.0
-inner_border_thickness = 10.0
+outer_border_thickness = 10.0
+outer_border_texture = SubResource("GradientTexture2D_ft0xd")
+inner_border_thickness = 5.0
+outer_border_fidelity = 60
 
 [node name="Stage" type="StaticBody2D" parent="VBoxContainer/DROW"]
 position = Vector2(275, 260)
