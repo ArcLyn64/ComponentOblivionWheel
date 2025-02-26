@@ -1,0 +1,86 @@
+[gd_scene load_steps=7 format=3 uid="uid://dpo0p7b7k2j4u"]
+
+[ext_resource type="Script" path="res://wheel-components/wheel_slices.gd" id="1_w3rsd"]
+[ext_resource type="Script" path="res://wheel-components/wheel_slice_data.gd" id="2_r084m"]
+
+[sub_resource type="Resource" id="Resource_r328f"]
+script = ExtResource("2_r084m")
+color = Color(1, 0.482353, 0, 1)
+value = 1
+
+[sub_resource type="Resource" id="Resource_4gxjy"]
+script = ExtResource("2_r084m")
+color = Color(1, 0.482353, 0, 1)
+value = 2
+
+[sub_resource type="Resource" id="Resource_mkqrd"]
+script = ExtResource("2_r084m")
+color = Color(1, 0.482353, 0, 1)
+value = 3
+
+[sub_resource type="Resource" id="Resource_m6t8g"]
+script = ExtResource("2_r084m")
+color = Color(1, 0.482353, 0, 1)
+value = 4
+
+[node name="WheelSlices" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 424.0
+offset_top = 320.0
+offset_right = 424.0
+offset_bottom = 320.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_w3rsd")
+slice_data = Array[ExtResource("2_r084m")]([SubResource("Resource_r328f"), SubResource("Resource_4gxjy"), SubResource("Resource_mkqrd"), SubResource("Resource_m6t8g")])
+maximum_radius = 300.0
+
+[node name="SliceGimbal" type="Control" parent="."]
+unique_name_in_owner = true
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[connection signal="area_entered" from="SliceGimbal/WheelSlice" to="SliceGimbal/WheelSlice/WheelPolygon" method="_bubble_area_entered"]
+[connection signal="area_exited" from="SliceGimbal/WheelSlice" to="SliceGimbal/WheelSlice/WheelPolygon" method="_bubble_area_exited"]
+[connection signal="area_shape_entered" from="SliceGimbal/WheelSlice" to="SliceGimbal/WheelSlice/WheelPolygon" method="_bubble_area_shape_entered"]
+[connection signal="area_shape_exited" from="SliceGimbal/WheelSlice" to="SliceGimbal/WheelSlice/WheelPolygon" method="_bubble_area_shape_exited"]
+[connection signal="body_entered" from="SliceGimbal/WheelSlice" to="SliceGimbal/WheelSlice/WheelPolygon" method="_bubble_body_entered"]
+[connection signal="body_exited" from="SliceGimbal/WheelSlice" to="SliceGimbal/WheelSlice/WheelPolygon" method="_bubble_body_exited"]
+[connection signal="body_shape_entered" from="SliceGimbal/WheelSlice" to="SliceGimbal/WheelSlice/WheelPolygon" method="_bubble_body_shape_entered"]
+[connection signal="body_shape_exited" from="SliceGimbal/WheelSlice" to="SliceGimbal/WheelSlice/WheelPolygon" method="_bubble_body_shape_exited"]
+[connection signal="mouse_entered" from="SliceGimbal/WheelSlice" to="SliceGimbal/WheelSlice/WheelPolygon" method="_bubble_mouse_entered"]
+[connection signal="mouse_exited" from="SliceGimbal/WheelSlice" to="SliceGimbal/WheelSlice/WheelPolygon" method="_bubble_mouse_exited"]
+[connection signal="area_entered" from="SliceGimbal/@Area2D@93446" to="SliceGimbal/@Area2D@93446/WheelPolygon" method="_bubble_area_entered"]
+[connection signal="area_exited" from="SliceGimbal/@Area2D@93446" to="SliceGimbal/@Area2D@93446/WheelPolygon" method="_bubble_area_exited"]
+[connection signal="area_shape_entered" from="SliceGimbal/@Area2D@93446" to="SliceGimbal/@Area2D@93446/WheelPolygon" method="_bubble_area_shape_entered"]
+[connection signal="area_shape_exited" from="SliceGimbal/@Area2D@93446" to="SliceGimbal/@Area2D@93446/WheelPolygon" method="_bubble_area_shape_exited"]
+[connection signal="body_entered" from="SliceGimbal/@Area2D@93446" to="SliceGimbal/@Area2D@93446/WheelPolygon" method="_bubble_body_entered"]
+[connection signal="body_exited" from="SliceGimbal/@Area2D@93446" to="SliceGimbal/@Area2D@93446/WheelPolygon" method="_bubble_body_exited"]
+[connection signal="body_shape_entered" from="SliceGimbal/@Area2D@93446" to="SliceGimbal/@Area2D@93446/WheelPolygon" method="_bubble_body_shape_entered"]
+[connection signal="body_shape_exited" from="SliceGimbal/@Area2D@93446" to="SliceGimbal/@Area2D@93446/WheelPolygon" method="_bubble_body_shape_exited"]
+[connection signal="mouse_entered" from="SliceGimbal/@Area2D@93446" to="SliceGimbal/@Area2D@93446/WheelPolygon" method="_bubble_mouse_entered"]
+[connection signal="mouse_exited" from="SliceGimbal/@Area2D@93446" to="SliceGimbal/@Area2D@93446/WheelPolygon" method="_bubble_mouse_exited"]
+[connection signal="area_entered" from="SliceGimbal/@Area2D@93462" to="SliceGimbal/@Area2D@93462/WheelPolygon" method="_bubble_area_entered"]
+[connection signal="area_exited" from="SliceGimbal/@Area2D@93462" to="SliceGimbal/@Area2D@93462/WheelPolygon" method="_bubble_area_exited"]
+[connection signal="area_shape_entered" from="SliceGimbal/@Area2D@93462" to="SliceGimbal/@Area2D@93462/WheelPolygon" method="_bubble_area_shape_entered"]
+[connection signal="area_shape_exited" from="SliceGimbal/@Area2D@93462" to="SliceGimbal/@Area2D@93462/WheelPolygon" method="_bubble_area_shape_exited"]
+[connection signal="body_entered" from="SliceGimbal/@Area2D@93462" to="SliceGimbal/@Area2D@93462/WheelPolygon" method="_bubble_body_entered"]
+[connection signal="body_exited" from="SliceGimbal/@Area2D@93462" to="SliceGimbal/@Area2D@93462/WheelPolygon" method="_bubble_body_exited"]
+[connection signal="body_shape_entered" from="SliceGimbal/@Area2D@93462" to="SliceGimbal/@Area2D@93462/WheelPolygon" method="_bubble_body_shape_entered"]
+[connection signal="body_shape_exited" from="SliceGimbal/@Area2D@93462" to="SliceGimbal/@Area2D@93462/WheelPolygon" method="_bubble_body_shape_exited"]
+[connection signal="mouse_entered" from="SliceGimbal/@Area2D@93462" to="SliceGimbal/@Area2D@93462/WheelPolygon" method="_bubble_mouse_entered"]
+[connection signal="mouse_exited" from="SliceGimbal/@Area2D@93462" to="SliceGimbal/@Area2D@93462/WheelPolygon" method="_bubble_mouse_exited"]
+[connection signal="area_entered" from="SliceGimbal/@Area2D@93463" to="SliceGimbal/@Area2D@93463/WheelPolygon" method="_bubble_area_entered"]
+[connection signal="area_exited" from="SliceGimbal/@Area2D@93463" to="SliceGimbal/@Area2D@93463/WheelPolygon" method="_bubble_area_exited"]
+[connection signal="area_shape_entered" from="SliceGimbal/@Area2D@93463" to="SliceGimbal/@Area2D@93463/WheelPolygon" method="_bubble_area_shape_entered"]
+[connection signal="area_shape_exited" from="SliceGimbal/@Area2D@93463" to="SliceGimbal/@Area2D@93463/WheelPolygon" method="_bubble_area_shape_exited"]
+[connection signal="body_entered" from="SliceGimbal/@Area2D@93463" to="SliceGimbal/@Area2D@93463/WheelPolygon" method="_bubble_body_entered"]
+[connection signal="body_exited" from="SliceGimbal/@Area2D@93463" to="SliceGimbal/@Area2D@93463/WheelPolygon" method="_bubble_body_exited"]
+[connection signal="body_shape_entered" from="SliceGimbal/@Area2D@93463" to="SliceGimbal/@Area2D@93463/WheelPolygon" method="_bubble_body_shape_entered"]
+[connection signal="body_shape_exited" from="SliceGimbal/@Area2D@93463" to="SliceGimbal/@Area2D@93463/WheelPolygon" method="_bubble_body_shape_exited"]
+[connection signal="mouse_entered" from="SliceGimbal/@Area2D@93463" to="SliceGimbal/@Area2D@93463/WheelPolygon" method="_bubble_mouse_entered"]
+[connection signal="mouse_exited" from="SliceGimbal/@Area2D@93463" to="SliceGimbal/@Area2D@93463/WheelPolygon" method="_bubble_mouse_exited"]

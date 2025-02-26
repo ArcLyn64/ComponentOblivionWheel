@@ -2,7 +2,7 @@
 class_name DROW
 extends Control
 
-#region Enums & Const
+#region Enums, Alias & Const
 enum TweenType { 
     TRANS_LINEAR,   ## linear animation.
     TRANS_SINE,     ## sine animation.
@@ -26,6 +26,9 @@ enum EaseType {
 }
 
 const DROW_CLICK_ACTION = 'DROW_wheel_click'
+
+## alias util function
+func wrap_index(length, index) -> int: return WheelUtil.wrap_index(length, index)
 #endregion
 
 
@@ -44,13 +47,13 @@ signal node_on_border() # used for connected node area detection
 @export_group('State')
 @export var selected_index:int = 0 :
     set(v):
-        selected_index = _wrap_index(v, get_num_slices())
+        selected_index = wrap_index(v, get_num_slices())
         if selector_active:
             new_segment_selected.emit()
         render()
 @export var slice_position:int = 0 :
     set(v):
-        slice_position = _wrap_index(v, get_num_slices())
+        slice_position = wrap_index(v, get_num_slices())
         render()
 @export var selector_active:bool = true:
     set(v):
@@ -111,14 +114,17 @@ signal node_on_border() # used for connected node area detection
 @export var radius:float = 100.0 :
     set(v):
         radius = v
+        if slices: slices.maximum_radius = radius
         if cover_texture: cover_texture.width = int(radius)
         if slice_gradient: slice_gradient.width = int(radius)
         if segment_gradient: segment_gradient.width = int(radius)
         render()
 @export var slice_fidelity:int = 20 :
     set(v):
-        slice_fidelity = v
-        render()
+        if slices: slices.slice_fidelity = v
+    get():
+        if slices: return slices.slice_fidelity
+        else: return 2
 @export var segment_fidelity:int = 20 :
     set(v):
         segment_fidelity = v
@@ -133,8 +139,12 @@ signal node_on_border() # used for connected node area detection
         render()
 @export var hitbox_fidelity:int = 5 :
     set(v):
-        hitbox_fidelity = v
-        render()
+        if slices: slices.hitbox_fidelity = v
+        # if segments: segments.hitbox_fidelity = v
+    get():
+        if slices: return slices.hitbox_fidelity
+        # elif segments: return segments.hitbox_fidelity
+        else: return 2
 @export var cover_fidelity:int = 20 :
     set(v):
         cover_fidelity = v
@@ -149,16 +159,22 @@ signal node_on_border() # used for connected node area detection
 @export_subgroup('Slices')
 @export_flags_2d_physics var slice_collision_layer = 1 :
     set(v):
-        slice_collision_layer = v
-        render()
+        if slices: slices.collision_layer = v
+    get():
+        if slices: return slices.collision_layer
+        else: return 0
 @export_flags_2d_physics var slice_collision_mask = 1 :
     set(v):
-        slice_collision_mask = v
-        render()
+        if slices: slices.collision_mask = v
+    get():
+        if slices: return slices.collision_mask
+        else: return 0
 @export var slice_collision_priority:int = 1 :
     set(v):
-        slice_collision_priority = v
-        render()
+        if slices: slices.collision_priority = v
+    get():
+        if slices: return slices.collision_priority
+        else: return 0
 @export_subgroup('Segments')
 @export_flags_2d_physics var segment_collision_layer = 1 :
     set(v):
@@ -175,24 +191,32 @@ signal node_on_border() # used for connected node area detection
 @export_subgroup('Wheel Area Detector')
 @export_flags_2d_physics var tad_collision_layer = 1 :
     set(v):
-        tad_collision_layer = v
-        render()
+        if total_area_detector: total_area_detector.collision_layer = v
+    get():
+        if total_area_detector: return total_area_detector.collision_layer
+        else: return 0
 @export_flags_2d_physics var tad_collision_mask = 1 :
     set(v):
-        tad_collision_mask = v
-        render()
-@export var tad_collision_priority:int = 1 :
+        if total_area_detector: total_area_detector.collision_mask = v
+    get():
+        if total_area_detector: return total_area_detector.collision_mask
+        else: return 0
+@export var tad_collision_priority:float = 1 :
     set(v):
-        tad_collision_priority = v
-        render()
+        if total_area_detector: total_area_detector.collision_priority = v
+    get():
+        if total_area_detector: return total_area_detector.collision_priority
+        else: return 0
     
 
 @export_group('Slices and Segments')
 @export var slice_gradient:GradientTexture1D :
     set(v):
-        slice_gradient = v
-        if slice_gradient: slice_gradient.width = int(radius)
-        render()
+        if v: v.width = int(radius)
+        if slices: slices.slice_texture = v
+    get():
+        if slices and slices.slice_texture is GradientTexture1D: return slices.slice_texture
+        else: return null
 @export var segment_gradient:GradientTexture1D :
     set(v):
         segment_gradient = v
@@ -203,19 +227,28 @@ signal node_on_border() # used for connected node area detection
 ## displays all segments if the value is <= 0
 @export var maximum_segments:int = -1 :
     set(v):
-        maximum_segments = v
+        if slices: slices.maximum_slices = v
+        # if segments: segments.maximum_segments = v
         render()
+    get():
+        if slices: return slices.maximum_slices
+        # elif segments: return segments.maximum_segments
+        else: return 0
 ## wheel slice size is based in relation to this value
 @export var max_multiplier_value:int = 4 :
     set(v):
-        max_multiplier_value = v
-        render()
+        if slices: slices.max_multiplier_value = v
+    get():
+        if slices: return slices.max_multiplier_value
+        else: return 0
 ## Data objects defining the slices of the wheel (the orange parts that rotate and multiply the result)
 ## Must have the same number of elements as the value segments.
 @export var multiplier_slice_data:Array[WheelSliceData] = [] :
     set(v):
-        multiplier_slice_data = v
-        render()
+        if slices: slices.slice_data = v
+    get():
+        if slices: return slices.slice_data
+        else: return []
 ## Data objects defining the segments of the wheel (the outlined parts that store the base values)
 ## Must have the same number of elements as the multiplier slices.
 @export var value_segment_data:Array[WheelSegmentData] = [] :
@@ -230,7 +263,7 @@ signal node_on_border() # used for connected node area detection
 @onready var wheel_slice_scene:PackedScene = preload("uid://c4xtb2itc034m")
 @onready var wheel_segment_scene:PackedScene = preload("uid://cdrvckmfxk4r")
 # wheel components
-@onready var slice_parent:Control = %SliceParent
+@onready var slices:WheelSlices = %WheelSlices
 @onready var segment_parent:Control = %SegmentParent
 @onready var wheel_overlay_parent:Control = %WheelOverlayParent
 @onready var cover_parent:Control = %CoverParent
@@ -243,7 +276,6 @@ signal node_on_border() # used for connected node area detection
 
 
 #region Local Vars
-var slices:Array[WheelSlice] = []
 var segments:Array[WheelSegment] = []
 var inner_borders:Array[Line2D] = []
 var covers:Array[Polygon2D] = []
@@ -314,7 +346,7 @@ func get_selection_data(even_if_unselectable:bool = false) -> WheelSelectionData
     selection_data.selection_index = selected_index
     selection_data.slice_position = slice_position
     selection_data.base_value = value_segment_data[selected_index].value
-    selection_data.multiplier = multiplier_slice_data[_wrap_index(selected_index - slice_position, get_num_slices())].value
+    selection_data.multiplier = multiplier_slice_data[wrap_index(selected_index - slice_position, get_num_slices())].value
     selection_data.total_value = selection_data.base_value * selection_data.multiplier
     return selection_data
 
@@ -340,7 +372,7 @@ func get_segments_with_matching_slices() -> Array[Array]:
     var return_array:Array[Array] = []
     for i in get_num_slices():
         var vsd = value_segment_data[i]
-        var msd = multiplier_slice_data[_wrap_index(i - slice_position, get_num_slices())]
+        var msd = multiplier_slice_data[wrap_index(i - slice_position, get_num_slices())]
         return_array.append([vsd, msd])
     return return_array
 
@@ -434,8 +466,8 @@ func _rotate_one_step(clockwise:bool):
     # do the animation
     rotation_started.emit()
     tween = create_tween()
-    slice_parent.rotation_degrees = from
-    tween.tween_property(slice_parent, 'rotation_degrees', to, animation_time)\
+    slices.gimbal_rotation_deg = from
+    tween.tween_property(slices, 'gimbal_rotation_deg', to, animation_time)\
          .set_trans(int(transition)) \
          .set_ease(int(easing))
     await tween.finished
@@ -461,7 +493,7 @@ func render():
     
     ## if we're not animating, snap slice_parent rotation to a valid wheel location
     if not (tween and tween.is_running()):
-        slice_parent.rotation_degrees = slice_position * slice_arc_angle_deg
+        slices.gimbal_rotation_deg = slice_position * slice_arc_angle_deg
 
     ## extra operations based on data outlier cases
     if num_slices <= 0: return # no wheel data, don't render
@@ -485,7 +517,6 @@ func render():
 
     
     ## render the parts of wheel
-    _render_slices(num_slices, _slice_data, slice_arc_angle_deg)
     _render_segments(num_slices, _segment_data, slice_arc_angle_deg)
     _render_inner_border(num_slices, slice_arc_angle_deg)
     _render_outer_border()
@@ -494,34 +525,6 @@ func render():
     
     render_finished.emit()
     
-    
-func _render_slices(num_slices:int, _slice_data:Array[WheelSliceData], slice_arc_angle_deg:float): 
-    ## make sure we have the right number of slices
-    if len(slices) > num_slices:
-        # remove extra slices from the end
-        for slice in slices.slice(num_slices): # ha, slices.slice()
-            slice.queue_free()
-        slices = slices.slice(0, num_slices) # we wanna resize the slice array to remove the things we queued to free
-    elif len(slices) < num_slices:
-        # create new slices
-        var needed_new_slices = num_slices - len(slices)
-        for _i in needed_new_slices:
-            var new_slice = wheel_slice_scene.instantiate()
-            slices.append(new_slice)
-            slice_parent.add_child(new_slice)
-
-    ## update the existing slice data
-    for i in len(slices):
-        var slice = slices[i]
-        var data = _slice_data[i]
-        var display_radius = radius * min(1, (float(max(data.value, 0)) / max_multiplier_value))
-        var hitbox_radius = radius
-        var offset:Array[Vector2] = [Vector2.ZERO]
-        var polygon_points:Array[Vector2] = offset + _create_arc_points(display_radius, slice_fidelity, slice_arc_angle_deg)
-        var hitbox_points:Array[Vector2] = offset + _create_arc_points(hitbox_radius, hitbox_fidelity, slice_arc_angle_deg)
-        slice.render(data, slice_gradient, polygon_points, hitbox_points, slice_collision_layer, slice_collision_mask, slice_collision_priority)
-        slice.rotation_degrees = i * slice_arc_angle_deg
-
 func _render_segments(num_segments:int, _segment_data:Array[WheelSegmentData], segment_arc_angle_deg:float):
     ## make sure we have the right number of segmentss
     if len(segments) > num_segments:
@@ -544,8 +547,8 @@ func _render_segments(num_segments:int, _segment_data:Array[WheelSegmentData], s
         var display_radius = radius
         var hitbox_radius = radius
         var offset:Array[Vector2] = [Vector2.ZERO]
-        var polygon_points:Array[Vector2] = offset + _create_arc_points(display_radius, segment_fidelity, segment_arc_angle_deg)
-        var hitbox_points:Array[Vector2] = offset + _create_arc_points(hitbox_radius, hitbox_fidelity, segment_arc_angle_deg)
+        var polygon_points:Array[Vector2] = offset + WheelUtil.create_arc_points(display_radius, segment_fidelity, segment_arc_angle_deg)
+        var hitbox_points:Array[Vector2] = offset + WheelUtil.create_arc_points(hitbox_radius, hitbox_fidelity, segment_arc_angle_deg)
         segment.render(data, segment_gradient, polygon_points, hitbox_points, segment_collision_layer, segment_collision_mask, segment_collision_priority)
         segment.rotation_degrees = i * segment_arc_angle_deg
         if not segment.mouse_entered.is_connected(_mouse_entered_segment.bind(i)):
@@ -594,7 +597,7 @@ func _render_inner_border(num_borders:int, slice_arc_angle_deg:float):
 
 
 func _render_outer_border():
-    outer_border.points = _create_arc_points(radius, outer_border_fidelity)
+    outer_border.points = WheelUtil.create_arc_points(radius, outer_border_fidelity)
     outer_border.width = outer_border_thickness
     outer_border.default_color = overlay_color
     outer_border.texture = outer_border_texture
@@ -619,9 +622,9 @@ func _render_selector(slice_arc_angle_deg:float):
     selector.rotation_degrees = (selected_index * slice_arc_angle_deg)
     if get_num_slices() == 1:
         pass
-        selector.points = _create_arc_points(selector_radius, selector_fidelity)
+        selector.points = WheelUtil.create_arc_points(selector_radius, selector_fidelity)
     else:
-        selector.points = [selector_offset] + _create_arc_points(selector_radius, selector_fidelity, slice_arc_angle_deg - arc_angle_offset)
+        selector.points = [selector_offset] + WheelUtil.create_arc_points(selector_radius, selector_fidelity, slice_arc_angle_deg - arc_angle_offset)
 
 
 func _render_covers(num_covers:int, slice_arc_angle_deg:float):
@@ -640,7 +643,7 @@ func _render_covers(num_covers:int, slice_arc_angle_deg:float):
             cover_parent.add_child(new_cover)
     
     ## update existing covers
-    var cover_points = [Vector2.ZERO] + _create_arc_points(radius, cover_fidelity, slice_arc_angle_deg)
+    var cover_points = [Vector2.ZERO] + WheelUtil.create_arc_points(radius, cover_fidelity, slice_arc_angle_deg)
     for i in num_covers:
         var cover:Polygon2D = covers[i]
         cover.set_polygon(cover_points)
@@ -652,25 +655,8 @@ func _render_covers(num_covers:int, slice_arc_angle_deg:float):
 
 
 #region Util
-func _wrap_index(index, length) -> int:
-    if length <= 0:
-        return index
-    if index < 0:
-        return _wrap_index(index + length, length)
-    else:
-        return index % length
-
 
 # I'd rather this be in some util class but it's here to make sure this code is portable
-func _create_arc_points(_radius:float, fidelity:int, arc_angle_deg:float = 360) -> Array[Vector2]:
-    fidelity = max(2, fidelity)
-    var points:Array[Vector2] = []
-    var pos: Vector2 = (Vector2.RIGHT * _radius).rotated(deg_to_rad(-arc_angle_deg/2))
-    var rotation_increment:float = deg_to_rad(arc_angle_deg / (fidelity - 1))
-    for i in fidelity:
-        points += [pos]
-        pos = pos.rotated(rotation_increment)
-    return points
 #endregion
 
 

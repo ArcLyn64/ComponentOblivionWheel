@@ -1,12 +1,9 @@
-[gd_scene load_steps=3 format=3 uid="uid://cdrvckmfxk4r"]
+[gd_scene load_steps=2 format=3 uid="uid://c4xtb2itc034m"]
 
-[ext_resource type="Script" path="res://wheel_segment.gd" id="1_hqm4y"]
+[ext_resource type="Script" path="res://wheel-components/wheel_slice.gd" id="1_hqkkf"]
 
-[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_fgxyr"]
-blend_mode = 2
-
-[node name="WheelSegment" type="Area2D"]
-script = ExtResource("1_hqm4y")
+[node name="WheelSlice" type="Area2D"]
+script = ExtResource("1_hqkkf")
 
 [node name="CollisionShape" type="CollisionPolygon2D" parent="."]
 unique_name_in_owner = true
@@ -15,7 +12,6 @@ polygon = PackedVector2Array(6, 0, 24, 25, 37, -18)
 
 [node name="WheelPolygon" type="Polygon2D" parent="."]
 unique_name_in_owner = true
-material = SubResource("CanvasItemMaterial_fgxyr")
 
 [connection signal="area_entered" from="." to="WheelPolygon" method="_bubble_area_entered"]
 [connection signal="area_exited" from="." to="WheelPolygon" method="_bubble_area_exited"]

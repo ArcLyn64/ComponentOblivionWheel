@@ -2,8 +2,8 @@
 
 [ext_resource type="Script" path="res://demo/subscenes/mash_wheel_with_drain.gd" id="1_g72a8"]
 [ext_resource type="PackedScene" uid="uid://ccy07coqyd1kq" path="res://DROW.tscn" id="2_o3s1a"]
-[ext_resource type="Script" path="res://wheel_slice_data.gd" id="3_pff0f"]
-[ext_resource type="Script" path="res://wheel_segment_data.gd" id="4_5ipat"]
+[ext_resource type="Script" path="res://wheel-components/wheel_slice_data.gd" id="3_pff0f"]
+[ext_resource type="Script" path="res://wheel-components/wheel_segment_data.gd" id="4_5ipat"]
 
 [sub_resource type="Resource" id="Resource_ectq5"]
 script = ExtResource("3_pff0f")
