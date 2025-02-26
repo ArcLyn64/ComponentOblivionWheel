@@ -59,7 +59,7 @@ const CENTER_POINT:Array[Vector2] = [Vector2.ZERO]
     set(v):
         collision_mask = v
         for_all_slices(update_hitbox_collision)
-@export var collision_priority:int = 1 :
+@export var collision_priority:float = 1 :
     set(v):
         collision_priority = v
         for_all_slices(update_hitbox_collision)
@@ -90,14 +90,14 @@ func _match_desired_slice_number():
         slices.append(new_slice)
         slice_parent.add_child(new_slice)
     
-    if len(slices) != _get_num_slices():
-        WheelUtil.match_desired_value(slices as Array[Node], _get_num_slices(), add_new_slice)
+    if len(slices) != get_num_slices():
+        WheelUtil.match_desired_value(slices as Array[Node], get_num_slices(), add_new_slice)
         for_all_slices(update_slice_data)
         for_all_slices(update_all_slice_points)
         
 ## Batch call a function with id func(index:int) for all slices
 func for_all_slices(f_to_call:Callable):
-    for i in _get_num_slices():
+    for i in get_num_slices():
         f_to_call.call(i)
 
 func update_slice_texture(slice_index:int):
@@ -130,8 +130,8 @@ func update_hitbox_collision(slice_index:int):
     if not slice_index < len(slices): return
     slices[slice_index].set_collision_properties(collision_layer, collision_mask, collision_priority)
 
-func _get_num_slices():
+func get_num_slices():
     return min(maximum_slices, len(slice_data))
 
 func _get_slice_arc_angle_deg() -> float:
-    return 360.0 / max(1, _get_num_slices())
+    return 360.0 / max(1, get_num_slices())

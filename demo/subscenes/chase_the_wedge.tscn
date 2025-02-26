@@ -1,9 +1,8 @@
-[gd_scene load_steps=19 format=3 uid="uid://dpa3e0ccbb2b6"]
+[gd_scene load_steps=15 format=3 uid="uid://dpa3e0ccbb2b6"]
 
 [ext_resource type="Script" path="res://demo/subscenes/chase_the_wedge.gd" id="1_0hmug"]
 [ext_resource type="PackedScene" uid="uid://ccy07coqyd1kq" path="res://DROW.tscn" id="1_dj464"]
 [ext_resource type="Script" path="res://wheel-components/wheel_slice_data.gd" id="2_60p4a"]
-[ext_resource type="Script" path="res://wheel-components/wheel_segment_data.gd" id="3_j2usd"]
 
 [sub_resource type="Gradient" id="Gradient_6uv37"]
 colors = PackedColorArray(1, 1, 1, 1, 0.776471, 0.776471, 0.776471, 0)
@@ -12,24 +11,6 @@ colors = PackedColorArray(1, 1, 1, 1, 0.776471, 0.776471, 0.776471, 0)
 gradient = SubResource("Gradient_6uv37")
 fill_from = Vector2(0, 1)
 fill_to = Vector2(0, 0)
-
-[sub_resource type="Resource" id="Resource_gh2m4"]
-script = ExtResource("3_j2usd")
-color = Color(1, 0, 1, 1)
-value = 1
-selectable = true
-
-[sub_resource type="Resource" id="Resource_61shm"]
-script = ExtResource("3_j2usd")
-color = Color(0, 1, 1, 1)
-value = 1
-selectable = true
-
-[sub_resource type="Resource" id="Resource_p4xfs"]
-script = ExtResource("3_j2usd")
-color = Color(1, 1, 0, 1)
-value = 1
-selectable = true
 
 [sub_resource type="Gradient" id="Gradient_tpi7f"]
 colors = PackedColorArray(0.532108, 0.870836, 0.362331, 1, 1, 1, 1, 1)
@@ -102,17 +83,21 @@ outer_border_texture = SubResource("GradientTexture2D_2obt8")
 inner_border_thickness = 0.0
 cover_texture = null
 slice_fidelity = 0
+segment_fidelity = 0
 hitbox_fidelity = 0
 transition = 8
 animation_time = 0.2
 slice_collision_layer = null
 slice_collision_mask = null
-slice_collision_priority = 0
+slice_collision_priority = 0.0
+segment_collision_layer = null
+segment_collision_mask = null
+segment_collision_priority = 0.0
 slice_gradient = null
 maximum_segments = 0
 max_multiplier_value = 0
 multiplier_slice_data = Array[ExtResource("2_60p4a")]([])
-value_segment_data = Array[ExtResource("3_j2usd")]([SubResource("Resource_gh2m4"), SubResource("Resource_61shm"), SubResource("Resource_p4xfs")])
+value_segment_data = Array[ExtResource("2_60p4a")]([])
 
 [node name="TimerContainer" type="HBoxContainer" parent="VBoxContainer"]
 custom_minimum_size = Vector2(550, 50)

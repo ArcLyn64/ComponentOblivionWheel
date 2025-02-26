@@ -1,34 +1,9 @@
-[gd_scene load_steps=22 format=3 uid="uid://1s3qqbc0ubl3"]
+[gd_scene load_steps=17 format=3 uid="uid://1s3qqbc0ubl3"]
 
 [ext_resource type="Script" path="res://demo/subscenes/wheel_as_play_area.gd" id="1_d4i3w"]
 [ext_resource type="PackedScene" uid="uid://ccy07coqyd1kq" path="res://DROW.tscn" id="2_m4fo0"]
-[ext_resource type="Script" path="res://wheel-components/wheel_segment_data.gd" id="4_q1l3b"]
 [ext_resource type="Texture2D" uid="uid://csvma1cn8nmie" path="res://demo/assets/player.png" id="5_ho7tv"]
 [ext_resource type="Script" path="res://demo/subscenes/player.gd" id="5_uoxp5"]
-
-[sub_resource type="Resource" id="Resource_1prh3"]
-script = ExtResource("4_q1l3b")
-color = Color(1, 1, 1, 1)
-value = -2
-selectable = true
-
-[sub_resource type="Resource" id="Resource_g5yle"]
-script = ExtResource("4_q1l3b")
-color = Color(1, 1, 1, 1)
-value = -1
-selectable = true
-
-[sub_resource type="Resource" id="Resource_5ern4"]
-script = ExtResource("4_q1l3b")
-color = Color(1, 1, 1, 1)
-value = 1
-selectable = true
-
-[sub_resource type="Resource" id="Resource_2fuo4"]
-script = ExtResource("4_q1l3b")
-color = Color(1, 1, 1, 1)
-value = 2
-selectable = true
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_hpqmw"]
 height = 26.0
@@ -109,7 +84,6 @@ node_as_selector = NodePath("Stage/Player")
 overlay_color = Color(0.82606, 0.82606, 0.82606, 1)
 outer_border_thickness = 20.0
 inner_border_thickness = 10.0
-value_segment_data = Array[ExtResource("4_q1l3b")]([SubResource("Resource_1prh3"), SubResource("Resource_g5yle"), SubResource("Resource_5ern4"), SubResource("Resource_2fuo4")])
 
 [node name="Stage" type="StaticBody2D" parent="VBoxContainer/DROW"]
 position = Vector2(275, 260)

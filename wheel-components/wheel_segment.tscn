@@ -10,7 +10,7 @@ script = ExtResource("1_hqm4y")
 
 [node name="CollisionShape" type="CollisionPolygon2D" parent="."]
 unique_name_in_owner = true
-visible = false
+self_modulate = Color(1, 1, 1, 0.411765)
 polygon = PackedVector2Array(6, 0, 24, 25, 37, -18)
 
 [node name="WheelPolygon" type="Polygon2D" parent="."]

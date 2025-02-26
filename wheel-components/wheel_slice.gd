@@ -14,7 +14,7 @@ var slice_data:WheelSliceData = null :
 func set_collision_properties(
     collision_layer_:int,
     collision_mask_:int,
-    collision_priority_:int,
+    collision_priority_:float,
 ) :
     self.collision_layer = collision_layer_
     self.collision_mask = collision_mask_
