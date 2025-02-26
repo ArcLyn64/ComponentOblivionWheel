@@ -84,27 +84,17 @@ func _ready() -> void:
 ## Adjust number of slice children to match the desired number
 ## only adds or removes from the end of the list
 func _match_desired_slice_number():
-    if not wheel_slice_scene: return
-    var num_slices = _get_num_slices()
-     ## make sure we have the right number of slices
-    if len(slices) > num_slices:
-        # remove extra slices from the end
-        var needed_removed = len(slices) - num_slices
-        for _i in needed_removed:
-            var removed = slices.pop_back()
-            if removed: removed.queue_free() # would love to do this in one line but have to null check
+    var add_new_slice:Callable = func():
+        if not wheel_slice_scene: return
+        var new_slice = wheel_slice_scene.instantiate()
+        slices.append(new_slice)
+        slice_parent.add_child(new_slice)
+    
+    if len(slices) != _get_num_slices():
+        WheelUtil.match_desired_value(slices as Array[Node], _get_num_slices(), add_new_slice)
         for_all_slices(update_slice_data)
         for_all_slices(update_all_slice_points)
-    elif len(slices) < num_slices:
-        # create new slices using the add_func
-        var needed_new = num_slices - len(slices)
-        for _i in needed_new:
-            var new_slice = wheel_slice_scene.instantiate()
-            slices.append(new_slice)
-            slice_parent.add_child(new_slice)
-        for_all_slices(update_slice_data)
-        for_all_slices(update_all_slice_points)
-
+        
 ## Batch call a function with id func(index:int) for all slices
 func for_all_slices(f_to_call:Callable):
     for i in _get_num_slices():
