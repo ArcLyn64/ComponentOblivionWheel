@@ -8,8 +8,12 @@ extends Area2D
 var segment_data:WheelSegmentData = null :
     set(v):
         segment_data = v
-        if segment_data:
-            polygon.color = segment_data.color.inverted() # so that it acts as a color filter, with the subtract blending on the polygon
+        update_color()
+
+func update_color():
+    if segment_data:
+        # invert so that it acts as a color filter, with the subtract blending on the polygon
+        polygon.color = segment_data.color.inverted()
 
 func set_collision_properties(
     collision_layer_:int,

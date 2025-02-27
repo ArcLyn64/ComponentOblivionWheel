@@ -78,7 +78,7 @@ func _match_desired_border_number():
  
 func update_inner_border_points():
     for i in num_borders:
-        if i > len(inner_borders): return
+        if i >= len(inner_borders): return
         var border:Line2D = inner_borders[i]
         border.points = [
             Vector2.ZERO,
@@ -97,12 +97,6 @@ func update_color():
     outer_border.default_color = overlay_color
     for border in inner_borders:
         border.default_color = overlay_color
-#endregion
-
-#region Covers
-#endregion
-
-#region Selector
 #endregion
 
 func _get_arc_angle_deg() -> float:

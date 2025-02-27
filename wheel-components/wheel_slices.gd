@@ -103,6 +103,7 @@ func update_slice_texture(slice_index:int):
 func update_slice_data(slice_index:int):
     if not slice_index < len(slices): return
     slices[slice_index].slice_data = slice_data[slice_index]
+    update_polygon_points(slice_index)
 
 func update_all_slice_points(slice_index:int):
     update_polygon_points(slice_index)

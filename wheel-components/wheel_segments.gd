@@ -23,19 +23,19 @@ signal num_segments_changed()
     set(v):
         if v != radius:
             radius = v
-            for_all_segments(update_all_segment_points)
+            update_points()
 @export var segment_fidelity:int = 20 :
     set(v):
         v = max(2, v)
         if v != segment_fidelity:
             segment_fidelity = v
-            for_all_segments(update_polygon_points)
+            update_points()
 @export var hitbox_fidelity:int = 5 :
     set(v):
         v = max(2, v)
         if v != hitbox_fidelity:
             hitbox_fidelity = v
-            for_all_segments(update_hitbox_points)
+            update_points()
 @export var segment_texture:Texture2D = null:
     set(v):
         segment_texture = v
@@ -64,8 +64,8 @@ func _ready() -> void:
     _match_desired_segment_number()
     for_all_segments(update_segment_data)
     for_all_segments(update_segment_texture)
-    for_all_segments(update_all_segment_points)
     for_all_segments(update_hitbox_collision)
+    update_points()
 
 ## Adjust number of segment children to match the desired number
 ## only adds or removes from the end of the list
@@ -79,7 +79,7 @@ func _match_desired_segment_number():
     if len(segments) != get_num_segments():
         WheelUtil.match_desired_value(segments, get_num_segments(), add_new_segment)
         for_all_segments(update_segment_data)
-        for_all_segments(update_all_segment_points)
+        update_points()
         num_segments_changed.emit()
         
 ## Batch call a function with id func(index:int) for all segments
@@ -95,20 +95,14 @@ func update_segment_data(segment_index:int):
     if not segment_index < len(segments): return
     segments[segment_index].segment_data = segment_data[segment_index]
 
-func update_all_segment_points(segment_index:int):
-    update_polygon_points(segment_index)
-    update_hitbox_points(segment_index)
-
-func update_polygon_points(segment_index:int):
-    if not segment_index < len(segments): return
-    segments[segment_index].polygon.set_polygon(
-        CENTER_POINT + WheelUtil.create_arc_points(radius, segment_fidelity, _get_segment_arc_angle_deg())
-    )
-    segments[segment_index].rotation_degrees = segment_index * _get_segment_arc_angle_deg()
-
-func update_hitbox_points(segment_index:int):
-    if not segment_index < len(segments): return
-    segments[segment_index].hitbox.polygon = CENTER_POINT + WheelUtil.create_arc_points(radius, hitbox_fidelity, _get_segment_arc_angle_deg())
+func update_points():
+    var polygon_points = CENTER_POINT + WheelUtil.create_arc_points(radius, segment_fidelity, _get_segment_arc_angle_deg())
+    var hitbox_points = CENTER_POINT + WheelUtil.create_arc_points(radius, hitbox_fidelity, _get_segment_arc_angle_deg())
+    for i in get_num_segments():
+        var segment = segments[i]
+        segment.polygon.set_polygon(polygon_points)
+        segment.hitbox.polygon = hitbox_points
+        segment.rotation_degrees = i * _get_segment_arc_angle_deg()
 
 func update_hitbox_collision(segment_index:int):
     if not segment_index < len(segments): return

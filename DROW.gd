@@ -38,7 +38,6 @@ signal new_segment_chosen(selection_data:WheelSelectionData)
 signal rotation_started()
 signal rotation_finished()
 # you have to call puzzle_finished() to check intentionally with this wheel...
-signal render_finished() # useful for debug
 signal node_on_border() # used for connected node area detection
 #endregion
 
@@ -50,15 +49,13 @@ signal node_on_border() # used for connected node area detection
         selected_index = wrap_index(v, get_num_segments())
         if selector_active:
             new_segment_selected.emit()
-        render()
 @export var slice_position:int = 0 :
     set(v):
         slice_position = wrap_index(v, get_num_segments())
-        render()
+        snap_gimbal_to_valid_angle()
 @export var selector_active:bool = true:
     set(v):
         selector_active = v
-        render()
 
 @export_group('Input')
 ## all external input disabled
@@ -103,27 +100,29 @@ signal node_on_border() # used for connected node area detection
 @export var selector_color:Color = Color.BLUE :
     set(v):
         selector_color = v
-        render()
+        _render_selector(360 / get_num_segments())
 @export var selector_thickness:float = 5.0:
     set(v):
         selector_thickness = v
-        render()
+        _render_selector(360 / get_num_segments())
 @export var cover_color:Color = Color('#3b3b3bc0') :
     set(v):
-        cover_color = v
-        render()
+        if covers: covers.color = v
+    get():
+        if covers: return covers.color
+        else: return Color('#3b3b3bc0')
 @export var cover_texture:GradientTexture1D :
     set(v):
-        cover_texture = v
-        if cover_texture: cover_texture.width = int(radius)
-        render()
+        if covers: covers.texture = v
+    get():
+        if covers and covers.texture is GradientTexture1D: return covers.texture
+        else: return null
 
 @export_group('Size and Rendering Settings')
 @export var radius:float = 100.0 :
     set(v):
         radius = v
         _sync_radius()
-        render()
 @export var slice_fidelity:int = 20 :
     set(v):
         if slices: slices.slice_fidelity = v
@@ -145,7 +144,7 @@ signal node_on_border() # used for connected node area detection
 @export var selector_fidelity:int = 20 :
     set(v):
         selector_fidelity = v
-        render()
+        _render_selector(360 / get_num_segments())
 @export var hitbox_fidelity:int = 5 :
     set(v):
         if slices: slices.hitbox_fidelity = v
@@ -156,8 +155,10 @@ signal node_on_border() # used for connected node area detection
         else: return 2
 @export var cover_fidelity:int = 20 :
     set(v):
-        cover_fidelity = v
-        render()
+        if covers: covers.fidelity = v
+    get():
+        if covers: return covers.fidelity
+        else: return 2
 
 @export_group('Animation')
 @export var transition:TweenType = TweenType.TRANS_CIRC
@@ -267,9 +268,11 @@ signal node_on_border() # used for connected node area detection
 @export var value_segment_data:Array[WheelSegmentData] = [] :
     set(v):
         if segments: segments.segment_data = v
+        if covers: covers.segment_data = v
         _sync_num_segments()
     get():
         if segments: return segments.segment_data
+        elif covers: return covers.segment_data
         else: return []
 #endregion
 
@@ -280,8 +283,7 @@ signal node_on_border() # used for connected node area detection
 @onready var slices:WheelSlices = %WheelSlices
 @onready var segments:WheelSegments = %WheelSegments
 @onready var wheel_overlay:WheelOverlay = %WheelOverlay
-@onready var cover_parent:Control = %CoverParent
-@onready var outer_border:Line2D = %OuterBorder
+@onready var covers:WheelCovers = %WheelCovers
 @onready var selector:Line2D = %Selector
 # detector components
 @onready var total_area_detector:Area2D = %TotalAreaDetector # area2d covering the whole wheel
@@ -290,8 +292,6 @@ signal node_on_border() # used for connected node area detection
 
 
 #region Local Vars
-var inner_borders:Array[Line2D] = []
-var covers:Array[Polygon2D] = []
 var tween:Tween # keeps track of wheel rotation, used to skip the animation on rapid input.
 var connected_node_touching_segments:Array[int] = [] # used to detect if we're in multiple segments
 #endregion
@@ -303,11 +303,12 @@ func _ready() -> void:
         var mouse_click_event = InputEventMouseButton.new()
         mouse_click_event.button_index = MOUSE_BUTTON_LEFT  
         InputMap.action_add_event(DROW_CLICK_ACTION, mouse_click_event)
+    if not total_area_detector.mouse_exited.is_connected(_mouse_exited_wheel):
+        total_area_detector.mouse_exited.connect(_mouse_exited_wheel)
     randomize()
     _bind_segment_area_detection()
     _sync_num_segments()
     _sync_radius()
-    render()
 
 #region Value Sync
 func _sync_radius():
@@ -317,6 +318,8 @@ func _sync_radius():
     if cover_texture: cover_texture.width = int(radius)
     if slice_gradient: slice_gradient.width = int(radius)
     if segment_gradient: segment_gradient.width = int(radius)
+    if tad_collision_shape: tad_collision_shape.shape.radius = radius + (outer_border_thickness / 2)
+    set_custom_minimum_size(Vector2.ONE * ((2 * radius) + (outer_border_thickness)))
 
 func get_num_segments():
     var max_possible_segments = min(len(value_segment_data), len(multiplier_slice_data))    
@@ -396,7 +399,6 @@ func _bind_segment_area_detection():
             segment.area_entered.connect(_when_node_enters_segment.bind(i))
         if not segment.area_exited.is_connected(_when_node_exits_segment.bind(i)):
             segment.area_exited.connect(_when_node_exits_segment.bind(i))
-
 #endregion
 
 
@@ -466,30 +468,31 @@ func reset(shuffle_values_:bool = true, shuffle_multipliers_:bool = true):
     if shuffle_values_: shuffle_values()
     if shuffle_multipliers_: shuffle_multipliers()
     make_all_selectable()
-    render()
 
 func shuffle_values():
     value_segment_data.shuffle()
-    render()
+    if segments: segments.for_all_segments(segments.update_segment_data)
 
 func shuffle_multipliers():
     multiplier_slice_data.shuffle()
-    render()
+    if slices: slices.for_all_slices(slices.update_slice_data)
 
 ## Useful for when the multiplier value is being used for something else
 func zero_all_multipliers():
     for msd in multiplier_slice_data: msd.value = 0
-    render()
+    if slices: slices.for_all_slices(slices.update_slice_data)
 
 ## Make all segments selectable again (hide all covers)
 func make_all_selectable():
     for vsd in value_segment_data: vsd.selectable = true
-    render()
+    if segments: segments.for_all_segments(segments.update_segment_data)
+    if covers: covers.for_all_segments(covers.update_visibility)
 
 ## Make all segments un-selectable (show all covers)
 func disable_all():
     for vsd in value_segment_data: vsd.selectable = false
-    render()
+    if segments: segments.for_all_segments(segments.update_segment_data)
+    if covers: covers.for_all_segments(covers.update_visibility)
 #endregion
 
 
@@ -528,35 +531,13 @@ func _rotate_one_step(clockwise:bool):
     
     #announce we're done
     rotation_finished.emit()
+    
+## if we're not animating, snaps slice rotation to a valid wheel location
+func snap_gimbal_to_valid_angle():
+    if not (tween and tween.is_running()):
+        if slices: slices.gimbal_rotation_deg = slice_position * (360 / get_num_segments())
 #endregion
 
-
-#region Rendering the Wheel
-## Called when one of our properties is modified
-func render():
-    # set up useful reference values
-    var slice_arc_angle_deg:float = 360.0 / max(1, get_num_segments())
-    
-    ## if we're not animating, snap slice_parent rotation to a valid wheel location
-    if not (tween and tween.is_running()):
-        if slices: slices.gimbal_rotation_deg = slice_position * slice_arc_angle_deg
-
-    if get_num_segments() <= 0: return # no wheel data, don't render
-
-    ## handle container sizing
-    set_custom_minimum_size(Vector2.ONE * ((2 * radius) + (outer_border_thickness)))
-    
-    ## handle total area detector
-    tad_collision_shape.shape.radius = radius + (outer_border_thickness / 2)
-    if not total_area_detector.mouse_exited.is_connected(_mouse_exited_wheel):
-        total_area_detector.mouse_exited.connect(_mouse_exited_wheel)
-    
-    ## render the parts of wheel
-    _render_selector(slice_arc_angle_deg)
-    _render_covers(get_num_segments(), slice_arc_angle_deg)
-    
-    render_finished.emit()
-    
 func _render_selector(slice_arc_angle_deg:float):
     if not selector_active:
         selector.hide()
@@ -579,29 +560,3 @@ func _render_selector(slice_arc_angle_deg:float):
         selector.points = WheelUtil.create_arc_points(selector_radius, selector_fidelity)
     else:
         selector.points = [selector_offset] + WheelUtil.create_arc_points(selector_radius, selector_fidelity, slice_arc_angle_deg - arc_angle_offset)
-
-func _render_covers(num_covers:int, slice_arc_angle_deg:float):
-    ## make sure we have the right number of covers
-    if len(covers) > num_covers:
-        # remove extra covers from the end
-        for cover in covers.slice(num_covers):
-            cover.queue_free()
-        covers = covers.slice(0, num_covers)
-    elif len(covers) < num_covers:
-        # create new covers
-        var needed_new_covers = num_covers - len(covers)
-        for _i in needed_new_covers:
-            var new_cover = Polygon2D.new()
-            covers.append(new_cover)
-            cover_parent.add_child(new_cover)
-    
-    ## update existing covers
-    var cover_points = [Vector2.ZERO] + WheelUtil.create_arc_points(radius, cover_fidelity, slice_arc_angle_deg)
-    for i in num_covers:
-        var cover:Polygon2D = covers[i]
-        cover.set_polygon(cover_points)
-        cover.color = cover_color
-        cover.texture = cover_texture
-        cover.rotation_degrees = i * slice_arc_angle_deg
-        cover.visible = not value_segment_data[i].selectable
-#endregion
