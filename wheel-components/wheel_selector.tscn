@@ -1,0 +1,16 @@
+[gd_scene load_steps=2 format=3 uid="uid://dl4dju1wnaqjg"]
+
+[ext_resource type="Script" path="res://wheel-components/wheel_selector.gd" id="1_o24sp"]
+
+[node name="WheelSelector" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+mouse_filter = 1
+script = ExtResource("1_o24sp")
+
+[node name="RenderedSelector" type="Line2D" parent="."]
+unique_name_in_owner = true
+points = PackedVector2Array(12.7598, 0, 158.001, -105.526, 164.234, -95.5363, 169.837, -85.1795, 174.787, -74.4956, 179.066, -63.5256, 182.657, -52.3115, 185.546, -40.8966, 187.723, -29.3246, 189.179, -17.6399, 189.909, -5.88751, 189.909, 5.88749, 189.179, 17.6399, 187.723, 29.3245, 185.546, 40.8966, 182.657, 52.3115, 179.066, 63.5255, 174.787, 74.4956, 169.836, 85.1795, 164.234, 95.5362, 158.001, 105.526)
+closed = true
+default_color = Color(0.52876, 0.68171, 1, 1)
+joint_mode = 2

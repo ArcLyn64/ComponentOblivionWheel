@@ -27,7 +27,7 @@ const CENTER_POINT:Array[Vector2] = [Vector2.ZERO]
         if v != fidelity:
             fidelity = v
             update_points()
-@export var color:Color = Color.WHITE :
+@export var color:Color = Color('#3b3b3bc0') :
     set(v):
         if color != v:
             color = v

@@ -98,6 +98,7 @@ func update_segment_data(segment_index:int):
 func update_points():
     var polygon_points = CENTER_POINT + WheelUtil.create_arc_points(radius, segment_fidelity, _get_segment_arc_angle_deg())
     var hitbox_points = CENTER_POINT + WheelUtil.create_arc_points(radius, hitbox_fidelity, _get_segment_arc_angle_deg())
+    if len(segment_data) == 0: return
     for i in get_num_segments():
         var segment = segments[i]
         segment.polygon.set_polygon(polygon_points)

@@ -1,6 +1,31 @@
-[gd_scene load_steps=2 format=3 uid="uid://didjvd0ru3rll"]
+[gd_scene load_steps=7 format=3 uid="uid://didjvd0ru3rll"]
 
 [ext_resource type="Script" path="res://wheel-components/wheel_covers.gd" id="1_v4pom"]
+[ext_resource type="Script" path="res://wheel-components/wheel_segment_data.gd" id="2_eyvca"]
+
+[sub_resource type="Resource" id="Resource_dkqbs"]
+script = ExtResource("2_eyvca")
+color = Color(1, 1, 1, 1)
+value = 1
+selectable = true
+
+[sub_resource type="Resource" id="Resource_scmvd"]
+script = ExtResource("2_eyvca")
+color = Color(1, 1, 1, 1)
+value = 1
+selectable = true
+
+[sub_resource type="Resource" id="Resource_oidu1"]
+script = ExtResource("2_eyvca")
+color = Color(1, 1, 1, 1)
+value = 1
+selectable = true
+
+[sub_resource type="Resource" id="Resource_7q0fw"]
+script = ExtResource("2_eyvca")
+color = Color(1, 1, 1, 1)
+value = 1
+selectable = true
 
 [node name="WheelCovers" type="Control"]
 layout_mode = 3
@@ -11,3 +36,4 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 1
 script = ExtResource("1_v4pom")
+segment_data = Array[ExtResource("2_eyvca")]([SubResource("Resource_dkqbs"), SubResource("Resource_scmvd"), SubResource("Resource_oidu1"), SubResource("Resource_7q0fw")])

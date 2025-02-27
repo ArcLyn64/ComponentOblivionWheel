@@ -41,21 +41,27 @@ signal rotation_finished()
 signal node_on_border() # used for connected node area detection
 #endregion
 
-
 #region Exports
 @export_group('State')
 @export var selected_index:int = 0 :
     set(v):
-        selected_index = wrap_index(v, get_num_segments())
-        if selector_active:
-            new_segment_selected.emit()
+        if selector:
+            selector.selector_index = wrap_index(v, get_num_segments())
+            if selector_active:
+                new_segment_selected.emit()
+    get():
+        if selector: return selector.selector_index
+        else: return 0
 @export var slice_position:int = 0 :
     set(v):
         slice_position = wrap_index(v, get_num_segments())
         snap_gimbal_to_valid_angle()
 @export var selector_active:bool = true:
     set(v):
-        selector_active = v
+        if selector: selector.visible = v
+    get():
+        if selector: return selector.visible
+        else: return false
 
 @export_group('Input')
 ## all external input disabled
@@ -82,6 +88,7 @@ signal node_on_border() # used for connected node area detection
 @export var outer_border_thickness:float = 5.0 :
     set(v):
         if wheel_overlay: wheel_overlay.outer_border_thickness = v
+        if selector: selector.outer_border_thickness = v
     get():
         if wheel_overlay: return wheel_overlay.outer_border_thickness
         else: return 0
@@ -94,17 +101,22 @@ signal node_on_border() # used for connected node area detection
 @export var inner_border_thickness:float = 10.0 :
     set(v):
         if wheel_overlay: wheel_overlay.inner_border_thickness = v
+        if selector: selector.inner_border_thickness = v
     get():
         if wheel_overlay: return wheel_overlay.inner_border_thickness
         else: return 0
-@export var selector_color:Color = Color.BLUE :
+@export var selector_color:Color = Color.DEEP_SKY_BLUE :
     set(v):
-        selector_color = v
-        _render_selector(360 / get_num_segments())
+        if selector: selector.color = v
+    get():
+        if selector: return selector.color
+        else: return Color.DEEP_SKY_BLUE
 @export var selector_thickness:float = 5.0:
     set(v):
-        selector_thickness = v
-        _render_selector(360 / get_num_segments())
+        if selector: selector.selector_thickness = v
+    get():
+        if selector: return selector.selector_thickness
+        else: return 0.0
 @export var cover_color:Color = Color('#3b3b3bc0') :
     set(v):
         if covers: covers.color = v
@@ -143,8 +155,10 @@ signal node_on_border() # used for connected node area detection
         else: return 0
 @export var selector_fidelity:int = 20 :
     set(v):
-        selector_fidelity = v
-        _render_selector(360 / get_num_segments())
+        if selector: selector.fidelity = v
+    get():
+        if selector: return selector.fidelity
+        else: return 2
 @export var hitbox_fidelity:int = 5 :
     set(v):
         if slices: slices.hitbox_fidelity = v
@@ -284,7 +298,7 @@ signal node_on_border() # used for connected node area detection
 @onready var segments:WheelSegments = %WheelSegments
 @onready var wheel_overlay:WheelOverlay = %WheelOverlay
 @onready var covers:WheelCovers = %WheelCovers
-@onready var selector:Line2D = %Selector
+@onready var selector:WheelSelector = %WheelSelector
 # detector components
 @onready var total_area_detector:Area2D = %TotalAreaDetector # area2d covering the whole wheel
 @onready var tad_collision_shape:CollisionShape2D = %TADCollision
@@ -315,6 +329,8 @@ func _sync_radius():
     if slices: slices.maximum_radius = radius
     if segments: segments.radius = radius
     if wheel_overlay: wheel_overlay.radius = radius
+    if covers: covers.radius = radius
+    if selector: selector.radius = radius
     if cover_texture: cover_texture.width = int(radius)
     if slice_gradient: slice_gradient.width = int(radius)
     if segment_gradient: segment_gradient.width = int(radius)
@@ -330,9 +346,13 @@ func get_num_segments():
 ## syncs all segments to the maximum possible number of segments with the data we have
 func _sync_num_segments():
     var num_segments = get_num_segments()
-    if slices: slices.slice_limit = num_segments
+    if slices:
+        slices.slice_limit = num_segments
+        snap_gimbal_to_valid_angle()
     if segments: segments.segment_limit = num_segments
     if wheel_overlay: wheel_overlay.num_borders = num_segments
+    if covers: covers.cover_limit = num_segments
+    if selector: selector.num_positions = num_segments
 #endregion
 
 #region Input Handling
@@ -537,26 +557,3 @@ func snap_gimbal_to_valid_angle():
     if not (tween and tween.is_running()):
         if slices: slices.gimbal_rotation_deg = slice_position * (360 / get_num_segments())
 #endregion
-
-func _render_selector(slice_arc_angle_deg:float):
-    if not selector_active:
-        selector.hide()
-        return
-
-    # calculate how much arc length to remove to fit the selector inside the borders
-    var selector_radius:float = radius - (outer_border_thickness / 2) - (selector_thickness / 2)
-    var arc_length = inner_border_thickness + (selector_thickness)
-    var arc_angle_offset = 360 * arc_length / (2 * PI * selector_radius)
-    # offset for the init point to fit the selector inside the borders
-    # I hate math so much
-    var selector_offset = Vector2.RIGHT * (selector_thickness + inner_border_thickness) / sin(deg_to_rad(slice_arc_angle_deg / 2)) / 2
-
-    selector.show()
-    selector.width = selector_thickness
-    selector.default_color = selector_color
-    selector.rotation_degrees = (selected_index * slice_arc_angle_deg)
-    if get_num_segments() == 1:
-        pass
-        selector.points = WheelUtil.create_arc_points(selector_radius, selector_fidelity)
-    else:
-        selector.points = [selector_offset] + WheelUtil.create_arc_points(selector_radius, selector_fidelity, slice_arc_angle_deg - arc_angle_offset)
