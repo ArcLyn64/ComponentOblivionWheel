@@ -89,6 +89,7 @@ signal node_on_border() # used for connected node area detection
     set(v):
         if wheel_overlay: wheel_overlay.outer_border_thickness = v
         if selector: selector.outer_border_thickness = v
+        set_custom_minimum_size(Vector2.ONE * ((2 * radius) + (outer_border_thickness)))
     get():
         if wheel_overlay: return wheel_overlay.outer_border_thickness
         else: return 0
@@ -111,7 +112,7 @@ signal node_on_border() # used for connected node area detection
     get():
         if selector: return selector.color
         else: return Color.DEEP_SKY_BLUE
-@export var selector_thickness:float = 5.0:
+@export var selector_thickness:float = 10.0:
     set(v):
         if selector: selector.selector_thickness = v
     get():
@@ -281,13 +282,9 @@ signal node_on_border() # used for connected node area detection
 ## Must have the same number of elements as the multiplier slices.
 @export var value_segment_data:Array[WheelSegmentData] = [] :
     set(v):
-        if segments: segments.segment_data = v
-        if covers: covers.segment_data = v
+        value_segment_data = v
+        _sync_value_segment_data()
         _sync_num_segments()
-    get():
-        if segments: return segments.segment_data
-        elif covers: return covers.segment_data
-        else: return []
 #endregion
 
 
@@ -310,7 +307,6 @@ var tween:Tween # keeps track of wheel rotation, used to skip the animation on r
 var connected_node_touching_segments:Array[int] = [] # used to detect if we're in multiple segments
 #endregion
 
-
 func _ready() -> void:
     if not InputMap.has_action(DROW_CLICK_ACTION):
         InputMap.add_action(DROW_CLICK_ACTION)
@@ -323,6 +319,7 @@ func _ready() -> void:
     _bind_segment_area_detection()
     _sync_num_segments()
     _sync_radius()
+    _sync_value_segment_data()
 
 #region Value Sync
 func _sync_radius():
@@ -336,6 +333,10 @@ func _sync_radius():
     if segment_gradient: segment_gradient.width = int(radius)
     if tad_collision_shape: tad_collision_shape.shape.radius = radius + (outer_border_thickness / 2)
     set_custom_minimum_size(Vector2.ONE * ((2 * radius) + (outer_border_thickness)))
+
+func _sync_value_segment_data():
+    if segments: segments.segment_data = value_segment_data
+    if covers: covers.segment_data = value_segment_data
 
 func get_num_segments():
     var max_possible_segments = min(len(value_segment_data), len(multiplier_slice_data))    
@@ -477,6 +478,7 @@ func confirm_selection():
     if disable_selection_during_animation and (tween and tween.is_running()): return false
     if not get_selected_segment() or not get_selected_segment().selectable: return false
     if disable_selected_segments: get_selected_segment().selectable = false
+    if covers: covers.update_visibility(selected_index)
     new_segment_chosen.emit(get_selection_data(true))
     return true
 
@@ -555,5 +557,5 @@ func _rotate_one_step(clockwise:bool):
 ## if we're not animating, snaps slice rotation to a valid wheel location
 func snap_gimbal_to_valid_angle():
     if not (tween and tween.is_running()):
-        if slices: slices.gimbal_rotation_deg = slice_position * (360 / get_num_segments())
+        if slices: slices.gimbal_rotation_deg = slice_position * (360 / max(1, get_num_segments()))
 #endregion

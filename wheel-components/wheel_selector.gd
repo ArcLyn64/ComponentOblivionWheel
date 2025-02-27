@@ -2,21 +2,19 @@
 class_name WheelSelector
 extends Control
 
-@onready var rendered_selector:Line2D = %RenderedSelector
-
-
 #region Export Vars
 @export_group('Data')
 @export var selector_index = 0 :
     set(v):
-        selector_index = v
+        selector_index = WheelUtil.wrap_index(v, num_positions)
         update_selector_angle()
 @export var num_positions:int :
     set(v):
         v = max(0, v)
         if v != num_positions:
             num_positions = v
-            update_selector_angle()
+            selector_index = selector_index
+            update_points()
 ## data from overlay
 @export var inner_border_thickness:float = 2 :
     set(v):
@@ -44,10 +42,14 @@ extends Control
             update_points()
 @export var selector_thickness:float = 5 :
     set(v):
+        selector_thickness = v
         if rendered_selector: rendered_selector.width = v
+        update_points()
     get():
-        if rendered_selector: return rendered_selector.width
-        else: return 0
+        if rendered_selector: # shenanigans to overcome initialization order
+            rendered_selector.width = selector_thickness
+            return rendered_selector.width
+        else: return selector_thickness
 @export var color:Color = Color.DEEP_SKY_BLUE :
     set(v):
         if rendered_selector: rendered_selector.default_color = v
@@ -55,6 +57,8 @@ extends Control
         if rendered_selector: return rendered_selector.default_color
         else: return Color.DEEP_SKY_BLUE
 #endregion
+
+@onready var rendered_selector:Line2D = %RenderedSelector
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -79,8 +83,7 @@ func update_points():
 
 
 func update_selector_angle():
-    rendered_selector.rotation_degrees = (selector_index * _get_arc_angle_deg())
-    pass
+    if rendered_selector: rendered_selector.rotation_degrees = (selector_index * _get_arc_angle_deg())
 
 func _get_arc_angle_deg() -> float:
     return 360.0 / max(1, num_positions)

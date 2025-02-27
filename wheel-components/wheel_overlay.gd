@@ -29,10 +29,13 @@ extends Control
             update_color()
 @export var outer_border_thickness:float = 5 :
     set(v):
+        outer_border_thickness = v
         if outer_border: outer_border.width = v
     get():
-        if outer_border: return outer_border.width
-        else: return 0
+        if outer_border:
+            outer_border.width = outer_border_thickness
+            return outer_border.width
+        else: return outer_border_thickness
 @export var inner_border_thickness:float = 2 :
     set(v):
         if inner_border_thickness != v:
@@ -94,7 +97,7 @@ func update_inner_border_thickness():
         border.width = inner_border_thickness
 
 func update_color():
-    outer_border.default_color = overlay_color
+    if outer_border: outer_border.default_color = overlay_color
     for border in inner_borders:
         border.default_color = overlay_color
 #endregion
