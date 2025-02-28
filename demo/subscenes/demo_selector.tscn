@@ -1,49 +1,8 @@
-[gd_scene load_steps=22 format=3 uid="uid://c1q5khwepbabi"]
+[gd_scene load_steps=10 format=3 uid="uid://c1q5khwepbabi"]
 
 [ext_resource type="Script" path="res://demo/subscenes/demo_selector.gd" id="1_87q0h"]
 [ext_resource type="PackedScene" uid="uid://ccy07coqyd1kq" path="res://DROW.tscn" id="2_mlbrg"]
-[ext_resource type="Script" path="res://wheel-components/wheel_slice_data.gd" id="3_ijdrc"]
 [ext_resource type="Script" path="res://wheel-components/wheel_segment_data.gd" id="4_q7yu1"]
-
-[sub_resource type="Resource" id="Resource_i5ux5"]
-script = ExtResource("3_ijdrc")
-color = Color(1, 0.482353, 0, 1)
-value = 1
-
-[sub_resource type="Resource" id="Resource_4k7va"]
-script = ExtResource("3_ijdrc")
-color = Color(1, 0.482353, 0, 1)
-value = 1
-
-[sub_resource type="Resource" id="Resource_0tkue"]
-script = ExtResource("3_ijdrc")
-color = Color(1, 0.482353, 0, 1)
-value = 1
-
-[sub_resource type="Resource" id="Resource_iisnb"]
-script = ExtResource("3_ijdrc")
-color = Color(1, 0.482353, 0, 1)
-value = 1
-
-[sub_resource type="Resource" id="Resource_6e82r"]
-script = ExtResource("3_ijdrc")
-color = Color(1, 0.482353, 0, 1)
-value = 1
-
-[sub_resource type="Resource" id="Resource_i0sbk"]
-script = ExtResource("3_ijdrc")
-color = Color(1, 0.482353, 0, 1)
-value = 1
-
-[sub_resource type="Resource" id="Resource_1ksey"]
-script = ExtResource("3_ijdrc")
-color = Color(1, 0.482353, 0, 1)
-value = 1
-
-[sub_resource type="Resource" id="Resource_t4ie3"]
-script = ExtResource("3_ijdrc")
-color = Color(1, 0.482353, 0, 1)
-value = 1
 
 [sub_resource type="Resource" id="Resource_ybvug"]
 script = ExtResource("4_q7yu1")
@@ -75,24 +34,6 @@ color = Color(1, 1, 1, 1)
 value = 0
 selectable = true
 
-[sub_resource type="Resource" id="Resource_76xgo"]
-script = ExtResource("4_q7yu1")
-color = Color(1, 1, 1, 1)
-value = 0
-selectable = true
-
-[sub_resource type="Resource" id="Resource_5nm1x"]
-script = ExtResource("4_q7yu1")
-color = Color(1, 1, 1, 1)
-value = 0
-selectable = true
-
-[sub_resource type="Resource" id="Resource_aq70u"]
-script = ExtResource("4_q7yu1")
-color = Color(1, 1, 1, 1)
-value = 1
-selectable = true
-
 [sub_resource type="LabelSettings" id="LabelSettings_e3vx1"]
 font_size = 56
 shadow_size = 5
@@ -110,18 +51,13 @@ layout_mode = 2
 
 [node name="DROW" parent="VBoxContainer" instance=ExtResource("2_mlbrg")]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(425, 425)
 layout_mode = 2
 selector_active = false
 rotate_on_selection = false
-overlay_color = Color(0.605274, 0.605274, 0.605274, 1)
-outer_border_thickness = 25.0
-inner_border_thickness = 10.0
-selector_color = Color(1, 0, 0.0500002, 0)
-radius = 200.0
+overlay_color = Color(0.223103, 0.223103, 0.223103, 1)
+segment_limit = 5
 max_multiplier_value = 100
-multiplier_slice_data = Array[ExtResource("3_ijdrc")]([SubResource("Resource_i5ux5"), SubResource("Resource_4k7va"), SubResource("Resource_0tkue"), SubResource("Resource_iisnb"), SubResource("Resource_6e82r"), SubResource("Resource_i0sbk"), SubResource("Resource_1ksey"), SubResource("Resource_t4ie3")])
-value_segment_data = Array[ExtResource("4_q7yu1")]([SubResource("Resource_ybvug"), SubResource("Resource_mbnxc"), SubResource("Resource_rrh1p"), SubResource("Resource_qrtvl"), SubResource("Resource_8ffis"), SubResource("Resource_76xgo"), SubResource("Resource_5nm1x"), SubResource("Resource_aq70u")])
+value_segment_data = Array[ExtResource("4_q7yu1")]([SubResource("Resource_ybvug"), SubResource("Resource_mbnxc"), SubResource("Resource_rrh1p"), SubResource("Resource_qrtvl"), SubResource("Resource_8ffis")])
 
 [node name="DemoName" type="Label" parent="VBoxContainer"]
 unique_name_in_owner = true

@@ -20,13 +20,14 @@ func _ready() -> void:
         _end_current_animation()
     )
     wheel.reset()
+    wheel.zero_all_multipliers()
 
 #region Signal Receivers
 func _update_displayed_demo():
     demo_name_label.text = demos[wheel.selected_index % len(demos)]
     _end_current_animation()
     tween = create_tween()
-    tween.tween_method(_update_wheel_selected_slice, 0, 100, 1.0).set_trans(Tween.TRANS_EXPO).set_ease(Tween.EASE_OUT)
+    tween.tween_method(_update_wheel_selected_slice, 0, wheel.max_multiplier_value, 1.0).set_trans(Tween.TRANS_EXPO).set_ease(Tween.EASE_OUT)
 
 func _go_to_selected_demo(selected_data:WheelSelectionData):
     _end_current_animation()
@@ -43,8 +44,6 @@ func _end_current_animation():
     wheel.zero_all_multipliers()
 
 func _update_wheel_selected_slice(value:int):
-    var selected_multiplier = wheel.get_selected_multiplier()
-    if selected_multiplier and wheel.get_selected_segment().selectable:
-        selected_multiplier.value = value
-        wheel.render()
+    wheel.update_selected_slice_data(value)
+
 #endregion

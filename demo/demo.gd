@@ -72,14 +72,10 @@ func _update_debug():
         data_array.append([msd_vsd_pair[0].value, msd_vsd_pair[1].value])
     wheel_data_label.text = str(data_array)
     
-
-
 func _connect_wheel_signals():
     var wheel:DROW = _get_active_scene_wheel()
-    if not wheel.render_finished.is_connected(_update_debug):
-        wheel.render_finished.connect(_update_debug)
-    if not wheel.total_area_detector.mouse_exited.is_connected(_update_debug):
-        wheel.total_area_detector.mouse_exited.connect(_update_debug)
+    # if not wheel.total_area_detector.mouse_exited.is_connected(_update_debug):
+    #     wheel.total_area_detector.mouse_exited.connect(_update_debug)
     if not wheel.rotation_started.is_connected(_play_sound.bind(rotate_sound)):
         wheel.rotation_started.connect(_play_sound.bind(rotate_sound))
     if not wheel.new_segment_selected.is_connected(_play_sound.bind(select_sound)):
@@ -109,3 +105,5 @@ func _play_music(music:AudioStream) -> void:
         _play_music(background_music)
     )
    
+func _process(_delta: float) -> void:
+    _update_debug()

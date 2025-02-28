@@ -8,8 +8,11 @@ extends Area2D
 var slice_data:WheelSliceData = null :
     set(v):
         slice_data = v
-        if slice_data:
-            polygon.color = slice_data.color
+        update_color()
+
+func update_color():
+    if slice_data:
+        polygon.color = slice_data.color
 
 func set_collision_properties(
     collision_layer_:int,

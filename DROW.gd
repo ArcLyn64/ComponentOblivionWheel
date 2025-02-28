@@ -58,9 +58,12 @@ signal node_on_border() # used for connected node area detection
         snap_gimbal_to_valid_angle()
 @export var selector_active:bool = true:
     set(v):
+        selector_active = v
         if selector: selector.visible = v
     get():
-        if selector: return selector.visible
+        if selector:
+            selector.visible = selector_active
+            return selector.visible
         else: return false
 
 @export_group('Input')
@@ -265,9 +268,12 @@ signal node_on_border() # used for connected node area detection
 ## wheel slice size is based in relation to this value
 @export var max_multiplier_value:int = 4 :
     set(v):
+        max_multiplier_value = v
         if slices: slices.max_multiplier_value = v
     get():
-        if slices: return slices.max_multiplier_value
+        if slices:
+            slices.max_multiplier_value = max_multiplier_value
+            return slices.max_multiplier_value
         else: return 0
 ## Data objects defining the slices of the wheel (the orange parts that rotate and multiply the result)
 ## Must have the same number of elements as the value segments.
@@ -433,9 +439,17 @@ func get_selection_data(even_if_unselectable:bool = false) -> WheelSelectionData
     selection_data.selection_index = selected_index
     selection_data.slice_position = slice_position
     selection_data.base_value = value_segment_data[selected_index].value
-    selection_data.multiplier = multiplier_slice_data[wrap_index(selected_index - slice_position, get_num_segments())].value
+    selection_data.multiplier = multiplier_slice_data[get_selected_slice_index()].value
     selection_data.total_value = selection_data.base_value * selection_data.multiplier
     return selection_data
+
+
+func get_selected_slice_index() -> int:
+    return get_slice_index_for_segment(selected_index)
+
+
+func get_slice_index_for_segment(segment_idx:int) -> int:
+    return wrap_index(segment_idx - slice_position, get_num_segments())
 
 
 func num_remaining_selectable_segments() -> int :
@@ -503,6 +517,23 @@ func shuffle_multipliers():
 func zero_all_multipliers():
     for msd in multiplier_slice_data: msd.value = 0
     if slices: slices.for_all_slices(slices.update_slice_data)
+
+## updates the slice attached to the segment index `index`
+## then asks slices to update its slice_data
+func update_slice_data(index:int, value = null, color = null):
+    index = wrap_index(index, get_num_segments())
+    var slice_index = get_slice_index_for_segment(index)
+    var slice_data = multiplier_slice_data[slice_index]
+    if value is int:
+        slice_data.value = value
+        slices.update_slice_data(slice_index)
+    if color is Color:
+        slice_data.color = color
+        slices.slice[slice_index].update_color()
+
+## alias for update_slice_data(get_selected_slice_index())
+func update_selected_slice_data(value = null, color = null):
+    update_slice_data(get_selected_slice_index(), value, color)
 
 ## Make all segments selectable again (hide all covers)
 func make_all_selectable():
