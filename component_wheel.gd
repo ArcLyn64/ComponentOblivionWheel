@@ -22,6 +22,8 @@ extends Control
 
 func update_all_components():
         for e in [slices, segments, overlay, covers, selector]:
+            # print_debug(e and 'update' in e and e.update is Callable)
+            e.update()
             if e and 'update' in e and e.update is Callable: e.update()
 
 func _ready() -> void:

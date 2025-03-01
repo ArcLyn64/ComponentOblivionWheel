@@ -1,5 +1,5 @@
 @tool
-class_name WheelSlice
+class_name OldWheelSlice
 extends Area2D
 
 @onready var hitbox:CollisionPolygon2D = %CollisionShape

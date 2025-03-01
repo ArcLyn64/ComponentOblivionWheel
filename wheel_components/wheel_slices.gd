@@ -131,6 +131,7 @@ func update_selected_slice(selected_index = 0):
     update_slice_data(WheelUtil.wrap_index(selected_index - position_index, num_slices))
 
 func update():
+    print_debug('update called')
     _match_desired_slice_number()
     for_all_slices(update_slice_data)
 #endregion

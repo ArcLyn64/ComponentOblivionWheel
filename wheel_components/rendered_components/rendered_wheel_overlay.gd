@@ -17,7 +17,7 @@ extends Control
 @export var radius:float = 100 :
     set(v): radius = max(0, v)
 ## How many points to use to render the outer wheel
-@export var fidelity:int = 20 :
+@export var fidelity:int = 60 :
     set(v): fidelity = max(2, v)
 
 @export_group('Inner Border')
