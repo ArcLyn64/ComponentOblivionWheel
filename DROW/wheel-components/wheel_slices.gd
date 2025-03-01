@@ -1,5 +1,5 @@
 @tool
-class_name WheelSlices
+class_name OldWheelSlices
 extends Control
 
 const CENTER_POINT:Array[Vector2] = [Vector2.ZERO]

@@ -1,12 +1,12 @@
 class_name WheelUtil
 extends Resource
 
-static func create_arc_points(radius:float, fidelity:int, arc_angle_deg:float = 360) -> Array[Vector2]:
-    arc_angle_deg = clampf(abs(arc_angle_deg), 0, 360) # clamp this to the circle
+static func create_arc_points(radius:float, fidelity:int, arc_angle_deg_:float = 360) -> Array[Vector2]:
+    arc_angle_deg_ = clampf(abs(arc_angle_deg_), 0, 360) # clamp this to the circle
     fidelity = max(2, fidelity)
     var points:Array[Vector2] = []
-    var pos: Vector2 = (Vector2.RIGHT * radius).rotated(deg_to_rad(-arc_angle_deg/2))
-    var rotation_increment:float = deg_to_rad(arc_angle_deg / (fidelity - 1))
+    var pos: Vector2 = (Vector2.RIGHT * radius).rotated(deg_to_rad(-arc_angle_deg_/2))
+    var rotation_increment:float = deg_to_rad(arc_angle_deg_ / (fidelity - 1))
     for i in fidelity:
         points += [pos]
         pos = pos.rotated(rotation_increment)
@@ -19,6 +19,10 @@ static func wrap_index(index, length) -> int:
         return wrap_index(index + length, length)
     else:
         return index % length
+
+static func arc_angle_deg(slices:int) -> float:
+    slices = max(1, slices)
+    return 360.0 / max(1, slices)
 
 ## used to match the correct number of children
 ## this was repeated a lot for generating wheel elements

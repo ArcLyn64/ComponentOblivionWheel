@@ -1,5 +1,5 @@
 @tool
-class_name WheelCovers
+class_name WheelCoversOld
 extends Control
 
 const CENTER_POINT:Array[Vector2] = [Vector2.ZERO]

@@ -1,5 +1,5 @@
 @tool
-class_name WheelOverlay
+class_name OldWheelOverlay
 extends Control
 
 #region Export Vars
@@ -47,13 +47,9 @@ extends Control
     get():
         if outer_border: return outer_border.texture 
         else: return null
-@export_group('Covers')
-@export_group('Selector')
 #endregion
 
 @onready var border_parent:Control = %BorderParent
-@onready var cover_parent:Control = %CoverParent
-@onready var selector_parent:Control = %SelectorParent
 @onready var outer_border:Line2D = %OuterBorder
 
 var inner_borders:Array[Line2D] = []

@@ -38,7 +38,7 @@ signal new_segment_chosen(selection_data:WheelSelectionData)
 signal rotation_started()
 signal rotation_finished()
 # you have to call puzzle_finished() to check intentionally with this wheel...
-signal node_on_border() # used for connected node area detection
+# signal node_on_border() # used for connected node area detection
 #endregion
 
 #region Exports
@@ -297,11 +297,11 @@ signal node_on_border() # used for connected node area detection
 #region Onready Vars
 # child scenes
 # wheel components
-@onready var slices:WheelSlices = %WheelSlices
-@onready var segments:WheelSegments = %WheelSegments
-@onready var wheel_overlay:WheelOverlay = %WheelOverlay
-@onready var covers:WheelCovers = %WheelCovers
-@onready var selector:WheelSelector = %WheelSelector
+@onready var slices:OldWheelSlices = %WheelSlices
+@onready var segments:OldWheelSegments = %WheelSegments
+@onready var wheel_overlay:OldWheelOverlay = %WheelOverlay
+@onready var covers:WheelCoversOld = %WheelCovers
+@onready var selector:OldWheelSelector = %WheelSelector
 # detector components
 @onready var total_area_detector:Area2D = %TotalAreaDetector # area2d covering the whole wheel
 @onready var tad_collision_shape:CollisionShape2D = %TADCollision
@@ -589,4 +589,5 @@ func _rotate_one_step(clockwise:bool):
 func snap_gimbal_to_valid_angle():
     if not (tween and tween.is_running()):
         if slices: slices.gimbal_rotation_deg = slice_position * (360 / max(1, get_num_segments()))
+
 #endregion

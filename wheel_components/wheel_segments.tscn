@@ -1,0 +1,12 @@
+[gd_scene load_steps=2 format=3 uid="uid://c6ugv7pcb6thk"]
+
+[ext_resource type="Script" path="res://wheel_components/wheel_segments.gd" id="1_5w5nw"]
+
+[node name="WheelSegments" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_5w5nw")

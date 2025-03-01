@@ -1,5 +1,5 @@
 @tool
-class_name WheelSelector
+class_name OldWheelSelector
 extends Control
 
 #region Export Vars
