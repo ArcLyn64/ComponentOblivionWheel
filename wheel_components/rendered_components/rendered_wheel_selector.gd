@@ -1,5 +1,5 @@
 @tool
-class_name WheelSelector
+class_name RenderedWheelSelector
 extends Control
 
 ######################
@@ -37,8 +37,9 @@ extends Control
 
 func _ready() -> void:
     assert(selector_line != null, 'selector must have a display line!')
+    update()
 
-func update_selector():
+func update():
     # calculate how much arc length to remove to fit the selector inside the borders
     var selector_radius:float = radius - (thickness / 2)
     var arc_length = edge_offset + thickness

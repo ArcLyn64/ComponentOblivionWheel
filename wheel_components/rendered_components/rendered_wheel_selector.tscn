@@ -1,0 +1,15 @@
+[gd_scene load_steps=2 format=3 uid="uid://cj7fmdg6stbuy"]
+
+[ext_resource type="Script" path="res://wheel_components/rendered_components/rendered_wheel_selector.gd" id="1_fp0hu"]
+
+[node name="WheelSelector" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_fp0hu")
+
+[node name="RenderedSelector" type="Line2D" parent="."]
+unique_name_in_owner = true
+closed = true
+joint_mode = 2

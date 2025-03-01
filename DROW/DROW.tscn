@@ -1,13 +1,13 @@
 [gd_scene load_steps=27 format=3 uid="uid://ccy07coqyd1kq"]
 
-[ext_resource type="Script" path="res://DROW.gd" id="1_dtc7r"]
-[ext_resource type="Script" path="res://wheel-components/wheel_slice_data.gd" id="2_g4dfi"]
-[ext_resource type="Script" path="res://wheel-components/wheel_segment_data.gd" id="3_n6fcq"]
-[ext_resource type="PackedScene" uid="uid://dpo0p7b7k2j4u" path="res://wheel-components/wheel_slices.tscn" id="4_t0won"]
-[ext_resource type="PackedScene" uid="uid://0w1kt42h04h0" path="res://wheel-components/wheel_segments.tscn" id="5_my22j"]
-[ext_resource type="PackedScene" uid="uid://bb7j65g16mygs" path="res://wheel-components/wheel_overlay.tscn" id="6_uwjbl"]
-[ext_resource type="PackedScene" uid="uid://didjvd0ru3rll" path="res://wheel-components/wheel_covers.tscn" id="7_ub8hg"]
-[ext_resource type="PackedScene" uid="uid://dl4dju1wnaqjg" path="res://wheel-components/wheel_selector.tscn" id="8_lcgus"]
+[ext_resource type="Script" path="res://DROW/DROW.gd" id="1_dtc7r"]
+[ext_resource type="Script" path="res://DROW/wheel-components/wheel_slice_data.gd" id="2_g4dfi"]
+[ext_resource type="Script" path="res://DROW/wheel-components/wheel_segment_data.gd" id="3_n6fcq"]
+[ext_resource type="PackedScene" uid="uid://dpo0p7b7k2j4u" path="res://DROW/wheel-components/wheel_slices.tscn" id="4_t0won"]
+[ext_resource type="PackedScene" uid="uid://0w1kt42h04h0" path="res://DROW/wheel-components/wheel_segments.tscn" id="5_my22j"]
+[ext_resource type="PackedScene" uid="uid://bb7j65g16mygs" path="res://DROW/wheel-components/wheel_overlay.tscn" id="6_uwjbl"]
+[ext_resource type="PackedScene" uid="uid://didjvd0ru3rll" path="res://DROW/wheel-components/wheel_covers.tscn" id="7_ub8hg"]
+[ext_resource type="PackedScene" uid="uid://dl4dju1wnaqjg" path="res://DROW/wheel-components/wheel_selector.tscn" id="8_lcgus"]
 
 [sub_resource type="Gradient" id="Gradient_v8edh"]
 interpolation_mode = 1

@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://c6ugv7pcb6thk"]
+[gd_scene load_steps=3 format=3 uid="uid://c6ugv7pcb6thk"]
 
 [ext_resource type="Script" path="res://wheel_components/wheel_segments.gd" id="1_5w5nw"]
+[ext_resource type="PackedScene" uid="uid://ct4gcxotee5or" path="res://wheel_components/rendered_components/rendered_wheel_segment.tscn" id="2_04ms5"]
 
 [node name="WheelSegments" type="Control"]
 layout_mode = 3
@@ -10,3 +11,4 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_5w5nw")
+segment_scene = ExtResource("2_04ms5")

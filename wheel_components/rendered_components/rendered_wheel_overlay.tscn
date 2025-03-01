@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://dojfjcyb0uco0"]
 
-[ext_resource type="Script" path="res://wheel_components/rendered_wheel_overlay.gd" id="1_xee4o"]
+[ext_resource type="Script" path="res://wheel_components/rendered_components/rendered_wheel_overlay.gd" id="1_xee4o"]
 
 [node name="RenderedWheelOverlay" type="Control"]
 layout_mode = 3
@@ -10,3 +10,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_xee4o")
+
+[node name="OuterBorder" type="Line2D" parent="."]
+unique_name_in_owner = true
+joint_mode = 2

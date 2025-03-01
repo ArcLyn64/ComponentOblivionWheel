@@ -41,7 +41,9 @@ signal rotation_finished()
 @export_group('Properties')
 ## Number of slices to show
 @export var num_slices:int = 4 :
-    set(v): num_slices = max(0, v)
+    set(v):
+        num_slices = max(0, v)
+        _match_desired_slice_number()
 ## rotation position
 @export var position_index:int = 0 :
     set(v): position_index = WheelUtil.wrap_index(0, num_slices)
@@ -91,6 +93,7 @@ func _ready() -> void:
     assert(slice_scene != null, 'slices must have a designated slice scene!')
     assert(len(colors) > 0, 'must have at least one valid color for slices!')
     assert(len(values) > 0, 'must have at least one valid value for slices!')
+    update()
 
 ## Adjust number of slice children to match the desired number
 ## only adds or removes from the end of the list
@@ -115,10 +118,11 @@ func update_slice_data(index:int):
     var slice = _slice_children[index]
     if 'maximum_radius' in slice: slice.maximum_radius = maximum_radius
     if 'fidelity' in slice: slice.fidelity = fidelity
+    if 'arc_angle_deg' in slice: slice.arc_angle_deg = WheelUtil.arc_angle_deg(num_slices)
     if 'value' in slice: slice.value = values[WheelUtil.wrap_index(index, len(values))]
+    if 'max_value' in slice: slice.max_value = max_value
     if 'color' in slice: slice.color = colors[WheelUtil.wrap_index(index, len(colors))]
     if 'texture' in slice: slice.texture = null if len(textures) == 0 else textures[WheelUtil.wrap_index(index, len(textures))]
-    if 'max_value' in slice: slice.max_value = max_value
     if 'rotation_degrees' in slice: slice.rotation_degrees = index * WheelUtil.arc_angle_deg(num_slices)
     if 'update' in slice and slice.update is Callable: slice.update()
 
@@ -126,8 +130,9 @@ func update_slice_data(index:int):
 func update_selected_slice(selected_index = 0):
     update_slice_data(WheelUtil.wrap_index(selected_index - position_index, num_slices))
 
-## alias for for_all_slices(update_slice_data)
-func update_all_slices(): for_all_slices(update_slice_data)
+func update():
+    _match_desired_slice_number()
+    for_all_slices(update_slice_data)
 #endregion
         
 ####################

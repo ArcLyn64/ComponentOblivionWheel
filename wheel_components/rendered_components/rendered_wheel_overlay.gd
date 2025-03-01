@@ -8,7 +8,9 @@ extends Control
 ## Number of segments to show.
 @export_group('Properties')
 @export var num_borders:int = 4 :
-    set(v): num_borders = max(0, v)
+    set(v):
+        num_borders = max(0, v)
+        _match_desired_border_number()
 
 @export_group('Size')
 ## Size of the wheel.
@@ -48,6 +50,7 @@ var _inner_borders:Array[Line2D] = []
 func _ready() -> void:
     assert(len(inner_border_colors) > 0, 'must have at least one valid color for inner borders!')
     assert(outer_border != null, "can't find outer border!")
+    update()
 
 ## Batch call a function with id func(index:int) for all segments
 func for_all_inner_borders(f_to_call:Callable):
@@ -82,4 +85,10 @@ func update_outer_border():
     outer_border.default_color = outer_border_color
     outer_border.texture = outer_border_texture
     outer_border.width = outer_border_thickness
+
+func update():
+    _match_desired_border_number()
+    for_all_inner_borders(update_inner_border)
+    update_outer_border()
+
 # endregion

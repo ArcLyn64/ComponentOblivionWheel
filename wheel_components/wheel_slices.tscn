@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://dmbc7yk7y8mbi"]
+[gd_scene load_steps=3 format=3 uid="uid://dmbc7yk7y8mbi"]
 
 [ext_resource type="Script" path="res://wheel_components/wheel_slices.gd" id="1_1aag5"]
+[ext_resource type="PackedScene" uid="uid://dvt513jl5i630" path="res://wheel_components/rendered_components/rendered_wheel_slice.tscn" id="2_02c10"]
 
 [node name="WheelSlices" type="Control"]
 layout_mode = 3
@@ -11,6 +12,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 1
 script = ExtResource("1_1aag5")
+slice_scene = ExtResource("2_02c10")
 
 [node name="SliceGimbal" type="Control" parent="."]
 unique_name_in_owner = true
