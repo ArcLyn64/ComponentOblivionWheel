@@ -7,9 +7,12 @@ layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
+mouse_filter = 1
 script = ExtResource("1_fp0hu")
 
 [node name="RenderedSelector" type="Line2D" parent="."]
 unique_name_in_owner = true
+points = PackedVector2Array(7.07107, 0, 72.3863, -65.3183, 77.2127, -59.5353, 81.5783, -53.3969, 85.457, -46.9398, 88.8257, -40.2026, 91.6642, -33.2254, 93.9556, -26.0499, 95.6862, -18.7189, 96.8457, -11.2762, 97.4272, -3.76624, 97.4272, 3.76624, 96.8457, 11.2762, 95.6862, 18.7189, 93.9556, 26.0499, 91.6642, 33.2254, 88.8257, 40.2026, 85.457, 46.9398, 81.5783, 53.3969, 77.2127, 59.5352, 72.3862, 65.3183)
 closed = true
+default_color = Color(0, 0.74902, 1, 1)
 joint_mode = 2

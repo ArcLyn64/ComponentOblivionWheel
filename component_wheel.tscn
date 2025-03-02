@@ -1,8 +1,9 @@
-[gd_scene load_steps=9 format=3 uid="uid://c3jlb4w5qfd00"]
+[gd_scene load_steps=11 format=3 uid="uid://c3jlb4w5qfd00"]
 
 [ext_resource type="Script" path="res://component_wheel.gd" id="1_eoucy"]
 [ext_resource type="PackedScene" uid="uid://dmbc7yk7y8mbi" path="res://wheel_components/wheel_slices.tscn" id="2_qm7n0"]
 [ext_resource type="Script" path="res://wheel_logic/wheel_input/mouse_wheel_input.gd" id="2_tvpjw"]
+[ext_resource type="Script" path="res://wheel_logic/puzzle_handler/classic_wheel_puzzle.gd" id="3_04y7b"]
 [ext_resource type="PackedScene" uid="uid://c6ugv7pcb6thk" path="res://wheel_components/wheel_segments.tscn" id="3_ugvgi"]
 [ext_resource type="PackedScene" uid="uid://dojfjcyb0uco0" path="res://wheel_components/rendered_components/rendered_wheel_overlay.tscn" id="4_m6vas"]
 [ext_resource type="PackedScene" uid="uid://cvj5oy3towclp" path="res://wheel_components/wheel_covers.tscn" id="5_j8ch4"]
@@ -11,7 +12,11 @@
 [sub_resource type="Resource" id="Resource_16xxg"]
 script = ExtResource("2_tvpjw")
 click_action = ""
+disable_selection_during_animation = false
 input_enabled = true
+
+[sub_resource type="Resource" id="Resource_ixwgg"]
+script = ExtResource("3_04y7b")
 
 [node name="ComponentWheel" type="CenterContainer" node_paths=PackedStringArray("slices", "segments", "overlay", "covers", "selector")]
 custom_minimum_size = Vector2(210, 210)
@@ -24,6 +29,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_eoucy")
 input_handler = SubResource("Resource_16xxg")
+puzzle_handler = SubResource("Resource_ixwgg")
 slices = NodePath("WheelSlices")
 segments = NodePath("WheelSegments")
 overlay = NodePath("RenderedWheelOverlay")
@@ -43,8 +49,10 @@ layout_mode = 2
 
 [node name="WheelCovers" parent="." instance=ExtResource("5_j8ch4")]
 layout_mode = 2
+colors = Array[Color]([Color(0.239216, 0.239216, 0.239216, 0.678431)])
 
 [node name="WheelSelector" parent="." instance=ExtResource("6_7v8b8")]
+visible = false
 layout_mode = 2
 color = Color(0, 0.74902, 1, 0.52549)
 radius = 95.0
@@ -60,33 +68,33 @@ thickness = 10.0
 [connection signal="body_shape_exited" from="WheelSegments/WheelSegment" to="WheelSegments/WheelSegment/WheelPolygon" method="_bubble_body_shape_exited"]
 [connection signal="mouse_entered" from="WheelSegments/WheelSegment" to="WheelSegments/WheelSegment/WheelPolygon" method="_bubble_mouse_entered"]
 [connection signal="mouse_exited" from="WheelSegments/WheelSegment" to="WheelSegments/WheelSegment/WheelPolygon" method="_bubble_mouse_exited"]
-[connection signal="area_entered" from="WheelSegments/@Area2D@26374" to="WheelSegments/@Area2D@26374/WheelPolygon" method="_bubble_area_entered"]
-[connection signal="area_exited" from="WheelSegments/@Area2D@26374" to="WheelSegments/@Area2D@26374/WheelPolygon" method="_bubble_area_exited"]
-[connection signal="area_shape_entered" from="WheelSegments/@Area2D@26374" to="WheelSegments/@Area2D@26374/WheelPolygon" method="_bubble_area_shape_entered"]
-[connection signal="area_shape_exited" from="WheelSegments/@Area2D@26374" to="WheelSegments/@Area2D@26374/WheelPolygon" method="_bubble_area_shape_exited"]
-[connection signal="body_entered" from="WheelSegments/@Area2D@26374" to="WheelSegments/@Area2D@26374/WheelPolygon" method="_bubble_body_entered"]
-[connection signal="body_exited" from="WheelSegments/@Area2D@26374" to="WheelSegments/@Area2D@26374/WheelPolygon" method="_bubble_body_exited"]
-[connection signal="body_shape_entered" from="WheelSegments/@Area2D@26374" to="WheelSegments/@Area2D@26374/WheelPolygon" method="_bubble_body_shape_entered"]
-[connection signal="body_shape_exited" from="WheelSegments/@Area2D@26374" to="WheelSegments/@Area2D@26374/WheelPolygon" method="_bubble_body_shape_exited"]
-[connection signal="mouse_entered" from="WheelSegments/@Area2D@26374" to="WheelSegments/@Area2D@26374/WheelPolygon" method="_bubble_mouse_entered"]
-[connection signal="mouse_exited" from="WheelSegments/@Area2D@26374" to="WheelSegments/@Area2D@26374/WheelPolygon" method="_bubble_mouse_exited"]
-[connection signal="area_entered" from="WheelSegments/@Area2D@26375" to="WheelSegments/@Area2D@26375/WheelPolygon" method="_bubble_area_entered"]
-[connection signal="area_exited" from="WheelSegments/@Area2D@26375" to="WheelSegments/@Area2D@26375/WheelPolygon" method="_bubble_area_exited"]
-[connection signal="area_shape_entered" from="WheelSegments/@Area2D@26375" to="WheelSegments/@Area2D@26375/WheelPolygon" method="_bubble_area_shape_entered"]
-[connection signal="area_shape_exited" from="WheelSegments/@Area2D@26375" to="WheelSegments/@Area2D@26375/WheelPolygon" method="_bubble_area_shape_exited"]
-[connection signal="body_entered" from="WheelSegments/@Area2D@26375" to="WheelSegments/@Area2D@26375/WheelPolygon" method="_bubble_body_entered"]
-[connection signal="body_exited" from="WheelSegments/@Area2D@26375" to="WheelSegments/@Area2D@26375/WheelPolygon" method="_bubble_body_exited"]
-[connection signal="body_shape_entered" from="WheelSegments/@Area2D@26375" to="WheelSegments/@Area2D@26375/WheelPolygon" method="_bubble_body_shape_entered"]
-[connection signal="body_shape_exited" from="WheelSegments/@Area2D@26375" to="WheelSegments/@Area2D@26375/WheelPolygon" method="_bubble_body_shape_exited"]
-[connection signal="mouse_entered" from="WheelSegments/@Area2D@26375" to="WheelSegments/@Area2D@26375/WheelPolygon" method="_bubble_mouse_entered"]
-[connection signal="mouse_exited" from="WheelSegments/@Area2D@26375" to="WheelSegments/@Area2D@26375/WheelPolygon" method="_bubble_mouse_exited"]
-[connection signal="area_entered" from="WheelSegments/@Area2D@26376" to="WheelSegments/@Area2D@26376/WheelPolygon" method="_bubble_area_entered"]
-[connection signal="area_exited" from="WheelSegments/@Area2D@26376" to="WheelSegments/@Area2D@26376/WheelPolygon" method="_bubble_area_exited"]
-[connection signal="area_shape_entered" from="WheelSegments/@Area2D@26376" to="WheelSegments/@Area2D@26376/WheelPolygon" method="_bubble_area_shape_entered"]
-[connection signal="area_shape_exited" from="WheelSegments/@Area2D@26376" to="WheelSegments/@Area2D@26376/WheelPolygon" method="_bubble_area_shape_exited"]
-[connection signal="body_entered" from="WheelSegments/@Area2D@26376" to="WheelSegments/@Area2D@26376/WheelPolygon" method="_bubble_body_entered"]
-[connection signal="body_exited" from="WheelSegments/@Area2D@26376" to="WheelSegments/@Area2D@26376/WheelPolygon" method="_bubble_body_exited"]
-[connection signal="body_shape_entered" from="WheelSegments/@Area2D@26376" to="WheelSegments/@Area2D@26376/WheelPolygon" method="_bubble_body_shape_entered"]
-[connection signal="body_shape_exited" from="WheelSegments/@Area2D@26376" to="WheelSegments/@Area2D@26376/WheelPolygon" method="_bubble_body_shape_exited"]
-[connection signal="mouse_entered" from="WheelSegments/@Area2D@26376" to="WheelSegments/@Area2D@26376/WheelPolygon" method="_bubble_mouse_entered"]
-[connection signal="mouse_exited" from="WheelSegments/@Area2D@26376" to="WheelSegments/@Area2D@26376/WheelPolygon" method="_bubble_mouse_exited"]
+[connection signal="area_entered" from="WheelSegments/@Area2D@35675" to="WheelSegments/@Area2D@35675/WheelPolygon" method="_bubble_area_entered"]
+[connection signal="area_exited" from="WheelSegments/@Area2D@35675" to="WheelSegments/@Area2D@35675/WheelPolygon" method="_bubble_area_exited"]
+[connection signal="area_shape_entered" from="WheelSegments/@Area2D@35675" to="WheelSegments/@Area2D@35675/WheelPolygon" method="_bubble_area_shape_entered"]
+[connection signal="area_shape_exited" from="WheelSegments/@Area2D@35675" to="WheelSegments/@Area2D@35675/WheelPolygon" method="_bubble_area_shape_exited"]
+[connection signal="body_entered" from="WheelSegments/@Area2D@35675" to="WheelSegments/@Area2D@35675/WheelPolygon" method="_bubble_body_entered"]
+[connection signal="body_exited" from="WheelSegments/@Area2D@35675" to="WheelSegments/@Area2D@35675/WheelPolygon" method="_bubble_body_exited"]
+[connection signal="body_shape_entered" from="WheelSegments/@Area2D@35675" to="WheelSegments/@Area2D@35675/WheelPolygon" method="_bubble_body_shape_entered"]
+[connection signal="body_shape_exited" from="WheelSegments/@Area2D@35675" to="WheelSegments/@Area2D@35675/WheelPolygon" method="_bubble_body_shape_exited"]
+[connection signal="mouse_entered" from="WheelSegments/@Area2D@35675" to="WheelSegments/@Area2D@35675/WheelPolygon" method="_bubble_mouse_entered"]
+[connection signal="mouse_exited" from="WheelSegments/@Area2D@35675" to="WheelSegments/@Area2D@35675/WheelPolygon" method="_bubble_mouse_exited"]
+[connection signal="area_entered" from="WheelSegments/@Area2D@35676" to="WheelSegments/@Area2D@35676/WheelPolygon" method="_bubble_area_entered"]
+[connection signal="area_exited" from="WheelSegments/@Area2D@35676" to="WheelSegments/@Area2D@35676/WheelPolygon" method="_bubble_area_exited"]
+[connection signal="area_shape_entered" from="WheelSegments/@Area2D@35676" to="WheelSegments/@Area2D@35676/WheelPolygon" method="_bubble_area_shape_entered"]
+[connection signal="area_shape_exited" from="WheelSegments/@Area2D@35676" to="WheelSegments/@Area2D@35676/WheelPolygon" method="_bubble_area_shape_exited"]
+[connection signal="body_entered" from="WheelSegments/@Area2D@35676" to="WheelSegments/@Area2D@35676/WheelPolygon" method="_bubble_body_entered"]
+[connection signal="body_exited" from="WheelSegments/@Area2D@35676" to="WheelSegments/@Area2D@35676/WheelPolygon" method="_bubble_body_exited"]
+[connection signal="body_shape_entered" from="WheelSegments/@Area2D@35676" to="WheelSegments/@Area2D@35676/WheelPolygon" method="_bubble_body_shape_entered"]
+[connection signal="body_shape_exited" from="WheelSegments/@Area2D@35676" to="WheelSegments/@Area2D@35676/WheelPolygon" method="_bubble_body_shape_exited"]
+[connection signal="mouse_entered" from="WheelSegments/@Area2D@35676" to="WheelSegments/@Area2D@35676/WheelPolygon" method="_bubble_mouse_entered"]
+[connection signal="mouse_exited" from="WheelSegments/@Area2D@35676" to="WheelSegments/@Area2D@35676/WheelPolygon" method="_bubble_mouse_exited"]
+[connection signal="area_entered" from="WheelSegments/@Area2D@35677" to="WheelSegments/@Area2D@35677/WheelPolygon" method="_bubble_area_entered"]
+[connection signal="area_exited" from="WheelSegments/@Area2D@35677" to="WheelSegments/@Area2D@35677/WheelPolygon" method="_bubble_area_exited"]
+[connection signal="area_shape_entered" from="WheelSegments/@Area2D@35677" to="WheelSegments/@Area2D@35677/WheelPolygon" method="_bubble_area_shape_entered"]
+[connection signal="area_shape_exited" from="WheelSegments/@Area2D@35677" to="WheelSegments/@Area2D@35677/WheelPolygon" method="_bubble_area_shape_exited"]
+[connection signal="body_entered" from="WheelSegments/@Area2D@35677" to="WheelSegments/@Area2D@35677/WheelPolygon" method="_bubble_body_entered"]
+[connection signal="body_exited" from="WheelSegments/@Area2D@35677" to="WheelSegments/@Area2D@35677/WheelPolygon" method="_bubble_body_exited"]
+[connection signal="body_shape_entered" from="WheelSegments/@Area2D@35677" to="WheelSegments/@Area2D@35677/WheelPolygon" method="_bubble_body_shape_entered"]
+[connection signal="body_shape_exited" from="WheelSegments/@Area2D@35677" to="WheelSegments/@Area2D@35677/WheelPolygon" method="_bubble_body_shape_exited"]
+[connection signal="mouse_entered" from="WheelSegments/@Area2D@35677" to="WheelSegments/@Area2D@35677/WheelPolygon" method="_bubble_mouse_entered"]
+[connection signal="mouse_exited" from="WheelSegments/@Area2D@35677" to="WheelSegments/@Area2D@35677/WheelPolygon" method="_bubble_mouse_exited"]

@@ -13,7 +13,9 @@ extends Control
         update()
 ## Selected position.
 @export var selected_index:int = 0 :
-    set(v): selected_index = WheelUtil.wrap_index(0, num_positions)
+    set(v):
+        selected_index = WheelUtil.wrap_index(v, num_positions)
+        update_selector_position()
 ## Selector color.
 @export var color:Color = Color.DEEP_SKY_BLUE
 
@@ -57,10 +59,9 @@ func update():
     else:
         selector_line.points = [selector_offset] + WheelUtil.create_arc_points(selector_radius, fidelity, display_angle)
     
-    update_selector_position(selected_index)
+    update_selector_position()
 
-func update_selector_position(index:int):
-    selected_index = index
+func update_selector_position():
     selector_line.rotation_degrees = (selected_index * WheelUtil.arc_angle_deg(num_positions))
 
 #endregion

@@ -5,6 +5,7 @@ const COW_CLICK_ACTION = 'COW_wheel_click'
 
 ## if click_action remains empty, this resource will autocreate an action instead.
 @export var click_action:String = ''
+@export var disable_selection_during_animation:bool = false
 
 func attach_wheel(wheel_:ComponentWheel):
     super(wheel_)
@@ -17,8 +18,7 @@ func handle_input(_event: InputEvent):
     if not input_enabled: return
     
     if wheel.is_selector_active() and Input.is_action_just_pressed(click_action):
-        var selection_valid = wheel.confirm_selection()
-        if selection_valid and wheel.rotate_on_selection: wheel.rotate_right()
+        wheel.confirm_selection()
 
 func _add_default_click_action():
     InputMap.add_action(COW_CLICK_ACTION)
@@ -28,6 +28,7 @@ func _add_default_click_action():
 
 func _mouse_entered_segment(index:int):
     if not input_enabled: return
+    if disable_selection_during_animation and wheel.is_rotating(): return 
     wheel.select_index(index)
 
 func _mouse_exited_wheel():

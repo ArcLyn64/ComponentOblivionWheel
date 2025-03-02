@@ -4,6 +4,7 @@ extends Control
 
 signal new_segment_selected()
 signal new_segment_chosen(selection_data:WheelSelectionData)
+@warning_ignore('unused_signal')
 signal puzzle_finished() # emit this from puzzle_handler
 # rotation started/ended are found under the slices component
 
@@ -17,10 +18,8 @@ signal puzzle_finished() # emit this from puzzle_handler
         update_all_components()
 
 @export_group('Logic')
-@export var disable_selection_during_animation:bool = false
-@export var disable_selected_segments:bool = true
 @export var input_handler:WheelInput
-# @export var puzzle_handler:WheelPuzzle
+@export var puzzle_handler:WheelPuzzle
 
 @export_group('Component Sync')
 @export var radius:float = 100 :
@@ -49,7 +48,9 @@ func _ready() -> void:
     assert(input_handler, 'wheel needs an input handler!')
     assert('selected_index' in selector and selector.selected_index is int, 'selector is not keeping track of selections!')
     assert('num_positions' in selector and selector.num_positions is int, 'selector is not keeping track of the number of possible selections!')
+    assert(puzzle_handler, 'wheel needs a puzzle handler!')
     input_handler.attach_wheel(self)
+    puzzle_handler.attach_wheel(self)
     update_all_components()
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -118,17 +119,17 @@ func is_no_selectable_segments() -> bool: return num_remaining_selectable_segmen
 
 ## returns true if the selection successfully went through, false otherwise.
 func confirm_selection() -> bool:
-    if disable_selection_during_animation and is_rotating(): return false
     if not is_selector_active() or not is_selected_index_selectable(): return false
     var selection_data = get_selection_data()
     if not selection_data: return false
-    if disable_selected_segments: covers.disable_cover(get_selected_index())
     new_segment_chosen.emit(selection_data)
     return true
 
 func enable_all_segments(): covers.disable_all_covers()
 
 func disable_all_segments(): covers.enable_all_covers()
+
+func disable_selected_segment(): covers.enable_cover(get_selected_index())
 
 func enable_selector(): selector.show()
 
