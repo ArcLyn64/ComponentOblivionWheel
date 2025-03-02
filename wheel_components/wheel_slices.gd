@@ -111,7 +111,16 @@ func _match_desired_slice_number():
 func for_all_slices(f_to_call:Callable):
     for i in num_slices:
         f_to_call.call(i)
-        
+
+## shuffles the values of the slices
+## if you're underfilling the values array, you'll end up seeing a pattern due to 
+## the duplicated elements, e.g. 3 1 2 3 1 2 instead of all 6 values randomized
+## if you want fully randomized behavior, you should probably input all values manually instead of undersizing.
+func shuffle_multipliers():
+    values.shuffle()
+    for_all_slices(update_slice_data)
+
+
 ## updates data for the selected slice and call its update function, if it has one.
 func update_slice_data(index:int):
     index = WheelUtil.wrap_index(index, num_slices)
@@ -127,11 +136,26 @@ func update_slice_data(index:int):
     if 'update' in slice and slice.update is Callable: slice.update()
 
 # figures out which slice matches with the selected index, then update that slice.
-func update_selected_slice(selected_index = 0):
-    update_slice_data(WheelUtil.wrap_index(selected_index - position_index, num_slices))
+func update_slice_at(selected_index = 0):
+    update_slice_data(get_slice_index_for_segment_index(selected_index))
+
+func get_slice_index_for_segment_index(index:int) -> int:
+    index = WheelUtil.wrap_index(index, num_slices)
+    return WheelUtil.wrap_index(index - position_index, num_slices)
+
+func get_multiplier_at(index:int) -> int:
+    return values[WheelUtil.wrap_index(get_slice_index_for_segment_index(index), len(values))]
+
+func set_multiplier_at(index:int, value:int):
+    index = get_slice_index_for_segment_index(index)
+    # we have to expand the values array to fill the wheel to prevent changes to other values
+    # we could probably be more efficient than doubling the array but this is quick and easy to write and read
+    while len(values) < num_slices:
+        values.append_array(values)
+    values[index] = value
+    update_slice_data(index)
 
 func update():
-    print_debug('update called')
     _match_desired_slice_number()
     for_all_slices(update_slice_data)
 #endregion
@@ -139,6 +163,10 @@ func update():
 ####################
 # region Animation
 ####################
+
+func is_rotating() -> bool:
+    return tween and tween.is_running()
+
 ## Rotates the wheel one step counter-clockwise
 func rotate_left():
     _rotate_one_step(false)
@@ -150,7 +178,7 @@ func rotate_right():
 func _rotate_one_step(clockwise:bool):
     if not slice_gimbal: return
     # end any animations in progress
-    if tween and tween.is_running():
+    if is_rotating():
         tween.custom_step(animation_time) # end the ongoing tween immediately
 
     # determine how we're moving
@@ -172,9 +200,9 @@ func _rotate_one_step(clockwise:bool):
     
     #announce we're done
     rotation_finished.emit()
-    
+
 ## if we're not animating, snaps slice rotation to a valid wheel location
 func snap_gimbal_to_valid_angle():
-    if not (tween and tween.is_running()):
+    if not is_rotating():
         if slice_gimbal: slice_gimbal.rotation_degrees = position_index * WheelUtil.arc_angle_deg(num_slices)
 #endregion

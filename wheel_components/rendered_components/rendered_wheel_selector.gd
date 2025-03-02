@@ -8,7 +8,9 @@ extends Control
 @export_group('Properties')
 ## Number of positions the selector can be in.
 @export var num_positions:int = 4 :
-    set(v): num_positions = max(1, v)
+    set(v):
+        num_positions = max(1, v)
+        update()
 ## Selected position.
 @export var selected_index:int = 0 :
     set(v): selected_index = WheelUtil.wrap_index(0, num_positions)
@@ -40,6 +42,7 @@ func _ready() -> void:
     update()
 
 func update():
+    selector_line.default_color = color
     # calculate how much arc length to remove to fit the selector inside the borders
     var selector_radius:float = radius - (thickness / 2)
     var arc_length = edge_offset + thickness

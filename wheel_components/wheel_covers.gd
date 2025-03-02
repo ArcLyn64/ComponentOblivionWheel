@@ -74,6 +74,33 @@ func update_cover_data(index:int):
     if 'update' in cover and cover.update is Callable: cover.update()
     if len(show_cover) <= index or not show_cover[index]: cover.hide()
 
+func enable_cover(index:int):
+    index = WheelUtil.wrap_index(index, num_covers)
+    if index >= len(show_cover):
+        WheelUtil.match_desired_value(show_cover, index + 1, func(): show_cover.append(false))
+    show_cover[index] = true
+    _cover_children[index].show()
+
+func disable_cover(index:int):
+    index = WheelUtil.wrap_index(index, num_covers)
+    # if index is >= len(show_cover), that cover is already disabled.
+    if index < len(show_cover):
+        show_cover[index] = false
+    _cover_children[index].hide()
+
+func disable_all_covers():
+    show_cover = []
+    for_all_covers(func(i): disable_cover(i))
+
+func enable_all_covers():
+    for_all_covers(func(i): enable_cover(i))
+
+func is_index_selectable(index:int) -> bool:
+    index = WheelUtil.wrap_index(index, num_covers)
+    if index < len(show_cover):
+        return not show_cover[index]
+    return true
+
 ## alias for for_all_covers(update_cover_data)
 func update():
     _match_desired_cover_number()

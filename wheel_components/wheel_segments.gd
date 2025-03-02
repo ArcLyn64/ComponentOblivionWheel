@@ -29,7 +29,7 @@ extends Control
 
 @export_group('Size')
 ## Radius of the wheel
-@export var radius:int = 100 :
+@export var radius:float = 100 :
     set(v): radius = max(0, v)
 ## How many points used to render the curved arc for each segment.
 @export var polygon_fidelity:int = 20 :
@@ -76,6 +76,26 @@ func for_all_segments(f_to_call:Callable):
     for i in num_segments:
         f_to_call.call(i)
         
+func get_value_at(index:int) -> int:
+    return values[WheelUtil.wrap_index(index, len(values))]
+
+func set_value_at(index:int, value:int):
+    index = WheelUtil.wrap_index(index, num_segments)
+    # we have to expand the values array to fill the wheel to prevent changes to other values
+    # we could probably be more efficient than doubling the array but this is quick and easy to write and read
+    while len(values) < num_segments:
+        values.append_array(values)
+    values[index] = value
+    update_segment_data(index)
+
+## shuffles the values of the segments
+## if you're underfilling the values array, you'll end up seeing a pattern due to 
+## the duplicated elements, e.g. 3 1 2 3 1 2 instead of all 6 values randomized
+## if you want fully randomized behavior, you should probably input all values manually instead of undersizing.
+func shuffle_values():
+    values.shuffle()
+    for_all_segments(update_segment_data)
+
 func update_segment_data(index:int):
     index = WheelUtil.wrap_index(index, num_segments)
     var segment = _segment_children[index]

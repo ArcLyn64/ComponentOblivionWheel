@@ -41,7 +41,7 @@ func _ready() -> void:
 func update():
     color = color # triggers setter to update polygon
     texture = texture # triggers setter to update polygon
-    var radius = maximum_radius * clampf(float(value) / float(max_value), 0, 1)
+    var radius = maximum_radius * clampf(float(max(value, 0)) / float(max(1, max_value)), 0, 1)
     polygon.set_polygon(
         CENTER_POINT + WheelUtil.create_arc_points(radius, fidelity, arc_angle_deg)        
     )
