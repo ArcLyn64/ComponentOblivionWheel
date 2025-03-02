@@ -51,6 +51,8 @@ extends Control
 ########################
 # region Core Function
 ########################
+@onready var segment_area:Area2D = %SegmentArea
+@onready var segment_area_hitbox:CollisionShape2D = %SegmentAreaHitbox
 var _segment_children:Array = [] # keeps track of child order
 
 func _ready() -> void:
@@ -88,6 +90,17 @@ func set_value_at(index:int, value:int):
     values[index] = value
     update_segment_data(index)
 
+## Checks if signame exists for segment at_index, then attaches to_function to it, binding at_index.
+## to_function should have id func(signal_original_args) (e.g. bind_to_body_entered(body:Node2D))
+## returns true if successful
+func bind_signal(signame:String, at_index:int, to_function:Callable) -> bool:
+    at_index = WheelUtil.wrap_index(at_index, num_segments)
+    var segment = _segment_children[at_index]
+    if not segment.has_signal(signame): return false # signal does not exist for segment
+    if segment.is_connected(signame, to_function.bind(at_index)): return false # signal already bound
+    var error = segment.connect(signame, to_function)
+    return not error
+
 ## shuffles the values of the segments
 ## if you're underfilling the values array, you'll end up seeing a pattern due to 
 ## the duplicated elements, e.g. 3 1 2 3 1 2 instead of all 6 values randomized
@@ -116,5 +129,6 @@ func update_segment_data(index:int):
 func update():
     _match_desired_segment_number()
     for_all_segments(update_segment_data)
+    segment_area_hitbox.shape.radius = radius
 #endregion
  

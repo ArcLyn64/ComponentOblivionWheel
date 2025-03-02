@@ -418,6 +418,7 @@ func _bind_segment_area_detection():
         var segment = segments.segments[i]
         if not segment.mouse_entered.is_connected(_mouse_entered_segment.bind(i)):
             segment.mouse_entered.connect(_mouse_entered_segment.bind(i))
+
         if not segment.body_entered.is_connected(_when_node_enters_segment.bind(i)):
             segment.body_entered.connect(_when_node_enters_segment.bind(i))
         if not segment.body_exited.is_connected(_when_node_exits_segment.bind(i)):

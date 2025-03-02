@@ -4,7 +4,7 @@ extends Control
 
 signal new_segment_selected()
 signal new_segment_chosen(selection_data:WheelSelectionData)
-signal puzzle_finished()
+signal puzzle_finished() # emit this from puzzle_handler
 # rotation started/ended are found under the slices component
 
 ######################
@@ -19,7 +19,7 @@ signal puzzle_finished()
 @export_group('Logic')
 @export var disable_selection_during_animation:bool = false
 @export var disable_selected_segments:bool = true
-# @export var input_handler:WheelInput
+@export var input_handler:WheelInput
 # @export var puzzle_handler:WheelPuzzle
 
 @export_group('Component Sync')
@@ -37,7 +37,7 @@ signal puzzle_finished()
 @export var segments:WheelSegments
 @export var overlay:Control
 @export var covers:WheelCovers
-@export var selector:Control # should have a selected_index:int property
+@export var selector:Control # should have a selected_index:int property and a num_positions:int property
 #endregion
 
 func _ready() -> void:
@@ -46,8 +46,14 @@ func _ready() -> void:
     assert(overlay, 'wheel is missing an overlay!')
     assert(covers, 'wheel is missing covers!')
     assert(selector, 'wheel is missing a selector!')
+    assert(input_handler, 'wheel needs an input handler!')
     assert('selected_index' in selector and selector.selected_index is int, 'selector is not keeping track of selections!')
+    assert('num_positions' in selector and selector.num_positions is int, 'selector is not keeping track of the number of possible selections!')
+    input_handler.attach_wheel(self)
     update_all_components()
+
+func _unhandled_input(event: InputEvent) -> void:
+    if input_handler: input_handler.handle_input(event)
 
 #####################
 # region Value Sync
@@ -123,6 +129,18 @@ func confirm_selection() -> bool:
 func enable_all_segments(): covers.disable_all_covers()
 
 func disable_all_segments(): covers.enable_all_covers()
+
+func enable_selector(): selector.show()
+
+func disable_selector(): selector.hide()
+
+func select_index(index:int):
+    index = WheelUtil.wrap_index(index, selector.num_positions)
+    var index_already_selected = is_selector_active() and selector.selected_index == index
+    if not index_already_selected:
+        enable_selector()
+        selector.selected_index = index
+        new_segment_selected.emit()
 
 func reset(shuffle_values_:bool = true, shuffle_multipliers_:bool = true):
     if shuffle_values_: segments.shuffle_values()
