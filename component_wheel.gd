@@ -56,6 +56,10 @@ func _ready() -> void:
 func _unhandled_input(event: InputEvent) -> void:
     if input_handler: input_handler.handle_input(event)
 
+func _process(delta: float) -> void:
+    if Engine.is_editor_hint(): return
+    if puzzle_handler: puzzle_handler.on_process(delta)
+
 #####################
 # region Value Sync
 #####################
@@ -75,9 +79,9 @@ func _sync_wheel_sections():
     if selector and 'num_positions' in selector: selector.num_positions = wheel_sections
 
 func update_all_components():
-        for e in [slices, segments, overlay, covers, selector]:
-            # print_debug(e and 'update' in e and e.update is Callable)
-            if e and 'update' in e and e.update is Callable: e.update()
+    for e in [slices, segments, overlay, covers, selector]:
+        # print_debug(e and 'update' in e and e.update is Callable)
+        if e and 'update' in e and e.update is Callable: e.update()
 # endregion
 
 ######################
@@ -89,6 +93,10 @@ func is_selected_index_selectable() -> bool: return covers.is_index_selectable(s
 func is_selector_active() -> bool: return selector.visible
 
 func get_selected_index() -> int: return selector.selected_index
+
+func get_selected_value() -> int: return segments.get_value_at(selector.selected_index)
+
+func get_selected_multiplier() -> int: return slices.get_multiplier_at(selector.selected_index)
 
 func is_rotating() -> bool: return slices.is_rotating()
 
@@ -143,10 +151,9 @@ func select_index(index:int):
         selector.selected_index = index
         new_segment_selected.emit()
 
-func reset(shuffle_values_:bool = true, shuffle_multipliers_:bool = true):
-    if shuffle_values_: segments.shuffle_values()
-    if shuffle_multipliers_: slices.shuffle_multipliers()
-    enable_all_segments()
+func reset():
+    puzzle_handler.reset()
+    update_all_components()
 
 ## Useful for when the multiplier value is being used for display purposes
 func zero_all_multipliers():

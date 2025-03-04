@@ -1,0 +1,213 @@
+[gd_scene load_steps=15 format=3 uid="uid://dpa3e0ccbb2b6"]
+
+[ext_resource type="Script" path="res://demo/subscenes/chase_the_wedge_demo.gd" id="1_0hmug"]
+[ext_resource type="PackedScene" uid="uid://c3jlb4w5qfd00" path="res://component_wheel.tscn" id="2_eysww"]
+[ext_resource type="Script" path="res://wheel_logic/puzzle_handler/chase_the_wedge_puzzle.gd" id="3_8bq2j"]
+
+[sub_resource type="Resource" id="Resource_xlo6i"]
+script = ExtResource("3_8bq2j")
+target = 20
+chance_to_rotate = 0.25
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_7cgt2"]
+blend_mode = 1
+
+[sub_resource type="Gradient" id="Gradient_tpi7f"]
+colors = PackedColorArray(0.532108, 0.870836, 0.362331, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_isosr"]
+gradient = SubResource("Gradient_tpi7f")
+width = 32
+height = 32
+fill_to = Vector2(1, 1)
+
+[sub_resource type="Gradient" id="Gradient_c2xld"]
+offsets = PackedFloat32Array(0, 0.167598)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_v7pml"]
+gradient = SubResource("Gradient_c2xld")
+width = 50
+height = 50
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_r2nw1"]
+gradient = SubResource("Gradient_tpi7f")
+width = 32
+height = 32
+fill_from = Vector2(1, 1)
+fill_to = Vector2(0, 0)
+
+[sub_resource type="Gradient" id="Gradient_2g2lx"]
+interpolation_mode = 1
+offsets = PackedFloat32Array(0, 0.167598)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_6g22r"]
+gradient = SubResource("Gradient_2g2lx")
+width = 50
+height = 50
+
+[sub_resource type="LabelSettings" id="LabelSettings_u3lwn"]
+font_size = 144
+font_color = Color(0.57, 1, 0.613, 1)
+shadow_size = 20
+shadow_color = Color(0, 0, 0, 1)
+shadow_offset = Vector2(10, 10)
+
+[sub_resource type="LabelSettings" id="LabelSettings_5r1bv"]
+font_size = 144
+font_color = Color(1, 0.57, 0.57, 1)
+shadow_size = 20
+shadow_color = Color(0, 0, 0, 1)
+shadow_offset = Vector2(10, 10)
+
+[node name="ChaseTheWedge" type="CenterContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_0hmug")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="ComponentWheel" parent="VBoxContainer" instance=ExtResource("2_eysww")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(410, 410)
+layout_mode = 2
+puzzle_handler = SubResource("Resource_xlo6i")
+radius = 200.0
+wheel_sections = 3
+
+[node name="WheelSlices" parent="VBoxContainer/ComponentWheel" index="0"]
+num_slices = 3
+colors = Array[Color]([Color(1, 1, 1, 1)])
+values = Array[int]([1, -1, -1])
+max_value = 1
+animation_time = 0.1
+maximum_radius = 200.0
+
+[node name="WheelSegments" parent="VBoxContainer/ComponentWheel" index="1"]
+num_segments = 3
+colors = Array[Color]([Color(1, 0, 1, 1), Color(0, 1, 1, 1), Color(1, 1, 0, 1)])
+values = Array[int]([1])
+radius = 200.0
+
+[node name="RenderedWheelOverlay" parent="VBoxContainer/ComponentWheel" index="2"]
+modulate = Color(0.219501, 0.219501, 0.219501, 1)
+num_borders = 3
+radius = 200.0
+
+[node name="WheelCovers" parent="VBoxContainer/ComponentWheel" index="3"]
+num_covers = 3
+radius = 200.0
+
+[node name="WheelSelector" parent="VBoxContainer/ComponentWheel" index="4"]
+visible = true
+material = SubResource("CanvasItemMaterial_7cgt2")
+num_positions = 3
+color = Color(1, 1, 1, 0.752941)
+radius = 195.0
+
+[node name="TimerContainer" type="HBoxContainer" parent="VBoxContainer"]
+custom_minimum_size = Vector2(550, 50)
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="TimerBar" type="TextureRect" parent="VBoxContainer/TimerContainer"]
+unique_name_in_owner = true
+self_modulate = Color(1, 0.39, 0.39, 1)
+custom_minimum_size = Vector2(500, 32)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+texture = SubResource("GradientTexture2D_isosr")
+expand_mode = 1
+
+[node name="TimerCap" type="TextureRect" parent="VBoxContainer/TimerContainer"]
+self_modulate = Color(1, 0.53, 0.53, 1)
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+texture = SubResource("GradientTexture2D_v7pml")
+
+[node name="ScoreContainer" type="HBoxContainer" parent="VBoxContainer"]
+custom_minimum_size = Vector2(550, 50)
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="ScoreBar" type="TextureRect" parent="VBoxContainer/ScoreContainer"]
+unique_name_in_owner = true
+self_modulate = Color(0.205138, 0.724113, 0.516817, 1)
+custom_minimum_size = Vector2(500, 32)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+texture = SubResource("GradientTexture2D_r2nw1")
+expand_mode = 1
+
+[node name="Spacer" type="ColorRect" parent="VBoxContainer/ScoreContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+color = Color(1, 1, 1, 0)
+
+[node name="ScoreCap" type="TextureRect" parent="VBoxContainer/ScoreContainer"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+texture = SubResource("GradientTexture2D_6g22r")
+
+[node name="WinLabel" type="Label" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+text = "CATLIKE
+REFLEXES"
+label_settings = SubResource("LabelSettings_u3lwn")
+horizontal_alignment = 1
+
+[node name="LoseLabel" type="Label" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+text = "GET JUKED"
+label_settings = SubResource("LabelSettings_5r1bv")
+horizontal_alignment = 1
+
+[connection signal="new_segment_chosen" from="VBoxContainer/ComponentWheel" to="." method="_process_mash"]
+[connection signal="puzzle_finished" from="VBoxContainer/ComponentWheel" to="." method="_win"]
+[connection signal="area_entered" from="VBoxContainer/ComponentWheel/WheelSegments/WheelSegment" to="VBoxContainer/ComponentWheel/WheelSegments/WheelSegment/WheelPolygon" method="_bubble_area_entered"]
+[connection signal="area_exited" from="VBoxContainer/ComponentWheel/WheelSegments/WheelSegment" to="VBoxContainer/ComponentWheel/WheelSegments/WheelSegment/WheelPolygon" method="_bubble_area_exited"]
+[connection signal="area_shape_entered" from="VBoxContainer/ComponentWheel/WheelSegments/WheelSegment" to="VBoxContainer/ComponentWheel/WheelSegments/WheelSegment/WheelPolygon" method="_bubble_area_shape_entered"]
+[connection signal="area_shape_exited" from="VBoxContainer/ComponentWheel/WheelSegments/WheelSegment" to="VBoxContainer/ComponentWheel/WheelSegments/WheelSegment/WheelPolygon" method="_bubble_area_shape_exited"]
+[connection signal="body_entered" from="VBoxContainer/ComponentWheel/WheelSegments/WheelSegment" to="VBoxContainer/ComponentWheel/WheelSegments/WheelSegment/WheelPolygon" method="_bubble_body_entered"]
+[connection signal="body_exited" from="VBoxContainer/ComponentWheel/WheelSegments/WheelSegment" to="VBoxContainer/ComponentWheel/WheelSegments/WheelSegment/WheelPolygon" method="_bubble_body_exited"]
+[connection signal="body_shape_entered" from="VBoxContainer/ComponentWheel/WheelSegments/WheelSegment" to="VBoxContainer/ComponentWheel/WheelSegments/WheelSegment/WheelPolygon" method="_bubble_body_shape_entered"]
+[connection signal="body_shape_exited" from="VBoxContainer/ComponentWheel/WheelSegments/WheelSegment" to="VBoxContainer/ComponentWheel/WheelSegments/WheelSegment/WheelPolygon" method="_bubble_body_shape_exited"]
+[connection signal="mouse_entered" from="VBoxContainer/ComponentWheel/WheelSegments/WheelSegment" to="VBoxContainer/ComponentWheel/WheelSegments/WheelSegment/WheelPolygon" method="_bubble_mouse_entered"]
+[connection signal="mouse_exited" from="VBoxContainer/ComponentWheel/WheelSegments/WheelSegment" to="VBoxContainer/ComponentWheel/WheelSegments/WheelSegment/WheelPolygon" method="_bubble_mouse_exited"]
+[connection signal="area_entered" from="VBoxContainer/ComponentWheel/WheelSegments/@Area2D@60932" to="VBoxContainer/ComponentWheel/WheelSegments/@Area2D@60932/WheelPolygon" method="_bubble_area_entered"]
+[connection signal="area_exited" from="VBoxContainer/ComponentWheel/WheelSegments/@Area2D@60932" to="VBoxContainer/ComponentWheel/WheelSegments/@Area2D@60932/WheelPolygon" method="_bubble_area_exited"]
+[connection signal="area_shape_entered" from="VBoxContainer/ComponentWheel/WheelSegments/@Area2D@60932" to="VBoxContainer/ComponentWheel/WheelSegments/@Area2D@60932/WheelPolygon" method="_bubble_area_shape_entered"]
+[connection signal="area_shape_exited" from="VBoxContainer/ComponentWheel/WheelSegments/@Area2D@60932" to="VBoxContainer/ComponentWheel/WheelSegments/@Area2D@60932/WheelPolygon" method="_bubble_area_shape_exited"]
+[connection signal="body_entered" from="VBoxContainer/ComponentWheel/WheelSegments/@Area2D@60932" to="VBoxContainer/ComponentWheel/WheelSegments/@Area2D@60932/WheelPolygon" method="_bubble_body_entered"]
+[connection signal="body_exited" from="VBoxContainer/ComponentWheel/WheelSegments/@Area2D@60932" to="VBoxContainer/ComponentWheel/WheelSegments/@Area2D@60932/WheelPolygon" method="_bubble_body_exited"]
+[connection signal="body_shape_entered" from="VBoxContainer/ComponentWheel/WheelSegments/@Area2D@60932" to="VBoxContainer/ComponentWheel/WheelSegments/@Area2D@60932/WheelPolygon" method="_bubble_body_shape_entered"]
+[connection signal="body_shape_exited" from="VBoxContainer/ComponentWheel/WheelSegments/@Area2D@60932" to="VBoxContainer/ComponentWheel/WheelSegments/@Area2D@60932/WheelPolygon" method="_bubble_body_shape_exited"]
+[connection signal="mouse_entered" from="VBoxContainer/ComponentWheel/WheelSegments/@Area2D@60932" to="VBoxContainer/ComponentWheel/WheelSegments/@Area2D@60932/WheelPolygon" method="_bubble_mouse_entered"]
+[connection signal="mouse_exited" from="VBoxContainer/ComponentWheel/WheelSegments/@Area2D@60932" to="VBoxContainer/ComponentWheel/WheelSegments/@Area2D@60932/WheelPolygon" method="_bubble_mouse_exited"]
+[connection signal="area_entered" from="VBoxContainer/ComponentWheel/WheelSegments/@Area2D@60933" to="VBoxContainer/ComponentWheel/WheelSegments/@Area2D@60933/WheelPolygon" method="_bubble_area_entered"]
+[connection signal="area_exited" from="VBoxContainer/ComponentWheel/WheelSegments/@Area2D@60933" to="VBoxContainer/ComponentWheel/WheelSegments/@Area2D@60933/WheelPolygon" method="_bubble_area_exited"]
+[connection signal="area_shape_entered" from="VBoxContainer/ComponentWheel/WheelSegments/@Area2D@60933" to="VBoxContainer/ComponentWheel/WheelSegments/@Area2D@60933/WheelPolygon" method="_bubble_area_shape_entered"]
+[connection signal="area_shape_exited" from="VBoxContainer/ComponentWheel/WheelSegments/@Area2D@60933" to="VBoxContainer/ComponentWheel/WheelSegments/@Area2D@60933/WheelPolygon" method="_bubble_area_shape_exited"]
+[connection signal="body_entered" from="VBoxContainer/ComponentWheel/WheelSegments/@Area2D@60933" to="VBoxContainer/ComponentWheel/WheelSegments/@Area2D@60933/WheelPolygon" method="_bubble_body_entered"]
+[connection signal="body_exited" from="VBoxContainer/ComponentWheel/WheelSegments/@Area2D@60933" to="VBoxContainer/ComponentWheel/WheelSegments/@Area2D@60933/WheelPolygon" method="_bubble_body_exited"]
+[connection signal="body_shape_entered" from="VBoxContainer/ComponentWheel/WheelSegments/@Area2D@60933" to="VBoxContainer/ComponentWheel/WheelSegments/@Area2D@60933/WheelPolygon" method="_bubble_body_shape_entered"]
+[connection signal="body_shape_exited" from="VBoxContainer/ComponentWheel/WheelSegments/@Area2D@60933" to="VBoxContainer/ComponentWheel/WheelSegments/@Area2D@60933/WheelPolygon" method="_bubble_body_shape_exited"]
+[connection signal="mouse_entered" from="VBoxContainer/ComponentWheel/WheelSegments/@Area2D@60933" to="VBoxContainer/ComponentWheel/WheelSegments/@Area2D@60933/WheelPolygon" method="_bubble_mouse_entered"]
+[connection signal="mouse_exited" from="VBoxContainer/ComponentWheel/WheelSegments/@Area2D@60933" to="VBoxContainer/ComponentWheel/WheelSegments/@Area2D@60933/WheelPolygon" method="_bubble_mouse_exited"]
+
+[editable path="VBoxContainer/ComponentWheel"]

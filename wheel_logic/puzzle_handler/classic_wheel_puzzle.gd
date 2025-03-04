@@ -10,3 +10,7 @@ func on_choice(data:WheelSelectionData):
     await wheel.slices.rotation_finished
     if wheel.is_no_selectable_segments():
         wheel.puzzle_finished.emit()
+
+func reset():
+    super()
+    score = 0

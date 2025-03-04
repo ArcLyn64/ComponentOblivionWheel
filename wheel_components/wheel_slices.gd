@@ -46,7 +46,7 @@ signal rotation_finished()
         _match_desired_slice_number()
 ## rotation position
 @export var position_index:int = 0 :
-    set(v): position_index = WheelUtil.wrap_index(0, num_slices)
+    set(v): position_index = WheelUtil.wrap_index(v, num_slices)
 ## Color of each slice. Must have at least one value.
 ## If it has fewer values than num_slices, loops through the array.
 ## e.g.: If it only has one value, all slices will be that color.
@@ -98,6 +98,7 @@ func _ready() -> void:
 ## Adjust number of slice children to match the desired number
 ## only adds or removes from the end of the list
 func _match_desired_slice_number():
+    if not slice_gimbal: await ready
     var add_new_slice:Callable = func():
         var new_slice = slice_scene.instantiate()
         _slice_children.append(new_slice)
@@ -188,7 +189,7 @@ func _rotate_one_step(clockwise:bool):
 
     # monitor our position
     position_index += 1 if clockwise else -1
-
+    
     # do the animation
     rotation_started.emit()
     tween = create_tween()

@@ -1,6 +1,8 @@
 class_name MouseWheelInput
 extends WheelInput
 
+signal mouse_exited_wheel()
+
 const COW_CLICK_ACTION = 'COW_wheel_click'
 
 ## if click_action remains empty, this resource will autocreate an action instead.
@@ -34,6 +36,7 @@ func _mouse_entered_segment(index:int):
 func _mouse_exited_wheel():
     if not input_enabled: return
     wheel.disable_selector()
+    mouse_exited_wheel.emit()
 
 func _connect_wheel_signals():
     if not wheel: return

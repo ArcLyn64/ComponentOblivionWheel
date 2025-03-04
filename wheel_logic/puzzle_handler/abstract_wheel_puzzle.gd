@@ -14,3 +14,11 @@ func on_selection():
 
 func on_choice(_choice_data:WheelSelectionData):
     pass
+
+func on_process(_delta:float):
+    pass
+
+func reset():
+    wheel.segments.shuffle_values()
+    wheel.slices.shuffle_multipliers()
+    wheel.enable_all_segments()

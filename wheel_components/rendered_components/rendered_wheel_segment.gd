@@ -1,5 +1,5 @@
 @tool
-class_name WheelSegment
+class_name RenderedWheelSegment
 extends Area2D
 
 const CENTER_POINT:Array[Vector2] = [Vector2.ZERO]
@@ -41,6 +41,7 @@ func _ready() -> void:
     update()
 
 func update():
+    if not polygon: await ready
     color = color # triggers setter to update polygon
     texture = texture # triggers setter to update polygon
     polygon.set_polygon(

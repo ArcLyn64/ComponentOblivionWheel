@@ -44,6 +44,7 @@ func _ready() -> void:
     update()
 
 func update():
+    if not selector_line: await ready
     selector_line.default_color = color
     # calculate how much arc length to remove to fit the selector inside the borders
     var selector_radius:float = radius - (thickness / 2)

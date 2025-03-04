@@ -55,29 +55,27 @@ func _get_active_scene():
     return subscene_container.get_child(0)
 
 
-func _get_active_scene_wheel():
-    if not _get_active_scene() or not 'wheel' in _get_active_scene(): return
+func _get_active_scene_wheel() -> ComponentWheel:
+    if not _get_active_scene() or not 'wheel' in _get_active_scene(): return null
     return _get_active_scene().wheel
 
 
 func _update_debug():
-    var wheel:DROW = _get_active_scene_wheel()
+    var wheel:ComponentWheel = _get_active_scene_wheel()
     if not wheel: return
-    wheel_value_label.text = '' if not wheel.get_selected_segment() else str(wheel.get_selected_segment().value)
-    wheel_multiplier_label.text = '' if not wheel.get_selected_multiplier() else str(wheel.get_selected_multiplier().value)
-    selected_index_and_position_label.text = '' if not wheel.selector_active else '%d/%d' % [wheel.selected_index, wheel.slice_position]
-    selected_wheel_data_label.text = '' if not wheel.get_selected_segment() or not wheel.get_selected_multiplier() else '%d/%d' % [wheel.get_selected_segment().value, wheel.get_selected_multiplier().value]
-    var data_array = []
-    for msd_vsd_pair in wheel.get_segments_with_matching_slices():
-        data_array.append([msd_vsd_pair[0].value, msd_vsd_pair[1].value])
+    wheel_value_label.text = '' if not wheel.is_selector_active() else str(wheel.get_selected_value())
+    wheel_multiplier_label.text = '' if not wheel.is_selector_active() else str(wheel.get_selected_multiplier())
+    selected_index_and_position_label.text = '' if not wheel.is_selector_active() else '%d/%d' % [wheel.get_selected_index(), wheel.slices.position_index]
+    selected_wheel_data_label.text = '' if not wheel.is_selector_active() else '%d/%d' % [wheel.get_selected_value(), wheel.get_selected_multiplier()]
+    var data_array:Array[Array] = []
+    for i in wheel.segments.num_segments:
+        data_array.append([wheel.segments.get_value_at(i), wheel.slices.get_multiplier_at(i)])
     wheel_data_label.text = str(data_array)
     
 func _connect_wheel_signals():
-    var wheel:DROW = _get_active_scene_wheel()
-    # if not wheel.total_area_detector.mouse_exited.is_connected(_update_debug):
-    #     wheel.total_area_detector.mouse_exited.connect(_update_debug)
-    if not wheel.rotation_started.is_connected(_play_sound.bind(rotate_sound)):
-        wheel.rotation_started.connect(_play_sound.bind(rotate_sound))
+    var wheel:ComponentWheel = _get_active_scene_wheel()
+    if not wheel.slices.rotation_started.is_connected(_play_sound.bind(rotate_sound)):
+        wheel.slices.rotation_started.connect(_play_sound.bind(rotate_sound))
     if not wheel.new_segment_selected.is_connected(_play_sound.bind(select_sound)):
         wheel.new_segment_selected.connect(_play_sound.bind(select_sound))
 
