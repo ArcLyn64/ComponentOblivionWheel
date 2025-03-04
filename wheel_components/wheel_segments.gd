@@ -101,6 +101,19 @@ func bind_signal(signame:String, at_index:int, to_function:Callable) -> bool:
     var error = segment.connect(signame, to_function)
     return not error
 
+func is_node_in_segment(node:Node2D, index:int) -> bool:
+    index = WheelUtil.wrap_index(index, num_segments)
+    var segment = _segment_children[index]
+    if node is Area2D:
+        for area in segment.get_overlapping_areas():
+            if area == node: return true
+    else:
+        for body in segment.get_overlapping_bodies():
+            if body == node: return true
+    return false
+
+
+
 ## shuffles the values of the segments
 ## if you're underfilling the values array, you'll end up seeing a pattern due to 
 ## the duplicated elements, e.g. 3 1 2 3 1 2 instead of all 6 values randomized

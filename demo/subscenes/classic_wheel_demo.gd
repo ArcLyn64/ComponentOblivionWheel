@@ -25,8 +25,7 @@ func _update_on_selection():
     indicator_rect.modulate = INDICATOR_COLORS[wheel.get_selected_value()]
 
 func _handle_choice(_data:WheelSelectionData):
-    # update score bar display
-    call_deferred('_update_score_bar')
+    _update_score_bar.call_deferred()
 
 func _update_score_bar():
     var score = wheel.puzzle_handler.score
