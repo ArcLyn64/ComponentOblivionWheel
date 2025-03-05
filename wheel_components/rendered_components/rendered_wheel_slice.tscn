@@ -15,14 +15,3 @@ polygon = PackedVector2Array(6, 0, 24, 25, 37, -18)
 unique_name_in_owner = true
 color = Color(1, 0.647059, 0, 1)
 polygon = PackedVector2Array(0, 0, 70.7107, -70.7107, 76.3084, -64.6299, 81.3849, -58.1077, 85.9054, -51.1885, 89.8391, -43.9197, 93.1591, -36.3508, 95.8427, -28.5336, 97.8717, -20.5215, 99.232, -12.3693, 99.9146, -4.1325, 99.9146, 4.1325, 99.232, 12.3693, 97.8717, 20.5215, 95.8427, 28.5336, 93.1591, 36.3508, 89.8391, 43.9196, 85.9054, 51.1885, 81.3848, 58.1077, 76.3084, 64.6299, 70.7107, 70.7107)
-
-[connection signal="area_entered" from="." to="WheelPolygon" method="_bubble_area_entered"]
-[connection signal="area_exited" from="." to="WheelPolygon" method="_bubble_area_exited"]
-[connection signal="area_shape_entered" from="." to="WheelPolygon" method="_bubble_area_shape_entered"]
-[connection signal="area_shape_exited" from="." to="WheelPolygon" method="_bubble_area_shape_exited"]
-[connection signal="body_entered" from="." to="WheelPolygon" method="_bubble_body_entered"]
-[connection signal="body_exited" from="." to="WheelPolygon" method="_bubble_body_exited"]
-[connection signal="body_shape_entered" from="." to="WheelPolygon" method="_bubble_body_shape_entered"]
-[connection signal="body_shape_exited" from="." to="WheelPolygon" method="_bubble_body_shape_exited"]
-[connection signal="mouse_entered" from="." to="WheelPolygon" method="_bubble_mouse_entered"]
-[connection signal="mouse_exited" from="." to="WheelPolygon" method="_bubble_mouse_exited"]

@@ -11,9 +11,10 @@ const COW_CLICK_ACTION = 'COW_wheel_click'
 
 func attach_wheel(wheel_:ComponentWheel):
     super(wheel_)
-    if click_action.is_empty() and not InputMap.has_action(COW_CLICK_ACTION):
+    if click_action.is_empty(): 
         click_action = COW_CLICK_ACTION
-        _add_default_click_action()
+        if not InputMap.has_action(COW_CLICK_ACTION):
+            _add_default_click_action()
     _connect_wheel_signals()
 
 func handle_input(_event: InputEvent):

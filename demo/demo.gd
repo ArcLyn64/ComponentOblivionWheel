@@ -9,7 +9,7 @@ const ANIM_TIME = 0.3
     'Mash to Fill': preload('uid://doswcbmdql5cy'),
     'Mash to Fill (Drain)': preload('uid://brn3assiyadxe'),
     'Chase the Wedge': preload('uid://dpa3e0ccbb2b6'),
-    'Wheel as Play Area': preload('uid://c1q5khwepbabi'),
+    'Wheel as Play Area': preload('uid://1s3qqbc0ubl3'),
 } 
 
 @onready var subscene_container:Control = %SubsceneContainer
@@ -19,17 +19,18 @@ const ANIM_TIME = 0.3
 @onready var selected_wheel_data_label:Label = %SelectedWheelDataDebugLabel
 @onready var selected_index_and_position_label:Label = %SelectedIndexAndPositionDebugLabel
 
-var background_music:AudioStream = preload("uid://0g3hbfl4uosc")
-var select_sound:AudioStream = preload("uid://cxg4q58es2u77")
-var rotate_sound:AudioStream = preload("uid://c43qhby2kqxxj")
-var success_sound:AudioStream = preload("uid://bd4rwxqynrent")
-var fail_sound:AudioStream = preload("uid://pcg4xnx3rd1t")
+var background_music:AudioStream = preload("uid://qunbssm1x4u1")
+var select_sound:AudioStream = preload("uid://bk1oyixl520ef")
+var rotate_sound:AudioStream = preload('uid://5pp47qq4qsxq')
 
 var bg_msc:AudioStreamPlayer
 
 func _ready() -> void:
+    bg_msc = AudioStreamPlayer.new()
+    add_child(bg_msc)
     _connect_wheel_signals()
     _update_debug()
+    DemoUtil.play_music(bg_msc, background_music)
 
 func change_scenes(scene:StringName):
     if not scene in subscenes.keys(): return
@@ -74,34 +75,10 @@ func _update_debug():
     
 func _connect_wheel_signals():
     var wheel:ComponentWheel = _get_active_scene_wheel()
-    if not wheel.slices.rotation_started.is_connected(_play_sound.bind(rotate_sound)):
-        wheel.slices.rotation_started.connect(_play_sound.bind(rotate_sound))
-    if not wheel.new_segment_selected.is_connected(_play_sound.bind(select_sound)):
-        wheel.new_segment_selected.connect(_play_sound.bind(select_sound))
-
-# thanks shane
-func _play_sound(sound:AudioStream)->void:
-    randomize()
-    var player = AudioStreamPlayer.new()
-    player.stream = sound
-    player.pitch_scale = randf_range(0.95,1.05)
-    self.add_child(player)
-    player.play()
-    player.finished.connect(func():player.queue_free())
-
-# thanks shane
-func _play_music(music:AudioStream) -> void:
-    if bg_msc == null:
-        bg_msc = AudioStreamPlayer.new()
-        self.add_child(bg_msc)
-    bg_msc.stream = music
-    bg_msc.pitch_scale = 1.02
-    bg_msc.volume_db = -30
-    bg_msc.play()
-    bg_msc.finished.connect(func(): 
-        await get_tree().create_timer(1.0).timeout
-        _play_music(background_music)
-    )
-   
+    if not wheel.slices.rotation_started.is_connected(DemoUtil.play_sound.bind(self, rotate_sound)):
+        wheel.slices.rotation_started.connect(DemoUtil.play_sound.bind(self, rotate_sound))
+    if not wheel.new_segment_selected.is_connected(DemoUtil.play_sound.bind(self, select_sound)):
+        wheel.new_segment_selected.connect(DemoUtil.play_sound.bind(self, select_sound))
+  
 func _process(_delta: float) -> void:
     _update_debug()

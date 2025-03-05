@@ -12,11 +12,16 @@ extends Control
 @export var value:int = 4
 ## The values that can be assigned.
 ## These map onto the textures at the same index
-## sigh... i wish we had static typed array exports...
-@export var possible_values:Array[int] = []
+## These are sorted for consistency (since values gets shuffled in wheel_slices)
+## sigh... i wish we had static typed dict exports...
+@export var possible_values:Array[int] = [] :
+    set(v):
+        possible_values = v.duplicate() # sort() is in place, but we don't wanna manipulate the original array.
+        possible_values.sort()
 ## The textures that can be assigned.
 ## These map onto the values at the same index
-## sigh... i wish we had static typed array exports...
+## remember possible_values is sorted, so these should be in order from small to large.
+## sigh... i wish we had static typed dict exports...
 @export var possible_textures:Array[Texture2D] = []
 ## Modulate for the texture rect
 @export var color:Color = Color.WHITE :

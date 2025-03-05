@@ -130,9 +130,11 @@ func update_slice_data(index:int):
     if 'fidelity' in slice: slice.fidelity = fidelity
     if 'arc_angle_deg' in slice: slice.arc_angle_deg = WheelUtil.arc_angle_deg(num_slices)
     if 'value' in slice: slice.value = values[WheelUtil.wrap_index(index, len(values))]
+    if 'possible_values' in slice: slice.possible_values = values
     if 'max_value' in slice: slice.max_value = max_value
     if 'color' in slice: slice.color = colors[WheelUtil.wrap_index(index, len(colors))]
     if 'texture' in slice: slice.texture = null if len(textures) == 0 else textures[WheelUtil.wrap_index(index, len(textures))]
+    if 'possible_textures' in slice: slice.possible_textures = textures
     if 'rotation_degrees' in slice: slice.rotation_degrees = index * WheelUtil.arc_angle_deg(num_slices)
     if 'update' in slice and slice.update is Callable: slice.update()
 

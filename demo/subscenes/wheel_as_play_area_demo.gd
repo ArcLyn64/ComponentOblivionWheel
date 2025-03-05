@@ -19,6 +19,8 @@ const MAX_SCORE_MAGNITUDE = 12 ## 8 + 4 is the highest a score can get on a regu
 @onready var lose_label_fall:Label = %LoseLabelFall
 @onready var lose_label_score:Label = %LoseLabelScore
 
+var success_sound:AudioStream = preload('uid://cw8khym1e68s7')
+var fail_sound:AudioStream = preload('uid://ix7ju3r8xufo')
 var game_over:bool = false
 
 func _ready() -> void:
@@ -51,6 +53,7 @@ func _win():
     if game_over: return
     game_over = true
     win_label.show()
+    DemoUtil.play_sound(self, success_sound, -20)
     get_tree().create_timer(1.0).timeout.connect(_go_to_main_menu)
 
 func _lose(fall:bool = false): 
@@ -61,6 +64,7 @@ func _lose(fall:bool = false):
         lose_label_fall.show()
     else:
         lose_label_score.show()
+    DemoUtil.play_sound(self, fail_sound, -15)
     get_tree().create_timer(1.0).timeout.connect(_go_to_main_menu)
 
 func _go_to_main_menu():
