@@ -84,10 +84,13 @@ wheel_sections = 7
 
 [node name="WheelSlices" parent="VBoxContainer/ComponentWheel" index="0"]
 num_slices = 7
+values = Array[int]([0])
+max_value = 200
 radius = 250.0
 
 [node name="WheelSegments" parent="VBoxContainer/ComponentWheel" index="1"]
 num_segments = 7
+values = Array[int]([-2, -1, -2, -1, -3])
 radius = 250.0
 
 [node name="RenderedWheelOverlay" parent="VBoxContainer/ComponentWheel" index="2"]
