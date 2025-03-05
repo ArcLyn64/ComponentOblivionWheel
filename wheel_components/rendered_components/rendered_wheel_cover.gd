@@ -16,12 +16,9 @@ const CENTER_POINT:Array[Vector2] = [Vector2.ZERO]
 ## How many points used to render the curved arc for this slice.
 @export var fidelity:int = 20 :
     set(v): fidelity = max(2, v)
-## Slice multiplier value, also determines fullness.
-@export var value:int = 4
-## Maximum value for a slice. Used to determine how full the slice should look.
-@export var max_value:int = 4
 # endregion
-
+    
+    
 func _ready() -> void:
     update()
 

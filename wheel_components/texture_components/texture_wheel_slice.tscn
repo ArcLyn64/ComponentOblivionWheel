@@ -21,8 +21,6 @@ possible_values = Array[int]([1, 2, 3, 4])
 possible_textures = Array[Texture2D]([ExtResource("2_0kg32"), ExtResource("3_j0el3"), ExtResource("4_utnl1"), ExtResource("2_lwcdx")])
 
 [node name="TextureRect" type="TextureRect" parent="."]
-unique_name_in_owner = true
-layout_mode = 0
 offset_left = -20.0
 offset_top = -20.0
 offset_right = 20.0

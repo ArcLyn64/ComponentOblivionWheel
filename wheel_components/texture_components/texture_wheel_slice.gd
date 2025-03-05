@@ -18,7 +18,7 @@ extends Control
 ## These map onto the values at the same index
 ## sigh... i wish we had static typed array exports...
 @export var possible_textures:Array[Texture2D] = []
-
+## Modulate for the texture rect
 @export var color:Color = Color.WHITE :
     set(v):
         color = v

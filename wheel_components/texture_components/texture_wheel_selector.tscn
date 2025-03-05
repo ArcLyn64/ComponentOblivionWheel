@@ -1,0 +1,30 @@
+[gd_scene load_steps=3 format=3 uid="uid://da3ejddh861jv"]
+
+[ext_resource type="Script" path="res://wheel_components/texture_components/texture_wheel_selector.gd" id="1_ycv8c"]
+[ext_resource type="Texture2D" uid="uid://vykvlqf1dvc4" path="res://assets/wheel-simple/selector.png" id="2_8f4wu"]
+
+[node name="TextureWheelSelector" type="Control"]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ycv8c")
+texture = ExtResource("2_8f4wu")
+texture_angle_offset_deg = 90.0
+
+[node name="TextureRect" type="TextureRect" parent="."]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = -100.0
+offset_top = -100.0
+offset_right = 100.0
+offset_bottom = 100.0
+rotation = 1.5708
+pivot_offset = Vector2(100, 100)
+texture = ExtResource("2_8f4wu")
+expand_mode = 1
+stretch_mode = 4
