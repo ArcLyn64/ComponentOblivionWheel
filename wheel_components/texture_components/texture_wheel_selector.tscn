@@ -12,9 +12,9 @@ anchor_right = 0.5
 anchor_bottom = 0.5
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 1
 script = ExtResource("1_ycv8c")
 texture = ExtResource("2_8f4wu")
-texture_angle_offset_deg = 90.0
 
 [node name="TextureRect" type="TextureRect" parent="."]
 unique_name_in_owner = true

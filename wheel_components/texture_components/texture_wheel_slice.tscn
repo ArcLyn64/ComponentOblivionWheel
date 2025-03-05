@@ -8,25 +8,22 @@
 
 [node name="TextureWheelSlice" type="Control"]
 layout_mode = 3
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-grow_horizontal = 2
-grow_vertical = 2
+anchors_preset = 0
+mouse_filter = 1
 script = ExtResource("1_ibbeo")
 value = 1
 possible_values = Array[int]([1, 2, 3, 4])
 possible_textures = Array[Texture2D]([ExtResource("2_0kg32"), ExtResource("3_j0el3"), ExtResource("4_utnl1"), ExtResource("2_lwcdx")])
 
 [node name="TextureRect" type="TextureRect" parent="."]
-offset_left = -20.0
-offset_top = -20.0
-offset_right = 20.0
-offset_bottom = 20.0
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = -100.0
+offset_top = -100.0
+offset_right = 100.0
+offset_bottom = 100.0
 rotation = 1.5708
-pivot_offset = Vector2(20, 20)
-texture = ExtResource("2_lwcdx")
+pivot_offset = Vector2(100, 100)
+texture = ExtResource("2_0kg32")
 expand_mode = 1
 stretch_mode = 4

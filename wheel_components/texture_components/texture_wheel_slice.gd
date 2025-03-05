@@ -31,6 +31,7 @@ func _ready() -> void:
     update()
 
 func update():
+    if not texture_rect: await ready
     texture_rect.size = Vector2.ONE * radius * 2
     texture_rect.position = Vector2.ONE * -radius
     texture_rect.pivot_offset = Vector2.ONE * radius

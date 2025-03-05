@@ -1,7 +1,26 @@
-[gd_scene load_steps=7 format=3 uid="uid://dqrwxwpxgtylj"]
+[gd_scene load_steps=19 format=3 uid="uid://dqrwxwpxgtylj"]
 
 [ext_resource type="Script" path="res://demo/subscenes/classic_wheel_demo.gd" id="1_wmdv4"]
-[ext_resource type="PackedScene" uid="uid://c3jlb4w5qfd00" path="res://component_wheel.tscn" id="2_cgadj"]
+[ext_resource type="Script" path="res://component_wheel.gd" id="2_xusu1"]
+[ext_resource type="Script" path="res://wheel_logic/wheel_input/mouse_wheel_input.gd" id="3_7dx6n"]
+[ext_resource type="PackedScene" uid="uid://xxnh1y6s3bpo" path="res://wheel_components/texture_components/texture_wheel_slice.tscn" id="3_m4b62"]
+[ext_resource type="PackedScene" uid="uid://dmbc7yk7y8mbi" path="res://wheel_components/wheel_slices.tscn" id="3_vpd2y"]
+[ext_resource type="PackedScene" uid="uid://c6ugv7pcb6thk" path="res://wheel_components/wheel_segments.tscn" id="4_1yosb"]
+[ext_resource type="Script" path="res://wheel_logic/puzzle_handler/classic_wheel_puzzle.gd" id="4_dsja8"]
+[ext_resource type="PackedScene" uid="uid://c44rw358lupel" path="res://wheel_components/texture_components/texture_overlay.tscn" id="5_i8nmq"]
+[ext_resource type="PackedScene" uid="uid://cvj5oy3towclp" path="res://wheel_components/wheel_covers.tscn" id="6_n8csi"]
+[ext_resource type="PackedScene" uid="uid://da3ejddh861jv" path="res://wheel_components/texture_components/texture_wheel_selector.tscn" id="7_l2y0n"]
+[ext_resource type="PackedScene" uid="uid://l2by7to4yim1" path="res://wheel_components/texture_components/texture_wheel_cover.tscn" id="8_xk1aq"]
+[ext_resource type="Texture2D" uid="uid://c58kxglsbrtpy" path="res://assets/wheel-simple/slice4.png" id="10_oc7ee"]
+
+[sub_resource type="Resource" id="Resource_fvtuf"]
+script = ExtResource("3_7dx6n")
+click_action = ""
+disable_selection_during_animation = false
+input_enabled = true
+
+[sub_resource type="Resource" id="Resource_wclwj"]
+script = ExtResource("4_dsja8")
 
 [sub_resource type="Gradient" id="Gradient_tbo00"]
 interpolation_mode = 1
@@ -42,9 +61,45 @@ script = ExtResource("1_wmdv4")
 layout_mode = 2
 theme_override_constants/separation = 20
 
-[node name="ComponentWheel" parent="VBoxContainer" instance=ExtResource("2_cgadj")]
+[node name="ComponentWheel" type="CenterContainer" parent="VBoxContainer" node_paths=PackedStringArray("slices", "segments", "overlay", "covers", "selector")]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(520, 520)
 layout_mode = 2
+script = ExtResource("2_xusu1")
+input_handler = SubResource("Resource_fvtuf")
+puzzle_handler = SubResource("Resource_wclwj")
+radius = 250.0
+slices = NodePath("WheelSlices")
+segments = NodePath("WheelSegments")
+overlay = NodePath("TextureOverlay")
+covers = NodePath("WheelCovers")
+selector = NodePath("TextureWheelSelector")
+
+[node name="WheelSlices" parent="VBoxContainer/ComponentWheel" instance=ExtResource("3_vpd2y")]
+layout_mode = 2
+colors = Array[Color]([Color(1, 0.384314, 0, 1)])
+radius = 250.0
+slice_scene = ExtResource("3_m4b62")
+
+[node name="WheelSegments" parent="VBoxContainer/ComponentWheel" instance=ExtResource("4_1yosb")]
+layout_mode = 2
+radius = 250.0
+
+[node name="TextureOverlay" parent="VBoxContainer/ComponentWheel" instance=ExtResource("5_i8nmq")]
+layout_mode = 2
+radius = 250.0
+
+[node name="WheelCovers" parent="VBoxContainer/ComponentWheel" instance=ExtResource("6_n8csi")]
+layout_mode = 2
+colors = Array[Color]([Color(0, 0, 0, 0.678431)])
+textures = Array[Texture2D]([ExtResource("10_oc7ee")])
+radius = 250.0
+cover_scene = ExtResource("8_xk1aq")
+
+[node name="TextureWheelSelector" parent="VBoxContainer/ComponentWheel" instance=ExtResource("7_l2y0n")]
+visible = false
+layout_mode = 2
+radius = 250.0
 
 [node name="ScoreBar" type="HBoxContainer" parent="VBoxContainer"]
 custom_minimum_size = Vector2(550, 50)
@@ -91,3 +146,43 @@ horizontal_alignment = 1
 [connection signal="new_segment_chosen" from="VBoxContainer/ComponentWheel" to="." method="_handle_choice"]
 [connection signal="new_segment_selected" from="VBoxContainer/ComponentWheel" to="." method="_update_on_selection"]
 [connection signal="puzzle_finished" from="VBoxContainer/ComponentWheel" to="." method="_handle_finished_puzzle"]
+[connection signal="area_entered" from="VBoxContainer/ComponentWheel/WheelSegments/WheelSegment" to="VBoxContainer/ComponentWheel/WheelSegments/WheelSegment/WheelPolygon" method="_bubble_area_entered"]
+[connection signal="area_exited" from="VBoxContainer/ComponentWheel/WheelSegments/WheelSegment" to="VBoxContainer/ComponentWheel/WheelSegments/WheelSegment/WheelPolygon" method="_bubble_area_exited"]
+[connection signal="area_shape_entered" from="VBoxContainer/ComponentWheel/WheelSegments/WheelSegment" to="VBoxContainer/ComponentWheel/WheelSegments/WheelSegment/WheelPolygon" method="_bubble_area_shape_entered"]
+[connection signal="area_shape_exited" from="VBoxContainer/ComponentWheel/WheelSegments/WheelSegment" to="VBoxContainer/ComponentWheel/WheelSegments/WheelSegment/WheelPolygon" method="_bubble_area_shape_exited"]
+[connection signal="body_entered" from="VBoxContainer/ComponentWheel/WheelSegments/WheelSegment" to="VBoxContainer/ComponentWheel/WheelSegments/WheelSegment/WheelPolygon" method="_bubble_body_entered"]
+[connection signal="body_exited" from="VBoxContainer/ComponentWheel/WheelSegments/WheelSegment" to="VBoxContainer/ComponentWheel/WheelSegments/WheelSegment/WheelPolygon" method="_bubble_body_exited"]
+[connection signal="body_shape_entered" from="VBoxContainer/ComponentWheel/WheelSegments/WheelSegment" to="VBoxContainer/ComponentWheel/WheelSegments/WheelSegment/WheelPolygon" method="_bubble_body_shape_entered"]
+[connection signal="body_shape_exited" from="VBoxContainer/ComponentWheel/WheelSegments/WheelSegment" to="VBoxContainer/ComponentWheel/WheelSegments/WheelSegment/WheelPolygon" method="_bubble_body_shape_exited"]
+[connection signal="mouse_entered" from="VBoxContainer/ComponentWheel/WheelSegments/WheelSegment" to="VBoxContainer/ComponentWheel/WheelSegments/WheelSegment/WheelPolygon" method="_bubble_mouse_entered"]
+[connection signal="mouse_exited" from="VBoxContainer/ComponentWheel/WheelSegments/WheelSegment" to="VBoxContainer/ComponentWheel/WheelSegments/WheelSegment/WheelPolygon" method="_bubble_mouse_exited"]
+[connection signal="area_entered" from="VBoxContainer/ComponentWheel/WheelSegments/@Area2D@197879" to="VBoxContainer/ComponentWheel/WheelSegments/@Area2D@197879/WheelPolygon" method="_bubble_area_entered"]
+[connection signal="area_exited" from="VBoxContainer/ComponentWheel/WheelSegments/@Area2D@197879" to="VBoxContainer/ComponentWheel/WheelSegments/@Area2D@197879/WheelPolygon" method="_bubble_area_exited"]
+[connection signal="area_shape_entered" from="VBoxContainer/ComponentWheel/WheelSegments/@Area2D@197879" to="VBoxContainer/ComponentWheel/WheelSegments/@Area2D@197879/WheelPolygon" method="_bubble_area_shape_entered"]
+[connection signal="area_shape_exited" from="VBoxContainer/ComponentWheel/WheelSegments/@Area2D@197879" to="VBoxContainer/ComponentWheel/WheelSegments/@Area2D@197879/WheelPolygon" method="_bubble_area_shape_exited"]
+[connection signal="body_entered" from="VBoxContainer/ComponentWheel/WheelSegments/@Area2D@197879" to="VBoxContainer/ComponentWheel/WheelSegments/@Area2D@197879/WheelPolygon" method="_bubble_body_entered"]
+[connection signal="body_exited" from="VBoxContainer/ComponentWheel/WheelSegments/@Area2D@197879" to="VBoxContainer/ComponentWheel/WheelSegments/@Area2D@197879/WheelPolygon" method="_bubble_body_exited"]
+[connection signal="body_shape_entered" from="VBoxContainer/ComponentWheel/WheelSegments/@Area2D@197879" to="VBoxContainer/ComponentWheel/WheelSegments/@Area2D@197879/WheelPolygon" method="_bubble_body_shape_entered"]
+[connection signal="body_shape_exited" from="VBoxContainer/ComponentWheel/WheelSegments/@Area2D@197879" to="VBoxContainer/ComponentWheel/WheelSegments/@Area2D@197879/WheelPolygon" method="_bubble_body_shape_exited"]
+[connection signal="mouse_entered" from="VBoxContainer/ComponentWheel/WheelSegments/@Area2D@197879" to="VBoxContainer/ComponentWheel/WheelSegments/@Area2D@197879/WheelPolygon" method="_bubble_mouse_entered"]
+[connection signal="mouse_exited" from="VBoxContainer/ComponentWheel/WheelSegments/@Area2D@197879" to="VBoxContainer/ComponentWheel/WheelSegments/@Area2D@197879/WheelPolygon" method="_bubble_mouse_exited"]
+[connection signal="area_entered" from="VBoxContainer/ComponentWheel/WheelSegments/@Area2D@197880" to="VBoxContainer/ComponentWheel/WheelSegments/@Area2D@197880/WheelPolygon" method="_bubble_area_entered"]
+[connection signal="area_exited" from="VBoxContainer/ComponentWheel/WheelSegments/@Area2D@197880" to="VBoxContainer/ComponentWheel/WheelSegments/@Area2D@197880/WheelPolygon" method="_bubble_area_exited"]
+[connection signal="area_shape_entered" from="VBoxContainer/ComponentWheel/WheelSegments/@Area2D@197880" to="VBoxContainer/ComponentWheel/WheelSegments/@Area2D@197880/WheelPolygon" method="_bubble_area_shape_entered"]
+[connection signal="area_shape_exited" from="VBoxContainer/ComponentWheel/WheelSegments/@Area2D@197880" to="VBoxContainer/ComponentWheel/WheelSegments/@Area2D@197880/WheelPolygon" method="_bubble_area_shape_exited"]
+[connection signal="body_entered" from="VBoxContainer/ComponentWheel/WheelSegments/@Area2D@197880" to="VBoxContainer/ComponentWheel/WheelSegments/@Area2D@197880/WheelPolygon" method="_bubble_body_entered"]
+[connection signal="body_exited" from="VBoxContainer/ComponentWheel/WheelSegments/@Area2D@197880" to="VBoxContainer/ComponentWheel/WheelSegments/@Area2D@197880/WheelPolygon" method="_bubble_body_exited"]
+[connection signal="body_shape_entered" from="VBoxContainer/ComponentWheel/WheelSegments/@Area2D@197880" to="VBoxContainer/ComponentWheel/WheelSegments/@Area2D@197880/WheelPolygon" method="_bubble_body_shape_entered"]
+[connection signal="body_shape_exited" from="VBoxContainer/ComponentWheel/WheelSegments/@Area2D@197880" to="VBoxContainer/ComponentWheel/WheelSegments/@Area2D@197880/WheelPolygon" method="_bubble_body_shape_exited"]
+[connection signal="mouse_entered" from="VBoxContainer/ComponentWheel/WheelSegments/@Area2D@197880" to="VBoxContainer/ComponentWheel/WheelSegments/@Area2D@197880/WheelPolygon" method="_bubble_mouse_entered"]
+[connection signal="mouse_exited" from="VBoxContainer/ComponentWheel/WheelSegments/@Area2D@197880" to="VBoxContainer/ComponentWheel/WheelSegments/@Area2D@197880/WheelPolygon" method="_bubble_mouse_exited"]
+[connection signal="area_entered" from="VBoxContainer/ComponentWheel/WheelSegments/@Area2D@197881" to="VBoxContainer/ComponentWheel/WheelSegments/@Area2D@197881/WheelPolygon" method="_bubble_area_entered"]
+[connection signal="area_exited" from="VBoxContainer/ComponentWheel/WheelSegments/@Area2D@197881" to="VBoxContainer/ComponentWheel/WheelSegments/@Area2D@197881/WheelPolygon" method="_bubble_area_exited"]
+[connection signal="area_shape_entered" from="VBoxContainer/ComponentWheel/WheelSegments/@Area2D@197881" to="VBoxContainer/ComponentWheel/WheelSegments/@Area2D@197881/WheelPolygon" method="_bubble_area_shape_entered"]
+[connection signal="area_shape_exited" from="VBoxContainer/ComponentWheel/WheelSegments/@Area2D@197881" to="VBoxContainer/ComponentWheel/WheelSegments/@Area2D@197881/WheelPolygon" method="_bubble_area_shape_exited"]
+[connection signal="body_entered" from="VBoxContainer/ComponentWheel/WheelSegments/@Area2D@197881" to="VBoxContainer/ComponentWheel/WheelSegments/@Area2D@197881/WheelPolygon" method="_bubble_body_entered"]
+[connection signal="body_exited" from="VBoxContainer/ComponentWheel/WheelSegments/@Area2D@197881" to="VBoxContainer/ComponentWheel/WheelSegments/@Area2D@197881/WheelPolygon" method="_bubble_body_exited"]
+[connection signal="body_shape_entered" from="VBoxContainer/ComponentWheel/WheelSegments/@Area2D@197881" to="VBoxContainer/ComponentWheel/WheelSegments/@Area2D@197881/WheelPolygon" method="_bubble_body_shape_entered"]
+[connection signal="body_shape_exited" from="VBoxContainer/ComponentWheel/WheelSegments/@Area2D@197881" to="VBoxContainer/ComponentWheel/WheelSegments/@Area2D@197881/WheelPolygon" method="_bubble_body_shape_exited"]
+[connection signal="mouse_entered" from="VBoxContainer/ComponentWheel/WheelSegments/@Area2D@197881" to="VBoxContainer/ComponentWheel/WheelSegments/@Area2D@197881/WheelPolygon" method="_bubble_mouse_entered"]
+[connection signal="mouse_exited" from="VBoxContainer/ComponentWheel/WheelSegments/@Area2D@197881" to="VBoxContainer/ComponentWheel/WheelSegments/@Area2D@197881/WheelPolygon" method="_bubble_mouse_exited"]

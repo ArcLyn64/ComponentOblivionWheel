@@ -40,6 +40,7 @@ func _ready() -> void:
     update()
 
 func update_selector_position():
+    if not texture_rect: await ready
     texture_rect.rotation_degrees = (selected_index * WheelUtil.arc_angle_deg(num_positions)) + texture_angle_offset_deg
 
 func update():
