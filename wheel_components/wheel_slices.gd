@@ -71,8 +71,8 @@ signal rotation_finished()
 
 @export_group('Size')
 ## Radius of the wheel, and the maximum radius a slice can be.
-@export var maximum_radius:float = 100 :
-    set(v): maximum_radius = max(0, v)
+@export var radius:float = 100 :
+    set(v): radius = max(0, v)
 ## How many points used to render the curved arc for each slice.
 @export var fidelity:int = 20 :
     set(v): fidelity = max(2, v)
@@ -126,7 +126,7 @@ func shuffle_multipliers():
 func update_slice_data(index:int):
     index = WheelUtil.wrap_index(index, num_slices)
     var slice = _slice_children[index]
-    if 'maximum_radius' in slice: slice.maximum_radius = maximum_radius
+    if 'radius' in slice: slice.radius = radius
     if 'fidelity' in slice: slice.fidelity = fidelity
     if 'arc_angle_deg' in slice: slice.arc_angle_deg = WheelUtil.arc_angle_deg(num_slices)
     if 'value' in slice: slice.value = values[WheelUtil.wrap_index(index, len(values))]

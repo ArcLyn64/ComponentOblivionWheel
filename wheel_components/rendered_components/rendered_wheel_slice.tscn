@@ -4,6 +4,7 @@
 
 [node name="WheelSlice" type="Area2D"]
 script = ExtResource("1_jxkct")
+radius = null
 
 [node name="CollisionShape" type="CollisionPolygon2D" parent="."]
 unique_name_in_owner = true
@@ -12,6 +13,8 @@ polygon = PackedVector2Array(6, 0, 24, 25, 37, -18)
 
 [node name="WheelPolygon" type="Polygon2D" parent="."]
 unique_name_in_owner = true
+color = Color(1, 0.647059, 0, 1)
+polygon = PackedVector2Array(0, 0, 70.7107, -70.7107, 76.3084, -64.6299, 81.3849, -58.1077, 85.9054, -51.1885, 89.8391, -43.9197, 93.1591, -36.3508, 95.8427, -28.5336, 97.8717, -20.5215, 99.232, -12.3693, 99.9146, -4.1325, 99.9146, 4.1325, 99.232, 12.3693, 97.8717, 20.5215, 95.8427, 28.5336, 93.1591, 36.3508, 89.8391, 43.9196, 85.9054, 51.1885, 81.3848, 58.1077, 76.3084, 64.6299, 70.7107, 70.7107)
 
 [connection signal="area_entered" from="." to="WheelPolygon" method="_bubble_area_entered"]
 [connection signal="area_exited" from="." to="WheelPolygon" method="_bubble_area_exited"]

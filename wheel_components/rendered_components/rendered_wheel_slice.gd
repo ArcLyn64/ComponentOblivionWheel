@@ -8,8 +8,8 @@ const CENTER_POINT:Array[Vector2] = [Vector2.ZERO]
 # region Export Vars
 ######################
 ## Radius of the wheel, and the maximum radius a slice can be.
-@export var maximum_radius:float = 100 :
-    set(v): maximum_radius = max(0, v)
+@export var radius:float = 100 :
+    set(v): radius = max(0, v)
 ## The angle of this slice's arc.
 @export var arc_angle_deg:float = 90 :
     set(v): arc_angle_deg = clampf(v, 0.0, 360.0)
@@ -41,7 +41,7 @@ func _ready() -> void:
 func update():
     color = color # triggers setter to update polygon
     texture = texture # triggers setter to update polygon
-    var radius = maximum_radius * clampf(float(max(value, 0)) / float(max(1, max_value)), 0, 1)
+    var display_radius = radius * clampf(float(max(value, 0)) / float(max(1, max_value)), 0, 1)
     polygon.set_polygon(
-        CENTER_POINT + WheelUtil.create_arc_points(radius, fidelity, arc_angle_deg)        
+        CENTER_POINT + WheelUtil.create_arc_points(display_radius, fidelity, arc_angle_deg)        
     )

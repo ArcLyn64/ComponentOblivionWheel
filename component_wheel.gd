@@ -65,7 +65,7 @@ func _process(delta: float) -> void:
 #####################
 
 func _sync_radius():
-    if slices: slices.maximum_radius = radius
+    if slices: slices.radius = radius
     if segments: segments.radius = radius
     if overlay and 'radius' in overlay: overlay.radius = radius
     if covers: covers.radius = radius
