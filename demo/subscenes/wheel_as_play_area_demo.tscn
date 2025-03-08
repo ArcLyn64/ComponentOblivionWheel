@@ -1,10 +1,10 @@
 [gd_scene load_steps=19 format=3 uid="uid://1s3qqbc0ubl3"]
 
-[ext_resource type="Script" path="res://demo/subscenes/wheel_as_play_area_demo.gd" id="1_d4i3w"]
+[ext_resource type="Script" uid="uid://du1lvpsqxeva4" path="res://demo/subscenes/wheel_as_play_area_demo.gd" id="1_d4i3w"]
 [ext_resource type="PackedScene" uid="uid://c3jlb4w5qfd00" path="res://component_wheel.tscn" id="2_vh4au"]
-[ext_resource type="Script" path="res://wheel_logic/wheel_input/follow_node_wheel_input.gd" id="3_44mgm"]
+[ext_resource type="Script" uid="uid://d2y354i1gu1s8" path="res://wheel_logic/wheel_input/follow_node_wheel_input.gd" id="3_44mgm"]
 [ext_resource type="Texture2D" uid="uid://csvma1cn8nmie" path="res://demo/assets/player.png" id="5_ho7tv"]
-[ext_resource type="Script" path="res://demo/subscenes/demo_platformer.gd" id="5_uoxp5"]
+[ext_resource type="Script" uid="uid://deeil52rv46pt" path="res://demo/subscenes/demo_platformer.gd" id="5_uoxp5"]
 
 [sub_resource type="Resource" id="Resource_lk5go"]
 script = ExtResource("3_44mgm")

@@ -1,8 +1,8 @@
 [gd_scene load_steps=15 format=3 uid="uid://dpa3e0ccbb2b6"]
 
-[ext_resource type="Script" path="res://demo/subscenes/chase_the_wedge_demo.gd" id="1_0hmug"]
+[ext_resource type="Script" uid="uid://u73msxjobp6o" path="res://demo/subscenes/chase_the_wedge_demo.gd" id="1_0hmug"]
 [ext_resource type="PackedScene" uid="uid://c3jlb4w5qfd00" path="res://component_wheel.tscn" id="2_eysww"]
-[ext_resource type="Script" path="res://wheel_logic/puzzle_handler/chase_the_wedge_puzzle.gd" id="3_8bq2j"]
+[ext_resource type="Script" uid="uid://fhyehfc4c0e3" path="res://wheel_logic/puzzle_handler/chase_the_wedge_puzzle.gd" id="3_8bq2j"]
 
 [sub_resource type="Resource" id="Resource_xlo6i"]
 script = ExtResource("3_8bq2j")

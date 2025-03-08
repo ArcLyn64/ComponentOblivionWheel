@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://ct4gcxotee5or"]
 
-[ext_resource type="Script" path="res://wheel_components/rendered_components/rendered_wheel_segment.gd" id="1_4om0p"]
+[ext_resource type="Script" uid="uid://ccyqp5ynwsqj2" path="res://wheel_components/rendered_components/rendered_wheel_segment.gd" id="1_4om0p"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_fgxyr"]
 blend_mode = 2

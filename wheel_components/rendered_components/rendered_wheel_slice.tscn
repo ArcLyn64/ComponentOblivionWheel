@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://dvt513jl5i630"]
 
-[ext_resource type="Script" path="res://wheel_components/rendered_components/rendered_wheel_slice.gd" id="1_jxkct"]
+[ext_resource type="Script" uid="uid://nc28xeim6e04" path="res://wheel_components/rendered_components/rendered_wheel_slice.gd" id="1_jxkct"]
 
 [node name="WheelSlice" type="Area2D"]
 script = ExtResource("1_jxkct")

@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://cvj5oy3towclp"]
 
-[ext_resource type="Script" path="res://wheel_components/wheel_covers.gd" id="1_yx54p"]
+[ext_resource type="Script" uid="uid://bmk0fxr3u06si" path="res://wheel_components/wheel_covers.gd" id="1_yx54p"]
 [ext_resource type="PackedScene" uid="uid://daq3ktxspfmpr" path="res://wheel_components/rendered_components/rendered_wheel_cover.tscn" id="2_3rmk4"]
 
 [node name="WheelCovers" type="Control"]

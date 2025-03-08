@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://cj7fmdg6stbuy"]
 
-[ext_resource type="Script" path="res://wheel_components/rendered_components/rendered_wheel_selector.gd" id="1_fp0hu"]
+[ext_resource type="Script" uid="uid://b1ngkmjryrc0g" path="res://wheel_components/rendered_components/rendered_wheel_selector.gd" id="1_fp0hu"]
 
 [node name="WheelSelector" type="Control"]
 layout_mode = 3

@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://c44rw358lupel"]
 
-[ext_resource type="Script" path="res://wheel_components/texture_components/texture_overlay.gd" id="1_rp3pu"]
+[ext_resource type="Script" uid="uid://bhcjtxp1vrjbl" path="res://wheel_components/texture_components/texture_overlay.gd" id="1_rp3pu"]
 [ext_resource type="Texture2D" uid="uid://742pxiqvrtvv" path="res://assets/wheel-simple/overlay.png" id="2_v72us"]
 
 [node name="TextureOverlay" type="Control"]

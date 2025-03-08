@@ -1,8 +1,8 @@
 [gd_scene load_steps=13 format=3 uid="uid://doswcbmdql5cy"]
 
-[ext_resource type="Script" path="res://demo/subscenes/mash_wheel_demo.gd" id="1_vq7gi"]
+[ext_resource type="Script" uid="uid://dn416i8idej0h" path="res://demo/subscenes/mash_wheel_demo.gd" id="1_vq7gi"]
 [ext_resource type="PackedScene" uid="uid://c3jlb4w5qfd00" path="res://component_wheel.tscn" id="2_c7v72"]
-[ext_resource type="Script" path="res://wheel_logic/puzzle_handler/mash_wheel_puzzle.gd" id="3_fqc4r"]
+[ext_resource type="Script" uid="uid://hfpvrnjuwud0" path="res://wheel_logic/puzzle_handler/mash_wheel_puzzle.gd" id="3_fqc4r"]
 
 [sub_resource type="Resource" id="Resource_opr1b"]
 script = ExtResource("3_fqc4r")

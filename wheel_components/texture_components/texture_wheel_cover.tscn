@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://l2by7to4yim1"]
 
-[ext_resource type="Script" path="res://wheel_components/texture_components/texture_wheel_cover.gd" id="1_dxx7h"]
+[ext_resource type="Script" uid="uid://dviagw0tn4psj" path="res://wheel_components/texture_components/texture_wheel_cover.gd" id="1_dxx7h"]
 [ext_resource type="Texture2D" uid="uid://c58kxglsbrtpy" path="res://assets/wheel-simple/slice4.png" id="2_7dgwv"]
 
 [node name="TextureWheelCover" type="Control"]
