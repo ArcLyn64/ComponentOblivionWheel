@@ -143,5 +143,8 @@ func update():
     _match_desired_segment_number()
     for_all_segments(update_segment_data)
     segment_area_hitbox.shape.radius = radius
+    segment_area.collision_layer = collision_layer
+    segment_area.collision_mask = collision_mask
+    segment_area.collision_priority = collision_priority
 #endregion
  
