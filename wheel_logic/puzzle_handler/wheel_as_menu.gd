@@ -11,7 +11,10 @@ var tween
 func attach_wheel(wheel_:ComponentWheel):
     super(wheel_)
     if wheel.input_handler.has_signal('mouse_exited_wheel'):
-        wheel.input_handler.mouse_exited_wheel.connect(wheel.zero_all_multipliers)
+        wheel.input_handler.mouse_exited_wheel.connect(func():
+            _end_animation()
+            wheel.zero_all_multipliers()
+    )
 
 func on_selection():
     _end_animation()
