@@ -22,6 +22,10 @@ func attach_follow_node(fn:Node2D):
     _follow_node_touching_segments_set = {}
     for index in _detect_colliding_areas():
         _follow_node_touching_segments_set[index] = true
+    if len(_follow_node_touching_segments_set.keys()) == 1:
+        wheel.select_index(_follow_node_touching_segments_set.keys()[0])
+    else:
+        wheel.disable_selector()
 
 func handle_input(_event: InputEvent):
     if not input_enabled: return
@@ -35,6 +39,8 @@ func _node_entered_segment(node:Node2D, index:int):
     _follow_node_touching_segments_set[index] = true
     if len(_follow_node_touching_segments_set.keys()) == 1:
         wheel.select_index(_follow_node_touching_segments_set.keys()[0])
+    else:
+        wheel.disable_selector()
 
 func _node_exited_segment(node:Node2D, index:int):
     if node != follow_node: return
@@ -42,6 +48,8 @@ func _node_exited_segment(node:Node2D, index:int):
     _follow_node_touching_segments_set.erase(index)
     if len(_follow_node_touching_segments_set.keys()) == 1:
         wheel.select_index(_follow_node_touching_segments_set.keys()[0])
+    else:
+        wheel.disable_selector()
 
 func _node_exited_wheel(node:Node2D):
     if node != follow_node: return
