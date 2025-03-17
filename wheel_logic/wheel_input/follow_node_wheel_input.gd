@@ -55,7 +55,7 @@ func _detect_colliding_areas() -> Array[int]:
     var overlapping_segments:Array[int] = []
     wheel.segments.for_all_segments(func(index):
         if wheel.segments.is_node_in_segment(follow_node, index):
-            follow_node.append(index)
+            overlapping_segments.append(index)
     )
     return overlapping_segments
 
